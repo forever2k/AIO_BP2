@@ -3,3 +3,4 @@ aiohttp==3.7.4.post0
 async-timeout==3.0.1
 ujson==4.0.2
 chardet==4.0.0
+mysql-connector-python==8.0.24

@@ -29,18 +29,16 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
 
-db = mysql.connector.connect(
-        host=os.getenv('myhost'),
-        user=os.getenv('myuser'),
-        passwd=os.getenv('mypass'),
-        port="3306",
-        database="eyefvtclr0ydnawm")
-
-
-# print(db)
-# print(db)
-
-cursor = db.cursor()
+# db = mysql.connector.connect(
+#         host=os.getenv('myhost'),
+#         user=os.getenv('myuser'),
+#         passwd=os.getenv('mypass'),
+#         port="3306",
+#         database="eyefvtclr0ydnawm")
+#
+#
+#
+# cursor = db.cursor()
 
 user_data = {}
 

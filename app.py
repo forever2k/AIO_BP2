@@ -4,6 +4,7 @@ from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils.executor import start_webhook
 import mysql.connector
+import random
 
 
 test_group = -1001153348142
@@ -42,13 +43,30 @@ cursor = dbase.cursor()
 
 user_data = {}
 
+class User:
+    def __init__(self, question):
+        self.question = question
+        self.answer1 = ''
+        self.answer2 = ''
+        self.answer3 = ''
+        self.answer4 = ''
+
 
 @dp.message_handler(commands=['start'])
 async def main_start(message: types.Message):
     await message.answer("Bot aio-bp2 works")
 
 
+@dp.message_handler(commands="random")
+async def cmd_random(message: types.Message):
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(types.InlineKeyboardButton(text="Нажми меня", callback_data="random_value"))
+    await message.answer("Нажмите на кнопку, чтобы бот отправил число от 1 до 10", reply_markup=keyboard)
 
+
+@dp.callback_query_handler(text="random_value")
+async def send_random_value(call: types.CallbackQuery):
+    await call.message.answer(random(1, 10))
         
 
 

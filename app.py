@@ -66,7 +66,7 @@ async def cmd_random(message: types.Message):
 
 @dp.callback_query_handler(text="random_value")
 async def send_random_value(call: types.CallbackQuery):
-    await call.message.answer(random(1, 10))
+    await call.message.answer(str(random(1, 10)))
         
 
 

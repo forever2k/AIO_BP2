@@ -7,8 +7,6 @@ import mysql.connector
 from random import randint
 from aiogram.utils.exceptions import BotBlocked
 
-from app.handlers.common import register_handlers_common
-
 
 test_group = -1001153348142
 test = -1001364950026
@@ -32,6 +30,3 @@ dbase = mysql.connector.connect(
         passwd=os.getenv('mypass'),
         port="3306",
         database="bqcbwpmrbqj7ghxx")
-
-bot = Bot(token=TOKEN)
-dp = Dispatcher(bot)

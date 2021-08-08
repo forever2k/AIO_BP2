@@ -36,7 +36,7 @@ logging.basicConfig(level=logging.DEBUG)
 # Парсинг файла конфигурации
 config = load_config("config/bot.ini")
 
-bot = Bot(token=config.ask_bot.TOKEN)
+bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
 dbase = mysql.connector.connect(

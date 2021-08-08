@@ -30,8 +30,8 @@ from app.handlers.common import register_handlers_common
 
 logging.basicConfig(level=logging.DEBUG)
 
-# bot = Bot(token=TOKEN)
-# dp = Dispatcher(bot)
+bot = Bot(token=TOKEN)
+dp = Dispatcher(bot)
 
 # Парсинг файла конфигурации
 

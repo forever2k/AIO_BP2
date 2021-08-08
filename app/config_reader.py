@@ -20,7 +20,7 @@ def load_config(path: str):
     ask_bot = config["ask_bot"]
 
     return Config(
-        tg_bot=AskBot(
+        ask_bot=AskBot(
             test_group=int(ask_bot["test_group"]),
             test=int(ask_bot["test"]),
         )

@@ -8,24 +8,24 @@ from aiogram.utils.executor import start_webhook
 import mysql.connector
 from random import randint
 from aiogram.utils.exceptions import BotBlocked
-from app.config_reader import load_config
+from app.config import *
 from app.handlers.common import register_handlers_common
 
 
 # test_group = -1001153348142
 # test = -1001364950026
-
-me = os.getenv('me')
-
-TOKEN = os.getenv('TOKEN')
-PROJECT_NAME = os.getenv('PROJECT_NAME')
-
-WEBHOOK_HOST = f'https://{PROJECT_NAME}.herokuapp.com'
-WEBHOOK_PATH = '/' + TOKEN
-WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
-
-WEBAPP_HOST = '0.0.0.0'
-WEBAPP_PORT = os.environ.get('PORT')
+#
+# me = os.getenv('me')
+#
+# TOKEN = os.getenv('TOKEN')
+# PROJECT_NAME = os.getenv('PROJECT_NAME')
+#
+# WEBHOOK_HOST = f'https://{PROJECT_NAME}.herokuapp.com'
+# WEBHOOK_PATH = '/' + TOKEN
+# WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
+#
+# WEBAPP_HOST = '0.0.0.0'
+# WEBAPP_PORT = os.environ.get('PORT')
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -34,17 +34,10 @@ logging.basicConfig(level=logging.DEBUG)
 # dp = Dispatcher(bot)
 
 # Парсинг файла конфигурации
-config = load_config("config/bot.ini")
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
-dbase = mysql.connector.connect(
-        host=os.getenv('myhost'),
-        user=os.getenv('myuser'),
-        passwd=os.getenv('mypass'),
-        port="3306",
-        database="bqcbwpmrbqj7ghxx")
 
 cursor = dbase.cursor()
 

@@ -61,12 +61,16 @@ async def set_commands(bot: Bot):
     await bot.set_my_commands(commands)
 
 
+async def rrr(message: types.Message):
+    await message.answer("rrrrrrrrrrrrrrrrrrrrrrrr")
+
+
 async def main():
-    bot = Bot(token=TOKEN)
-    dp = Dispatcher(bot)
 
     # Регистрация хэндлеров
-    register(dp)
+    # register(dp)
+
+    dp.register_message_handler(rrr, commands="rrrr")
 
     # Установка команд бота
     await set_commands(bot)

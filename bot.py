@@ -62,6 +62,8 @@ async def set_commands(bot: Bot):
 
 
 async def main():
+    bot = Bot(token=TOKEN)
+    dp = Dispatcher(bot)
 
     # Регистрация хэндлеров
     register(dp)

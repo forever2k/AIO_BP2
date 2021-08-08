@@ -6,6 +6,10 @@ from aiogram.utils.exceptions import BotBlocked
 from app.config import *
 
 
+@dp.message_handler(commands=['bbb'], state="*")
+async def bbb(message: types.Message):
+    await message.answer("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+
 # @dp.message_handler(commands=['start'], state="*")
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.finish()

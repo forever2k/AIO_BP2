@@ -74,7 +74,7 @@ async def main():
     await set_commands(bot)
 
     # Регистрация хэндлеров
-    register_handlers_common(dp, config.tg_bot.admin_id)
+    register_handlers_common(dp, config.ask_bot.admin_id)
 
 
 async def on_startup(dp):

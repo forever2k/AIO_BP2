@@ -69,11 +69,15 @@ async def set_commands(bot: Bot):
 
 
 async def main():
+
+    print('TUTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
     # Регистрация хэндлеров
     register_handlers_common(dp)
 
     # Установка команд бота
     await set_commands(bot)
+
+
 
 
 

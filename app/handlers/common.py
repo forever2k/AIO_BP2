@@ -73,7 +73,7 @@ async def secret_command(message: types.Message):
     await message.answer("Поздравляю! Эта команда доступна только администратору бота.")
 
 
-def register_handlers_common(dp: Dispatcher, admin_id: int):
+def register_handlers_common(dp: Dispatcher):
     dp.register_message_handler(cmd_start, commands="start", state="*")
     dp.register_message_handler(cmd_cancel, commands="cancel", state="*")
     dp.register_message_handler(cmd_cancel, Text(equals="отмена", ignore_case=True), state="*")
@@ -83,4 +83,4 @@ def register_handlers_common(dp: Dispatcher, admin_id: int):
     dp.register_message_handler(cmd_random, commands="random", state="*")
     dp.register_message_handler(send_random_value, commands="random_value", state="*")
     dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
-    dp.register_message_handler(secret_command, IDFilter(user_id=admin_id), commands="abracadabra")
+    # dp.register_message_handler(secret_command, IDFilter(user_id=admin_id), commands="abracadabra")

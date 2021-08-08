@@ -60,20 +60,26 @@ class User:
 
 
 
-async def set_commands(bot: Bot):
-    commands = [
-        BotCommand(command="/ask", description="Ask a question"),
-        BotCommand(command="/cancel", description="Cancel")
-    ]
-    await bot.set_my_commands(commands)
+# async def set_commands(bot: Bot):
+#     commands = [
+#         BotCommand(command="/ask", description="Ask a question"),
+#         BotCommand(command="/cancel", description="Cancel")
+#     ]
+#     await bot.set_my_commands(commands)
 
 
 async def main():
     # Установка команд бота
-    await set_commands(bot)
+    # await set_commands(bot)
 
     # Регистрация хэндлеров
-    register_handlers_common(dp, me)
+    register_handlers_common(dp)
+
+
+
+@dp.message_handler(commands=['ttt'], state="*")
+async def ttt(message: types.Message):
+    await message.answer("ееееееееееееееее")
 
 
 async def on_startup(dp):

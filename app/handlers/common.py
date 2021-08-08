@@ -5,6 +5,7 @@ from aiogram.dispatcher.filters import Text, IDFilter
 from aiogram.utils.exceptions import BotBlocked
 
 
+@Dispatcher.message_handler(commands=['start'], state="*")
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("Hi my friend! \n"
@@ -73,7 +74,7 @@ async def secret_command(message: types.Message):
     await message.answer("Поздравляю! Эта команда доступна только администратору бота.")
 
 
-def register_handlers_common(dp: Dispatcher):
+def register_handlers_common(dp):
     dp.register_message_handler(cmd_start, commands="start", state="*")
     # dp.register_message_handler(cmd_cancel, commands="cancel", state="*")
     # dp.register_message_handler(cmd_cancel, Text(equals="отмена", ignore_case=True), state="*")

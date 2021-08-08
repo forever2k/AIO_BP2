@@ -1,5 +1,14 @@
 import os
+from aiogram import Bot
+from aiogram.dispatcher import Dispatcher, FSMContext
+from aiogram.types import BotCommand
+from aiogram.utils.executor import start_webhook
 import mysql.connector
+from random import randint
+from aiogram.utils.exceptions import BotBlocked
+
+from app.handlers.common import register_handlers_common
+
 
 test_group = -1001153348142
 test = -1001364950026
@@ -23,3 +32,4 @@ dbase = mysql.connector.connect(
         passwd=os.getenv('mypass'),
         port="3306",
         database="bqcbwpmrbqj7ghxx")
+

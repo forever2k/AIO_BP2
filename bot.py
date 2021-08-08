@@ -65,7 +65,7 @@ async def main():
 
     # print('TUTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
     # Регистрация хэндлеров
-    register(dp)
+    register()
 
     # Установка команд бота
     await set_commands(bot)

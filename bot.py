@@ -9,7 +9,7 @@ import mysql.connector
 from random import randint
 from aiogram.utils.exceptions import BotBlocked
 from app.config import *
-from app.handlers.common import register_handlers_common
+from app.handlers.common import register
 
 
 # test_group = -1001153348142
@@ -65,7 +65,7 @@ async def main():
 
     # print('TUTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
     # Регистрация хэндлеров
-    register_handlers_common(dp)
+    register(dp)
 
     # Установка команд бота
     await set_commands(bot)

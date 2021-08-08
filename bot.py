@@ -35,8 +35,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 # Парсинг файла конфигурации
 
-bot = Bot(token=TOKEN)
-dp = Dispatcher(bot)
+# bot = Bot(token=TOKEN)
+# dp = Dispatcher(bot)
 
 
 cursor = dbase.cursor()

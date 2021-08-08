@@ -33,3 +33,5 @@ dbase = mysql.connector.connect(
         port="3306",
         database="bqcbwpmrbqj7ghxx")
 
+bot = Bot(token=TOKEN)
+dp = Dispatcher(bot)

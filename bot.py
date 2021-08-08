@@ -73,7 +73,7 @@ async def main():
     await set_commands(bot)
 
     # Регистрация хэндлеров
-    register_handlers_common(dp, config.ask_bot.admin_id)
+    register_handlers_common(dp, me)
 
 
 async def on_startup(dp):

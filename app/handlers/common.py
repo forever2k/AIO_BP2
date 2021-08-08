@@ -15,6 +15,10 @@ async def cmd_start(message: types.Message, state: FSMContext):
     )
 
 
+async def bbb(message: types.Message):
+    await message.answer("bbbbbbbbbbbbbbbbbbbb")
+
+
 async def cmd_cancel(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("Action canceled", reply_markup=types.ReplyKeyboardRemove())
@@ -77,6 +81,7 @@ async def secret_command(message: types.Message):
 
 def register(dp):
     dp.register_message_handler(cmd_start, commands="start", state="*")
+    dp.register_message_handler(bbb, commands=['bbb'])
     # dp.register_message_handler(cmd_cancel, commands="cancel", state="*")
     # dp.register_message_handler(cmd_cancel, Text(equals="отмена", ignore_case=True), state="*")
     dp.register_message_handler(ask_start, commands=["ask"], state="*")

@@ -56,7 +56,9 @@ class User:
 async def set_commands(bot: Bot):
     commands = [
         BotCommand(command="/ask", description="Ask a question"),
-        BotCommand(command="/cancel", description="Cancel")
+        BotCommand(command="/cancel", description="Cancel"),
+        BotCommand(command="/rrrr", description="rrrr")
+
     ]
     await bot.set_my_commands(commands)
 

@@ -79,7 +79,7 @@ dp.register_message_handler(get_answers1, state=GetData.waiting_for_answer1)
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 
-dp.register_callback_query_handler(start_session(), lambda callback_query: True)
+dp.register_callback_query_handler(start_session, lambda callback_query: True)
 
 
 async def main():

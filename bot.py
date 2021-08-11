@@ -64,7 +64,7 @@ async def set_commands(bot: Bot):
 
 
 
-dp.register_message_handler(cmd_start, commands="start", state="*")
+dp.dp.register_message_handler(cmd_start, commands="start", state="*")
 dp.register_message_handler(cmd_cancel, commands="cancel", state="*")
 dp.register_message_handler(cmd_cancel, Text(equals="отмена", ignore_case=True), state="*")
 dp.register_message_handler(ask_start, commands=["ask"], state="*")
@@ -72,8 +72,9 @@ dp.register_message_handler(send_start_session, commands="start_session", state=
 dp.register_message_handler(send_close_session, commands="close_session", state="*")
 dp.register_message_handler(cmd_random, commands=["random"], state="*")
 dp.register_message_handler(send_random_value, commands="random_value", state="*")
+dp.register_message_handler(secret_command, IDFilter(user_id=me), commands="abracadabra")
+
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
-dp.register_message_handler(secret_command, IDFilter(user_id=admin_id), commands="abracadabra")
 
 
 async def main():

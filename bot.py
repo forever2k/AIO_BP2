@@ -73,13 +73,14 @@ dp.register_message_handler(cmd_random, commands=["random"], state="*")
 dp.register_message_handler(send_random_value, commands="random_value", state="*")
 dp.register_message_handler(secret_command, IDFilter(user_id=me), commands="abracadabra")
 dp.register_message_handler(get_question, state=GetData.waiting_for_question)
-dp.register_message_handler(get_answers1, state=GetData.waiting_for_answer1)
+dp.register_message_handler(get_answer, state=GetData.waiting_for_answer)
 
 
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 
 dp.register_callback_query_handler(start_session, lambda callback_query: True)
+dp.register_callback_query_handler(close_session, lambda callback_query: True)
 
 
 async def main():

@@ -38,11 +38,7 @@ async def ask_start(message: types.Message):
 
 
 
-async def start_session(call: types.CallbackQuery):
-    await call.message.answer("Send me your question")
-    await GetData.waiting_for_question.set()
-    # await call.answer(text="Thanks!", show_alert=True)
-    # или просто await call.answer()
+
 
 
 

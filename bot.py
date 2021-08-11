@@ -9,8 +9,7 @@ import mysql.connector
 from random import randint
 from aiogram.utils.exceptions import BotBlocked
 from app.config import *
-from app.handlers.common import register
-
+from app.handlers.common import *
 
 # test_group = -1001153348142
 # test = -1001364950026
@@ -57,14 +56,13 @@ async def set_commands(bot: Bot):
     commands = [
         BotCommand(command="/ask", description="Ask a question"),
         BotCommand(command="/cancel", description="Cancel"),
-        BotCommand(command="/rrrr", description="rrrr")
+        # BotCommand(command="/rrrr", description="rrrr")
 
     ]
     await bot.set_my_commands(commands)
 
 
-async def rrr(message: types.Message):
-    await message.answer("rrrrrrrrrrrrrrrrrrrrrrrr")
+
 
 dp.register_message_handler(rrr, commands="rrrr")
 
@@ -85,7 +83,7 @@ async def main():
 
 @dp.message_handler(commands=['ttt'], state="*")
 async def ttt(message: types.Message):
-    await message.answer("ееееееееееееееее")
+    await message.answer("tttttttttttttttttttttttt")
 
 
 async def on_startup(dp):

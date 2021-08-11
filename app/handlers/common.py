@@ -14,6 +14,9 @@ async def cmd_start(message: types.Message, state: FSMContext):
     )
 
 
+async def rrr(message: types.Message):
+    await message.answer("rrrrrrrrrrrrrrrrrrrrrrrr")
+
 async def bbb(message: types.Message):
     await message.answer("bbbbbbbbbbbbbbbbbbbb")
 

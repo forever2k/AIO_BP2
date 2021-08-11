@@ -13,10 +13,9 @@ class GetData(StatesGroup):
 
 async def start_session(call: types.CallbackQuery):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    await call.message.answer("Send me your question  = 111")
     for name in available_qustions:
         keyboard.add(name)
-    await call.answer("Выберите блюдо:", reply_markup=keyboard)
+    await call.message.answer("Send me your question:", reply_markup=keyboard)
     await GetData.waiting_for_question.set()
     # await call.answer(text="Thanks!", show_alert=True)
     # или просто await call.answer()

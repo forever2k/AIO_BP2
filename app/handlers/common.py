@@ -6,13 +6,22 @@ from aiogram.utils.exceptions import BotBlocked
 
 
 # @dp.message_handler(commands=['start'], state="*")
+async def cmd_start22(message: types.Message):
+    await message.answer("cmd_start22 ---     Hi my friend! \n"
+                         "Ask me and I can ask the whole World!",
+                         reply_markup=types.ReplyKeyboardRemove()
+    )
+    # await ask_start()
+
+
+# @dp.message_handler(commands=['start'], state="*")
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("Hi my friend! \n"
                          "Ask me and I can ask the whole World!",
                          reply_markup=types.ReplyKeyboardRemove()
     )
-    await ask_start()
+    # await ask_start()
 
 
 

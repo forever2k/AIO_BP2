@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 from aiogram import Bot, types
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import Dispatcher, FSMContext
 from aiogram.types import BotCommand
 from aiogram.utils.executor import start_webhook
@@ -32,7 +33,7 @@ from app.handlers.get_data import *
 logging.basicConfig(level=logging.DEBUG)
 
 bot = Bot(token=TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher(bot, storage=MemoryStorage())
 
 # Парсинг файла конфигурации
 

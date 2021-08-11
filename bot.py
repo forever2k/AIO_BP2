@@ -10,6 +10,8 @@ from random import randint
 from aiogram.utils.exceptions import BotBlocked
 from app.config import *
 from app.handlers.common import *
+from app.handlers.get_data import *
+
 
 # test_group = -1001153348142
 # test = -1001364950026
@@ -63,18 +65,21 @@ async def set_commands(bot: Bot):
 
 
 
-dp.register_message_handler(cmd_start22, commands="start22", state="*")
 dp.register_message_handler(cmd_start, commands="start", state="*")
 dp.register_message_handler(cmd_cancel, commands="cancel", state="*")
 dp.register_message_handler(cmd_cancel, Text(equals="отмена", ignore_case=True), state="*")
 dp.register_message_handler(ask_start, commands=["ask"], state="*")
-dp.register_message_handler(send_start_session, commands="start_session", state="*")
-dp.register_message_handler(send_close_session, commands="close_session", state="*")
 dp.register_message_handler(cmd_random, commands=["random"], state="*")
 dp.register_message_handler(send_random_value, commands="random_value", state="*")
 dp.register_message_handler(secret_command, IDFilter(user_id=me), commands="abracadabra")
+dp.register_message_handler(get_question, state=GetData.waiting_for_question)
+dp.register_message_handler(get_answers1, state=GetData.waiting_for_answer1)
+
+
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
+
+dp.register_callback_query_handler(start_session(), lambda callback_query: True)
 
 
 async def main():

@@ -6,12 +6,8 @@ from aiogram.utils.exceptions import BotBlocked
 
 
 # @dp.message_handler(commands=['start'], state="*")
-async def cmd_start22(message: types.Message):
-    await message.answer("cmd_start22 ---     Hi my friend! \n"
-                         "Ask me and I can ask the whole World!",
-                         reply_markup=types.ReplyKeyboardRemove()
-    )
-    # await ask_start()
+from app.handlers.get_data import GetData
+
 
 
 # @dp.message_handler(commands=['start'], state="*")
@@ -42,14 +38,15 @@ async def ask_start(message: types.Message):
 
 
 
-async def send_start_session(call: types.CallbackQuery):
+async def start_session(call: types.CallbackQuery):
     await call.message.answer("Send me your question")
-    await call.answer(text="Thanks!", show_alert=True)
+    await GetData.waiting_for_question.set()
+    # await call.answer(text="Thanks!", show_alert=True)
     # или просто await call.answer()
 
 
 
-async def send_close_session(call: types.CallbackQuery):
+async def close_session(call: types.CallbackQuery):
     await call.answer(text="Buy!", show_alert=True)
     # или просто await call.answer()
 

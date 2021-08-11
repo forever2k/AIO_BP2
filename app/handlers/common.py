@@ -21,7 +21,7 @@ async def cmd_start(message: types.Message, state: FSMContext):
                          "Ask me and I can ask the whole World!",
                          reply_markup=types.ReplyKeyboardRemove()
     )
-    # await ask_start()
+    await ask_start(message)
 
 
 

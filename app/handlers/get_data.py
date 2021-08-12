@@ -3,8 +3,8 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
-available_questions = ["вопрос1", "вопрос3", "вопрос3"]
-available_answers = ["ответ1", "ответ2", "ответ3"]
+# available_questions = ["вопрос1", "вопрос3", "вопрос3"]
+# available_answers = ["ответ1", "ответ2", "ответ3"]
 
 class GetData(StatesGroup):
     waiting_for_question = State()
@@ -12,10 +12,11 @@ class GetData(StatesGroup):
 
 
 async def start_session(call: types.CallbackQuery):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    for name in available_questions:
-        keyboard.add(name)
-    await call.message.answer("Send me your question:", reply_markup=keyboard)
+    # keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    # for name in available_questions:
+    #     keyboard.add(name)
+    # await call.message.answer("Send me your question:", reply_markup=keyboard)
+    await call.message.answer("Send me your question:")
     await GetData.waiting_for_question.set()
     # await call.answer(text="Thanks!", show_alert=True)
     # или просто await call.answer()
@@ -27,11 +28,12 @@ async def get_question(message: types.Message, state: FSMContext):
         return
     await state.update_data(chosen_question=message.text.lower())
 
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    for size in available_answers:
-        keyboard.add(size)
-    await GetData.waiting_for_answer.set()
-    await message.answer("Now write your ANSWER", reply_markup=keyboard)
+    # keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    # for size in available_answers:
+    #     keyboard.add(size)
+    # await GetData.waiting_for_answer.set()
+    # await message.answer("Now write your ANSWER", reply_markup=keyboard)
+    await message.answer("Now write your ANSWER")
 
 
 async def get_answer(message: types.Message, state: FSMContext):

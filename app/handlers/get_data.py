@@ -22,8 +22,8 @@ async def start_session(call: types.CallbackQuery):
 
 
 async def get_question(message: types.Message, state: FSMContext):
-    if message.text.lower() not in available_questions:
-        await message.answer("Пожалуйста, выберите вопрос, используя клавиатуру ниже.")
+    if len(message.text) < 5:
+        await message.answer("Пожалуйста, напишите корректный вопрос, используя клавиатуру ниже.")
         return
     await state.update_data(chosen_question=message.text.lower())
 
@@ -35,10 +35,12 @@ async def get_question(message: types.Message, state: FSMContext):
 
 
 async def get_answer(message: types.Message, state: FSMContext):
-    if message.text.lower() not in available_answers:
-        await message.answer("Пожалуйста, выберите вопрос, используя клавиатуру ниже.")
+    if len(message.text) < 5:
+        await message.answer("Пожалуйста, напишите вопрос, используя клавиатуру ниже.")
         return
+    await state.update_data(chosen_answer=message.text.lower())
     user_data = await state.get_data()
     await message.answer(f"Вы написали вопрос: {user_data['chosen_question']}.\n"
+                         f"Вы написали ответ: {user_data['chosen_answer']}.\n"
                          f"Попробуйте теперь задать еще вопрос: /start", reply_markup=types.ReplyKeyboardRemove())
     await state.finish()

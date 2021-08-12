@@ -98,11 +98,6 @@ async def main():
 
 
 
-@dp.message_handler(commands=['ttt'], state="*")
-async def ttt(message: types.Message):
-    await message.answer("tttttttttttttttttttttttt")
-
-
 async def on_startup(dp):
     logging.warning('Starting connection')
     await bot.set_webhook(WEBHOOK_URL)

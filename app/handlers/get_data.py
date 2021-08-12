@@ -11,14 +11,14 @@ class GetData(StatesGroup):
     waiting_for_answer = State()
 
 
-async def start_session(call: types.CallbackQuery):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    for name in available_questions:
-        keyboard.add(name)
-    await call.message.answer("Send me your question:", reply_markup=keyboard)
-    await GetData.waiting_for_question.set()
-    # await call.answer(text="Thanks!", show_alert=True)
-    # или просто await call.answer()
+# async def start_session(call: types.CallbackQuery):
+#     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+#     for name in available_questions:
+#         keyboard.add(name)
+#     await call.message.answer("Send me your question:", reply_markup=keyboard)
+#     await GetData.waiting_for_question.set()
+#     # await call.answer(text="Thanks!", show_alert=True)
+#     # или просто await call.answer()
 
 
 async def get_question(message: types.Message, state: FSMContext):

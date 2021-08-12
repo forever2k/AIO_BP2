@@ -31,7 +31,7 @@ async def get_question(message: types.Message, state: FSMContext):
     # keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     # for size in available_answers:
     #     keyboard.add(size)
-    # await GetData.waiting_for_answer.set()
+    await GetData.waiting_for_answer.set()
     # await message.answer("Now write your ANSWER", reply_markup=keyboard)
     await message.answer("Now write your ANSWER")
 

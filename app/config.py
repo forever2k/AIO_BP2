@@ -30,3 +30,4 @@ dbase = mysql.connector.connect(
         passwd=os.getenv('mypass'),
         port="3306",
         database="bqcbwpmrbqj7ghxx")
+

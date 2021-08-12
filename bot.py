@@ -80,7 +80,7 @@ dp.register_message_handler(get_answer, state=GetData.waiting_for_answer)
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 
-dp.register_callback_query_handler(start_session)
+# dp.register_callback_query_handler(start_session)
 dp.register_callback_query_handler(close_session)
 
 

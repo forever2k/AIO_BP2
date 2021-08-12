@@ -43,6 +43,7 @@ async def ask_start(message: types.Message):
 
 
 async def close_session(call: types.CallbackQuery):
+    await call.message.answer("It`s the close_session")
     await call.answer(text="Buy!", show_alert=True)
     # или просто await call.answer()
 

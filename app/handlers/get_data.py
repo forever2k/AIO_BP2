@@ -1,10 +1,11 @@
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
-
+from app.db import cursor, db
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
 # available_answers = ["ответ1", "ответ2", "ответ3"]
+
 
 class GetData(StatesGroup):
     waiting_for_question = State()
@@ -45,4 +46,17 @@ async def get_answer(message: types.Message, state: FSMContext):
     await message.answer(f"Вы написали вопрос: {user_data['chosen_question']}.\n"
                          f"Вы написали ответ: {user_data['chosen_answer']}.\n"
                          f"Попробуйте теперь задать еще вопрос: /start", reply_markup=types.ReplyKeyboardRemove())
+
+    user_id = message.from_user.id
+    try:
+
+        sql = "INSERT INTO users (user_id, QUESTION, ANSWER) \
+                                                          VALUES (%s, %s, %s)"
+        val = (user_id, user_data['chosen_question'], user_data['chosen_answer'])
+        cursor.execute(sql, val)
+        db.commit()
+
+    except Exception as e:
+        await message.reply(message, 'ERROR - add_answer2')
+
     await state.finish()

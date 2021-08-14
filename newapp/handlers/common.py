@@ -6,7 +6,7 @@ from aiogram.utils.exceptions import BotBlocked
 
 
 # @dp.message_handler(commands=['start'], state="*")
-from app.handlers.get_data import GetData
+from newapp.handlers.get_data import GetData
 
 
 

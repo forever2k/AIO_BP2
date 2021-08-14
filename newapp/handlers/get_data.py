@@ -57,12 +57,13 @@ async def get_answer(message: types.Message, state: FSMContext):
 
     user_id = message.from_user.id
     # bd_id = generate_number(user_id)
+    bd_id = "343464574564"
 
     try:
 
-        sql = "INSERT INTO users (user_id, QUESTION, ANSWER) \
+        sql = "INSERT INTO users (bd_id, user_id, QUESTION, ANSWER) \
                                                           VALUES (%s, %s, %s, %s)"
-        val = (user_id, user_data['chosen_question'], user_data['chosen_answer'])
+        val = (bd_id, user_id, user_data['chosen_question'], user_data['chosen_answer'])
         cursor.execute(sql, val)
         dbase.commit()
 

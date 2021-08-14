@@ -4,6 +4,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
 
+from newapp.app import generate_number
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
 
@@ -43,6 +44,7 @@ async def get_question(message: types.Message, state: FSMContext):
     await message.answer("Now write your ANSWER")
 
 
+
 async def get_answer(message: types.Message, state: FSMContext):
     if len(message.text) < 5:
         await message.answer("Пожалуйста, напишите вопрос, используя клавиатуру ниже.")
@@ -54,11 +56,13 @@ async def get_answer(message: types.Message, state: FSMContext):
                          f"Попробуйте теперь задать еще вопрос: /start", reply_markup=types.ReplyKeyboardRemove())
 
     user_id = message.from_user.id
+    id = generate_number(user_id)
+
     try:
 
         sql = "INSERT INTO users (user_id, QUESTION, ANSWER) \
-                                                          VALUES (%s, %s, %s)"
-        val = (user_id, user_data['chosen_question'], user_data['chosen_answer'])
+                                                          VALUES (%s, %s, %s, %s)"
+        val = (id, user_id, user_data['chosen_question'], user_data['chosen_answer'])
         cursor.execute(sql, val)
         dbase.commit()
 
@@ -68,8 +72,8 @@ async def get_answer(message: types.Message, state: FSMContext):
     try:
         await message.answer("it`s the last part")
         await bot.send_message(test_group, "A new message has been received", disable_notification=False)
-        await bot.send_message(test_group, 'New question was recevied')
-        await bot.send_message(me, 'New question was recevied')
+        # await bot.send_message(test_group, 'New question was recevied')
+        # await bot.send_message(me, 'New question was recevied')
 
     except exceptions.BotBlocked:
         logging.error(f"Target [ID:{test_group}]: blocked by user")

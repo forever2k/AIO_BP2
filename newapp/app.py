@@ -96,6 +96,12 @@ async def main():
     await set_commands(bot)
 
 
+async def generate_number(id_generate):
+    id_generate = id_generate + "_"
+    for i in range(0, 10):
+        id_generate = id_generate + str(i)
+    return id_generate
+
 
 
 

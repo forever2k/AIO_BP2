@@ -69,12 +69,9 @@ async def get_answer(message: types.Message, state: FSMContext):
         await message.answer("it`s the last part")
         await bot.send_message(test_group, "A new message has been received", disable_notification=False)
         await bot.send_message(test_group, 'New question was recevied')
+        await bot.send_message(me, 'New question was recevied')
 
     except exceptions.BotBlocked:
         logging.error(f"Target [ID:{test_group}]: blocked by user")
-
-
-
-
 
     await state.finish()

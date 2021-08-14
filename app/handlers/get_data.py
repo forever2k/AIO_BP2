@@ -4,7 +4,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
 from app.config import dbase, test_group, me
-from app.app import bot
+from app.app_new import bot
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
 # available_answers = ["ответ1", "ответ2", "ответ3"]

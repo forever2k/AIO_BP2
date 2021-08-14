@@ -1,43 +1,44 @@
+import asyncio
 import logging
 import os
 from aiogram import Bot, types
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import Dispatcher, FSMContext
+from aiogram.types import BotCommand
 from aiogram.utils.executor import start_webhook
 import mysql.connector
 from random import randint
 from aiogram.utils.exceptions import BotBlocked
+from app.config import *
+from app.handlers.common import *
+from app.handlers.get_data import *
 
 
-test_group = -1001153348142
-test = -1001364950026
-me = os.getenv('me')
-
-
-
-TOKEN = os.getenv('TOKEN')
-PROJECT_NAME = os.getenv('PROJECT_NAME')
-
-WEBHOOK_HOST = f'https://{PROJECT_NAME}.herokuapp.com'
-WEBHOOK_PATH = '/' + TOKEN
-WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
-
-WEBAPP_HOST = '0.0.0.0'
-WEBAPP_PORT = os.environ.get('PORT')
+# test_group = -1001153348142
+# test = -1001364950026
+#
+# me = os.getenv('me')
+#
+# TOKEN = os.getenv('TOKEN')
+# PROJECT_NAME = os.getenv('PROJECT_NAME')
+#
+# WEBHOOK_HOST = f'https://{PROJECT_NAME}.herokuapp.com'
+# WEBHOOK_PATH = '/' + TOKEN
+# WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
+#
+# WEBAPP_HOST = '0.0.0.0'
+# WEBAPP_PORT = os.environ.get('PORT')
 
 
 logging.basicConfig(level=logging.DEBUG)
 
 bot = Bot(token=TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher(bot, storage=MemoryStorage())
 
+# Парсинг файла конфигурации
 
-dbase = mysql.connector.connect(
-        host=os.getenv('myhost'),
-        user=os.getenv('myuser'),
-        passwd=os.getenv('mypass'),
-        port="3306",
-        database="bqcbwpmrbqj7ghxx")
-
+# bot = Bot(token=TOKEN)
+# dp = Dispatcher(bot)
 
 
 cursor = dbase.cursor()
@@ -53,74 +54,45 @@ class User:
         self.answer4 = ''
 
 
-@dp.message_handler(commands=['start'], state="*")
-async def cmd_start(message: types.Message, state: FSMContext):
-    await state.finish()
-    await message.answer("Hi my friend! \n"
-                         "Ask me and I can ask the whole World!",
-                         reply_markup=types.ReplyKeyboardRemove()
-    )
 
+async def set_commands(bot: Bot):
+    commands = [
+        BotCommand(command="/ask", description="Ask a question"),
+        BotCommand(command="/cancel", description="Cancel"),
+        # BotCommand(command="/rrrr", description="rrrr")
 
-@dp.message_handler(commands=['cancel', 'отмена'], state="*")
-async def cmd_cancel(message: types.Message, state: FSMContext):
-    await state.finish()
-    await message.answer("Action canceled", reply_markup=types.ReplyKeyboardRemove())
-
-
-@dp.message_handler(commands=['ask'], state="*")
-async def ask_start(message: types.Message):
-    buttons = [
-        types.InlineKeyboardButton(text="YES!", callback_data="start_session"),
-        types.InlineKeyboardButton(text="NO :(", callback_data="close_session")
     ]
-    keyboard = types.InlineKeyboardMarkup(row_width=1)
-    keyboard.add(*buttons)
-    await message.answer("Are you ready?", reply_markup=keyboard)
+    await bot.set_my_commands(commands)
 
 
 
-@dp.callback_query_handler(text="start_session")
-async def send_start_session(call: types.CallbackQuery):
-    await call.message.answer("Send me your question")
-
-    await call.answer(text="Thanks!", show_alert=True)
-    # или просто await call.answer()
-
-
-@dp.callback_query_handler(text="close_session")
-async def send_close_session(call: types.CallbackQuery):
-    await call.answer(text="Buy!", show_alert=True)
-    # или просто await call.answer()
+dp.register_message_handler(cmd_start, commands="start", state="*")
+dp.register_message_handler(cmd_cancel, commands="cancel", state="*")
+dp.register_message_handler(cmd_cancel, Text(equals="отмена", ignore_case=True), state="*")
+dp.register_message_handler(ask_start, commands=["ask"], state="*")
+dp.register_message_handler(cmd_random, commands=["random"], state="*")
+dp.register_message_handler(send_random_value, commands="random_value", state="*")
+dp.register_message_handler(secret_command, IDFilter(user_id=me), commands="abracadabra")
+dp.register_message_handler(get_question, state=GetData.waiting_for_question)
+dp.register_message_handler(get_answer, state=GetData.waiting_for_answer)
 
 
 
+dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 
-@dp.message_handler(commands="random")
-async def cmd_random(message: types.Message):
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(types.InlineKeyboardButton(text="Press me", callback_data="random_value"))
-    await message.answer("Number from 1 to 10", reply_markup=keyboard)
+dp.register_callback_query_handler(start_session, text="start_session")
+dp.register_callback_query_handler(close_session, text="close_session")
 
 
-@dp.callback_query_handler(text="random_value")
-async def send_random_value(call: types.CallbackQuery):
-    await call.message.answer(str(randint(1, 10)))
-    await call.answer(text="Thanks!", show_alert=True)
-    # или просто await call.answer()
+async def main():
 
+    # Регистрация хэндлеров
+    # register(dp)
 
+    # dp.register_message_handler(rrr, commands="rrrr")
 
-# обработчик исключения BotBlocked
-@dp.errors_handler(exception=BotBlocked)
-async def error_bot_blocked(update: types.Update, exception: BotBlocked):
-    # Update: объект события от Telegram. Exception: объект исключения
-    # Здесь можно как-то обработать блокировку, например, удалить пользователя из БД
-    print(f"Меня заблокировал пользователь!\nСообщение: {update}\nОшибка: {exception}")
-
-    # Такой хэндлер должен всегда возвращать True,
-    # если дальнейшая обработка не требуется.
-    return True
+    # Установка команд бота
+    await set_commands(bot)
 
 
 
@@ -140,4 +112,6 @@ if __name__ == '__main__':
     start_webhook(dispatcher=dp, webhook_path=WEBHOOK_PATH,
                   on_startup=on_startup, on_shutdown=on_shutdown,
                   host=WEBAPP_HOST, port=WEBAPP_PORT, skip_updates=True)
+    asyncio.run(main())
+
 

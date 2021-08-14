@@ -3,10 +3,10 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
-
-from newapp.app import generate_number
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
+from newapp.todo import generate_number
+
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
 # available_answers = ["ответ1", "ответ2", "ответ3"]
@@ -56,13 +56,13 @@ async def get_answer(message: types.Message, state: FSMContext):
                          f"Попробуйте теперь задать еще вопрос: /start", reply_markup=types.ReplyKeyboardRemove())
 
     user_id = message.from_user.id
-    id = generate_number(user_id)
+    id_bd = generate_number(user_id)
 
     try:
 
         sql = "INSERT INTO users (user_id, QUESTION, ANSWER) \
                                                           VALUES (%s, %s, %s, %s)"
-        val = (id, user_id, user_data['chosen_question'], user_data['chosen_answer'])
+        val = (id_bd, user_id, user_data['chosen_question'], user_data['chosen_answer'])
         cursor.execute(sql, val)
         dbase.commit()
 

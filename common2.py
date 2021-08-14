@@ -8,8 +8,6 @@ from aiogram.utils.exceptions import BotBlocked
 # @dp.message_handler(commands=['start'], state="*")
 
 
-
-
 # @dp.message_handler(commands=['start'], state="*")
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.finish()

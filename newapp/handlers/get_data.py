@@ -3,6 +3,8 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
+
+from newapp.bt import bot
 from newapp.config import dbase, test_group, me
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
@@ -65,8 +67,8 @@ async def get_answer(message: types.Message, state: FSMContext):
 
     try:
         await message.answer("it`s the last part")
-        # await bot.send_message(test_group, "A new message has been received", disable_notification=False)
-        # await bot.send_message(test_group, 'New question was recevied')
+        await bot.send_message(test_group, "A new message has been received", disable_notification=False)
+        await bot.send_message(test_group, 'New question was recevied')
 
     except exceptions.BotBlocked:
         logging.error(f"Target [ID:{test_group}]: blocked by user")

@@ -11,7 +11,7 @@ from random import randint
 from aiogram.utils.exceptions import BotBlocked
 from newapp.config import *
 from newapp.handlers.common import *
-from newapp.handlers.get_data import *
+from newapp.handlers.get_data import get_question, get_answer, start_session, GetData
 
 
 # test_group = -1001153348142

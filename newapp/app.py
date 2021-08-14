@@ -12,6 +12,7 @@ from aiogram.utils.exceptions import BotBlocked
 from newapp.config import *
 from newapp.handlers.common import *
 from newapp.handlers.get_data import *
+from bt import *
 
 
 # test_group = -1001153348142
@@ -32,8 +33,8 @@ from newapp.handlers.get_data import *
 
 logging.basicConfig(level=logging.DEBUG)
 
-bot = Bot(token=TOKEN)
-dp = Dispatcher(bot, storage=MemoryStorage())
+# bot = Bot(token=TOKEN)
+# dp = Dispatcher(bot, storage=MemoryStorage())
 
 # Парсинг файла конфигурации
 

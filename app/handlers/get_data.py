@@ -3,12 +3,10 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
-
 from app.config import dbase, me, test_group
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
 # available_answers = ["ответ1", "ответ2", "ответ3"]
-from bot import bot
 
 cursor = dbase.cursor()
 
@@ -64,12 +62,12 @@ async def get_answer(message: types.Message, state: FSMContext):
     except Exception as e:
         await message.reply(message, 'Something went wrong.. Please contact the admin')
 
-    try:
-        await message.answer("it`s the last part")
-        await bot.send_message(test_group, "A new message has been received", disable_notification=False)
-        await bot.send_message(test_group, "A new message has been received 222")
-    except exceptions.BotBlocked:
-        logging.error(f"Target [ID:{test_group}]: blocked by user")
+    # try:
+    #     await message.answer("it`s the last part")
+    #     await bot.send_message(test_group, "A new message has been received", disable_notification=False)
+    #     await bot.send_message(test_group, "A new message has been received 222")
+    # except exceptions.BotBlocked:
+    #     logging.error(f"Target [ID:{test_group}]: blocked by user")
 
 
 

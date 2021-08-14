@@ -3,15 +3,14 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
-from config2 import dbase, test_group, me
-# from app2 import bot
+from app.config import dbase, test_group, me
+# from app.app import bot
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
 # available_answers = ["ответ1", "ответ2", "ответ3"]
 
 
 cursor = dbase.cursor()
-
 
 class GetData(StatesGroup):
     waiting_for_question = State()

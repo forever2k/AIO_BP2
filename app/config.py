@@ -8,7 +8,6 @@ from random import randint
 from aiogram.utils.exceptions import BotBlocked
 
 
-
 test_group = -1001153348142
 test = -1001364950026
 

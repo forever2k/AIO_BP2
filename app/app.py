@@ -9,9 +9,10 @@ from aiogram.utils.executor import start_webhook
 import mysql.connector
 from random import randint
 from aiogram.utils.exceptions import BotBlocked
-from config2 import *
-from common2 import *
-from get_data2 import *
+from app.config import *
+from app.handlers.common import *
+from app.handlers.get_data import *
+
 
 # test_group = -1001153348142
 # test = -1001364950026

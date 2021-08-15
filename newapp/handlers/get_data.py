@@ -33,7 +33,6 @@ async def start_session(call: types.CallbackQuery):
 
 
 
-
 async def get_question(message: types.Message, state: FSMContext):
     if len(message.text) < 5:
         await message.answer("Пожалуйста, напишите корректный вопрос, используя клавиатуру ниже.")

@@ -16,7 +16,7 @@ cursor = dbase.cursor()
 
 class GetData(StatesGroup):
     waiting_for_get_question = State()
-    waiting_for_ask_answer = State()
+    # waiting_for_ask_answer = State()
     waiting_for_write_answer = State()
 
 
@@ -43,15 +43,19 @@ async def get_question(message: types.Message, state: FSMContext):
     # keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     # for size in available_answers:
     #     keyboard.add(size)
-    await GetData.waiting_for_ask_answer.set()
+    # await GetData.waiting_for_ask_answer.set()
     # await message.answer("Now write your ANSWER", reply_markup=keyboard)
     await message.answer("You need to write from 2 to 4 answers")
+    await ask_answer(message)
 
 
 async def ask_answer(message: types.Message, state: FSMContext):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(types.InlineKeyboardButton(text="Yes", callback_data="get_answer"))
-    keyboard.add(types.InlineKeyboardButton(text="No", callback_data="close_session"))
+    buttons = [
+        types.InlineKeyboardButton(text="Yes", callback_data="get_answer"),
+        types.InlineKeyboardButton(text="No", callback_data="close_session")
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=3)
+    keyboard.add(*buttons)
     await message.answer("Do you want to write your answer?", reply_markup=keyboard)
 
 

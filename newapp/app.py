@@ -74,7 +74,7 @@ dp.register_message_handler(cmd_random, commands=["random"], state="*")
 dp.register_message_handler(send_random_value, commands="random_value", state="*")
 dp.register_message_handler(secret_command, IDFilter(user_id=me), commands="abracadabra")
 dp.register_message_handler(get_question, state=GetData.waiting_for_get_question)
-dp.register_message_handler(ask_answer, state=GetData.waiting_for_ask_answer)
+# dp.register_message_handler(ask_answer, state=GetData.waiting_for_ask_answer)
 dp.register_message_handler(write_answer, state=GetData.waiting_for_write_answer)
 
 

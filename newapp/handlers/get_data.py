@@ -61,8 +61,8 @@ async def ask_answer(message: types.Message):
 
 
 async def get_answer(call: types.CallbackQuery):
-    await GetData.waiting_for_write_answer.set()
     await call.answer("Now write your ANSWER")
+    await GetData.waiting_for_write_answer.set()
 
 
 async def write_answer(message: types.Message, state: FSMContext):

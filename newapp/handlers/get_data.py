@@ -46,7 +46,7 @@ async def get_question(message: types.Message, state: FSMContext):
     # await message.answer("Now write your ANSWER", reply_markup=keyboard)
     await message.answer("You need to write from 2 to 4 answers\n"
                          "Now write and send your first Answer")
-    await state.finish()
+    # await state.finish()
     await ask_answer(message)
 
 
@@ -96,7 +96,7 @@ async def write_answer(message: types.Message, state: FSMContext):
     except exceptions.BotBlocked:
         logging.error(f"Target [ID:{test_group}]: blocked by user")
 
-    await state.finish()
+    # await state.finish()
     await ask_answer(message)
 
 

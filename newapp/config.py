@@ -8,7 +8,7 @@ from random import randint
 from aiogram.utils.exceptions import BotBlocked
 
 
-USE_WEBHOOK = True
+USE_WEBHOOK = False
 
 test_group = -1001153348142
 test = -1001364950026

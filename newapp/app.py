@@ -45,17 +45,6 @@ logging.basicConfig(level=logging.DEBUG)
 
 cursor = dbase.cursor()
 
-user_data = {}
-
-class User:
-    def __init__(self, question):
-        self.question = question
-        self.answer1 = ''
-        self.answer2 = ''
-        self.answer3 = ''
-        self.answer4 = ''
-
-
 
 async def set_commands(bot: Bot):
     commands = [

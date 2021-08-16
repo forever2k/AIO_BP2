@@ -5,7 +5,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
-from newapp.todo import generate_number
+from newapp.todo import *
 
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
@@ -33,11 +33,19 @@ async def start_session(call: types.CallbackQuery):
 
 
 
-async def get_question(message: types.Message, state: FSMContext):
+async def get_question(message: types.Message, state: FSMContext, user_data=user_data):
     if len(message.text) < 5:
         await message.answer("Пожалуйста, напишите корректный вопрос, используя клавиатуру ниже.")
         return
-    await state.update_data(chosen_question=message.text.lower())
+
+    user_id = message.from_user.id
+    user_data[user_id] = User(message.text)
+
+    await state.finish()
+
+    # await state.update_data(chosen_question=message.text.lower())
+    # user_data = await state.get_data()
+
 
     # keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     # for size in available_answers:
@@ -62,25 +70,27 @@ async def ask_answer(message: types.Message):
 
 
 async def get_answer(call: types.CallbackQuery):
-    await call.answer("Now write your ANSWER")
-    # await GetData.waiting_for_write_answer.set()
+    await call.message.answer("Now write your ANSWER")
+    await GetData.waiting_for_write_answer.set()
 
 
 async def write_answer(message: types.Message, state: FSMContext):
     if len(message.text) < 5:
         await message.answer("Пожалуйста, напишите вопрос, используя клавиатуру ниже.")
         return
-    await state.update_data(chosen_answer=message.text.lower())
-    user_data = await state.get_data()
+    # await state.update_data(chosen_answer=message.text.lower())
+    # user_data = await state.get_data()
 
     user_id = message.from_user.id
-    bd_id = generate_number(user_id)
+    user = user_data[user_id]
+    user.answer1 = message.text
+    session_id = generate_number(user_id)
 
     try:
 
-        sql = "INSERT INTO users (bd_id, user_id, QUESTION, ANSWER) \
+        sql = "INSERT INTO users (session_id, user_id, QUESTION, ANSWER) \
                                                           VALUES (%s, %s, %s, %s)"
-        val = (bd_id, user_id, user_data['chosen_question'], user_data['chosen_answer'])
+        val = (session_id, user_id, user.question, user.answer1)
         cursor.execute(sql, val)
         dbase.commit()
 
@@ -96,7 +106,7 @@ async def write_answer(message: types.Message, state: FSMContext):
     except exceptions.BotBlocked:
         logging.error(f"Target [ID:{test_group}]: blocked by user")
 
-    # await state.finish()
+    await state.finish()
     await ask_answer(message)
 
 

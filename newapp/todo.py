@@ -6,3 +6,13 @@ def generate_number(id):
         id_generate = id_generate + str(randint(1, 10))
     return id_generate
 
+
+user_data = {}
+
+class User:
+    def __init__(self, question):
+        self.question = question
+        self.answer1 = ''
+        self.answer2 = ''
+        self.answer3 = ''
+        self.answer4 = ''

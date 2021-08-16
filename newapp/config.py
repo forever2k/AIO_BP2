@@ -22,7 +22,7 @@ if USE_WEBHOOK == False:
 else:
         me = os.getenv('me')
 
-        TOKEN = os.getenv('TOKEN_POOLING')
+        TOKEN = os.getenv('TOKEN')
 
         PROJECT_NAME = os.getenv('PROJECT_NAME')
 

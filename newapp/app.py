@@ -5,6 +5,7 @@ from aiogram import Bot, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import Dispatcher, FSMContext
 from aiogram.types import BotCommand
+from aiogram.utils import executor
 from aiogram.utils.executor import start_webhook
 import mysql.connector
 from random import randint
@@ -109,9 +110,13 @@ async def on_shutdown(dp):
 
 
 if __name__ == '__main__':
-    start_webhook(dispatcher=dp, webhook_path=WEBHOOK_PATH,
-                  on_startup=on_startup, on_shutdown=on_shutdown,
-                  host=WEBAPP_HOST, port=WEBAPP_PORT, skip_updates=True)
-    asyncio.run(main())
+    if USE_WEBHOOK:
+        start_webhook(dispatcher=dp, webhook_path=WEBHOOK_PATH,
+                      on_startup=on_startup, on_shutdown=on_shutdown,
+                      host=WEBAPP_HOST, port=WEBAPP_PORT, skip_updates=True)
+        asyncio.run(main())
+    else:
+        executor.start_polling(dp, skip_updates=True)
+
 
 

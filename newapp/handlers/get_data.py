@@ -40,6 +40,11 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
 
     user_id = message.from_user.id
     user_data[user_id] = User(message.text)
+    user = user_data[user_id]
+    session_id = generate_number(user_id)
+    user.session_id = session_id
+
+    # await write_to_database(message, user.session_id, user_id, question=user.question)
 
     await state.finish()
 
@@ -59,13 +64,19 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
 
 
 async def ask_answer(message: types.Message):
-    buttons = [
-        types.InlineKeyboardButton(text="Yes", callback_data="get_answer"),
-        types.InlineKeyboardButton(text="No", callback_data="close_session")
-    ]
-    keyboard = types.InlineKeyboardMarkup(row_width=3)
-    keyboard.add(*buttons)
-    await message.answer("Do you want to write your answer?", reply_markup=keyboard)
+    user_id = message.from_user.id
+    user = user_data[user_id]
+    if user.answer1 == '' or user.answer2 == '' or user.answer3 == '' or user.answer4 == '':
+        buttons = [
+            types.InlineKeyboardButton(text="Yes", callback_data="get_answer"),
+            types.InlineKeyboardButton(text="No", callback_data="close_session")
+        ]
+        keyboard = types.InlineKeyboardMarkup(row_width=3)
+        keyboard.add(*buttons)
+        await message.answer("Do you want to write your answer?", reply_markup=keyboard)
+    else:
+        await message.answer(text="You have already sent 4 answers", show_alert=True)
+
 
 
 
@@ -76,26 +87,36 @@ async def get_answer(call: types.CallbackQuery):
 
 async def write_answer(message: types.Message, state: FSMContext):
     if len(message.text) < 5:
-        await message.answer("Пожалуйста, напишите вопрос, используя клавиатуру ниже.")
+        await message.answer("Пожалуйста, напишите ответ, используя клавиатуру ниже.")
         return
     # await state.update_data(chosen_answer=message.text.lower())
     # user_data = await state.get_data()
 
     user_id = message.from_user.id
     user = user_data[user_id]
-    user.answer1 = message.text
-    session_id = generate_number(user_id)
 
-    try:
+    # try:
+    #     sql = "INSERT INTO users (session_id, user_id, QUESTION, ANSWER1) \
+    #                                                       VALUES (%s, %s, %s, %s)"
+    #     val = (session_id, user_id, user.question, user.answer1)
+    #     cursor.execute(sql, val)
+    #     dbase.commit()
+    #
+    # except Exception as e:
+    #     await message.reply(message, 'Something went wrong.. Please contact the admin')
 
-        sql = "INSERT INTO users (session_id, user_id, QUESTION, ANSWER) \
-                                                          VALUES (%s, %s, %s, %s)"
-        val = (session_id, user_id, user.question, user.answer1)
-        cursor.execute(sql, val)
-        dbase.commit()
-
-    except Exception as e:
-        await message.reply(message, 'Something went wrong.. Please contact the admin')
+    if user.answer1 =='':
+        user.answer1 = message.text
+        await write_to_database(message, user.session_id, user_id, question=user.question, answer1=user.answer1)
+    elif user.answer2 =='':
+        user.answer2 = message.text
+        await write_to_database(message, user.session_id, user_id, answer2=user.answer2)
+    elif user.answer3 == '':
+        user.answer3 = message.text
+        await write_to_database(message, user.session_id, user_id, answer3=user.answer3)
+    elif user.answer4 == '':
+        user.answer4 = message.text
+        await write_to_database(message, user.session_id, user_id, answer4=user.answer4)
 
     try:
         await message.answer("it`s the last part")
@@ -110,6 +131,63 @@ async def write_answer(message: types.Message, state: FSMContext):
     await ask_answer(message)
 
 
+async def write_to_database(message: types.Message, session_id, user_id, **kwargs):
+
+    answer_number = ''
+    answer_text = ''
+
+    for key, val in kwargs.items():
+        if key == 'question':
+            question = val
+        else:
+            answer_number = key
+            answer_text = val
+
+    check_session_query = "SELECT * FROM users WHERE session_id = %s"
+    cursor.execute(check_session_query, (session_id,))
+    cursor.fetchall()
+
+
+    if cursor.rowcount == 0:
+        try:
+            insert_data_query = "INSERT INTO users (session_id, user_id, QUESTION, ANSWER1) \
+                                                              VALUES (%s, %s, %s, %s)"
+            val = (session_id, user_id, question, answer_text)
+            cursor.execute(insert_data_query, val)
+            dbase.commit()
+
+        except Exception as e:
+            await message.answer("Something went wrong.. Please contact the admin")
+            # await message.reply(message, 'Something went wrong.. Please contact the admin')
+
+    else:
+        try:
+            if answer_number == 'answer2':
+                update_data_query = "UPDATE users SET ANSWER2 = %s WHERE session_id = %s"
+                val = (answer_text, session_id)
+                cursor.execute(update_data_query, val)
+                dbase.commit()
+
+            elif answer_number == 'answer3':
+                update_data_query = "UPDATE users SET ANSWER3 = %s WHERE session_id = %s"
+                val = (answer_text, session_id)
+                cursor.execute(update_data_query, val)
+                dbase.commit()
+
+            elif answer_number == 'answer4':
+                update_data_query = "UPDATE users SET ANSWER4 = %s WHERE session_id = %s"
+                val = (answer_text, session_id)
+                cursor.execute(update_data_query, val)
+                dbase.commit()
+
+
+        except Exception as e:
+            await message.answer("Something went wrong.. Please contact the admin")
+            # await message.reply(message, 'Something went wrong.. Please contact the admin')
+
+
+        # await message.answer("check_session_query_val != 0 ! ! ! ")
+        # await message.reply(message, 'check_session_query_val != 0 ! ! ! ')
 
 
 

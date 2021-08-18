@@ -16,3 +16,4 @@ class User:
         self.answer2 = ''
         self.answer3 = ''
         self.answer4 = ''
+        self.session_id = ''

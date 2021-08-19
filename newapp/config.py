@@ -15,7 +15,7 @@ test = -1001364950026
 
 
 if USE_WEBHOOK == False:
-        from config_pooling import *
+        from config_pooling import me, TOKEN, dbase
         TOKEN = TOKEN
         dbase = dbase
 

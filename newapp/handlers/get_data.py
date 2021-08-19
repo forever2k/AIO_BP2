@@ -64,18 +64,22 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
 
 
 async def ask_answer(message: types.Message):
-    user_id = message.from_user.id
-    user = user_data[user_id]
-    if user.answer1 == '' or user.answer2 == '' or user.answer3 == '' or user.answer4 == '':
-        buttons = [
-            types.InlineKeyboardButton(text="Yes", callback_data="get_answer"),
-            types.InlineKeyboardButton(text="No", callback_data="close_session")
-        ]
-        keyboard = types.InlineKeyboardMarkup(row_width=3)
-        keyboard.add(*buttons)
-        await message.answer("Do you want to write your answer?", reply_markup=keyboard)
-    else:
-        await message.answer(text="You have already sent 4 answers", show_alert=True)
+    try:
+        user_id = message.from_user.id
+        user = user_data[user_id]
+        if user.answer1 == '' or user.answer2 == '' or user.answer3 == '' or user.answer4 == '':
+            buttons = [
+                types.InlineKeyboardButton(text="Yes", callback_data="get_answer"),
+                types.InlineKeyboardButton(text="No", callback_data="notice_to_admin")
+            ]
+            keyboard = types.InlineKeyboardMarkup(row_width=3)
+            keyboard.add(*buttons)
+            await message.answer("Do you want to write your answer?", reply_markup=keyboard)
+        else:
+            await message.answer(text="You have already sent 4 answers", show_alert=True)
+
+    except Exception as e:
+        await message.answer("Something went wrong.. Please contact the admin")
 
 
 
@@ -92,40 +96,44 @@ async def write_answer(message: types.Message, state: FSMContext):
     # await state.update_data(chosen_answer=message.text.lower())
     # user_data = await state.get_data()
 
-    user_id = message.from_user.id
-    user = user_data[user_id]
+    try:
+        user_id = message.from_user.id
+        user = user_data[user_id]
+
+        # try:
+        #     sql = "INSERT INTO users (session_id, user_id, QUESTION, ANSWER1) \
+        #                                                       VALUES (%s, %s, %s, %s)"
+        #     val = (session_id, user_id, user.question, user.answer1)
+        #     cursor.execute(sql, val)
+        #     dbase.commit()
+        #
+        # except Exception as e:
+        #     await message.reply(message, 'Something went wrong.. Please contact the admin')
+
+        if user.answer1 =='':
+            user.answer1 = message.text
+            await write_to_database(message, user.session_id, user_id, question=user.question, answer1=user.answer1)
+        elif user.answer2 =='':
+            user.answer2 = message.text
+            await write_to_database(message, user.session_id, user_id, answer2=user.answer2)
+        elif user.answer3 == '':
+            user.answer3 = message.text
+            await write_to_database(message, user.session_id, user_id, answer3=user.answer3)
+        elif user.answer4 == '':
+            user.answer4 = message.text
+            await write_to_database(message, user.session_id, user_id, answer4=user.answer4)
+
+    except Exception as e:
+        await message.answer("Something went wrong.. Please contact the admin")
 
     # try:
-    #     sql = "INSERT INTO users (session_id, user_id, QUESTION, ANSWER1) \
-    #                                                       VALUES (%s, %s, %s, %s)"
-    #     val = (session_id, user_id, user.question, user.answer1)
-    #     cursor.execute(sql, val)
-    #     dbase.commit()
+    #     await message.answer("Is this a mistake????")
+    #     await bot.send_message(test_group, "A new message has been received", disable_notification=False)
+    #     # await bot.send_message(test_group, 'New question was recevied')
+    #     # await bot.send_message(me, 'New question was recevied')
     #
-    # except Exception as e:
-    #     await message.reply(message, 'Something went wrong.. Please contact the admin')
-
-    if user.answer1 =='':
-        user.answer1 = message.text
-        await write_to_database(message, user.session_id, user_id, question=user.question, answer1=user.answer1)
-    elif user.answer2 =='':
-        user.answer2 = message.text
-        await write_to_database(message, user.session_id, user_id, answer2=user.answer2)
-    elif user.answer3 == '':
-        user.answer3 = message.text
-        await write_to_database(message, user.session_id, user_id, answer3=user.answer3)
-    elif user.answer4 == '':
-        user.answer4 = message.text
-        await write_to_database(message, user.session_id, user_id, answer4=user.answer4)
-
-    try:
-        await message.answer("it`s the last part")
-        await bot.send_message(test_group, "A new message has been received", disable_notification=False)
-        # await bot.send_message(test_group, 'New question was recevied')
-        # await bot.send_message(me, 'New question was recevied')
-
-    except exceptions.BotBlocked:
-        logging.error(f"Target [ID:{test_group}]: blocked by user")
+    # except exceptions.BotBlocked:
+    #     logging.error(f"Target [ID:{test_group}]: blocked by user")
 
     await state.finish()
     await ask_answer(message)

@@ -1,15 +1,18 @@
+import logging
 from random import randint
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text, IDFilter
+from aiogram.utils import exceptions
 from aiogram.utils.exceptions import BotBlocked
+from newapp.bt import bot
+from newapp.config import test_group
 
 
 # @dp.message_handler(commands=['start'], state="*")
-from newapp.handlers.get_data import GetData
+from newapp.todo import user_data
 
 
-# @dp.message_handler(commands=['start'], state="*")
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("Hi my friend! \n"
@@ -38,13 +41,27 @@ async def ask_start(message: types.Message):
 
 
 
-
-
-
 async def close_session(call: types.CallbackQuery):
     await call.message.answer("It`s the close_session")
     await call.answer(text="Buy!", show_alert=True)
     # или просто await call.answer()
+
+
+async def notice_to_admin(call: types.CallbackQuery):
+    user_id = call.from_user.id
+    user = user_data[user_id]
+
+    try:
+        # await call.answer("Is this a mistake????")
+        await bot.send_message(test_group, f"A new message has been received with Session_id = {user.session_id}", disable_notification=False)
+        # await bot.send_message(test_group, 'New question was recevied')
+        # await bot.send_message(me, 'New question was recevied')
+        await close_session(call)
+
+    except exceptions.BotBlocked:
+        logging.error(f"Target [ID:{test_group}]: blocked by user")
+        await close_session(call)
+
 
 
 

@@ -44,7 +44,7 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
     session_id = generate_number(user_id)
     user.session_id = session_id
 
-    # await write_to_database(message, user.session_id, user_id, question=user.question)
+    await write_to_database(message, user.session_id, user_id, question=user.question)
 
     await state.finish()
 
@@ -63,23 +63,44 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
     await ask_answer(message)
 
 
+async def keyboard_answer(message: types.Message, number_question):
+    buttons = [
+        types.InlineKeyboardButton(text="Yes", callback_data="get_answer"),
+        types.InlineKeyboardButton(text="No", callback_data="notice_to_admin")
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=3)
+    keyboard.add(*buttons)
+    await message.answer(f"Do you want to write your {number_question} answer?", reply_markup=keyboard)
+
+
+
+
 async def ask_answer(message: types.Message):
     try:
         user_id = message.from_user.id
         user = user_data[user_id]
-        if user.answer1 == '' or user.answer2 == '' or user.answer3 == '' or user.answer4 == '':
-            buttons = [
-                types.InlineKeyboardButton(text="Yes", callback_data="get_answer"),
-                types.InlineKeyboardButton(text="No", callback_data="notice_to_admin")
-            ]
-            keyboard = types.InlineKeyboardMarkup(row_width=3)
-            keyboard.add(*buttons)
-            await message.answer("Do you want to write your answer?", reply_markup=keyboard)
+        if user.answer1 == '':
+            await keyboard_answer(message, "First")
+        elif user.answer2 == '':
+            await keyboard_answer(message, "Second")
+        elif user.answer3 == '':
+            await keyboard_answer(message, "Third")
+        elif user.answer4 == '':
+            await keyboard_answer(message, "Fourth")
+
+        # if user.answer1 == '' or user.answer2 == '' or user.answer3 == '' or user.answer4 == '':
+        #     buttons = [
+        #         types.InlineKeyboardButton(text="Yes", callback_data="get_answer"),
+        #         types.InlineKeyboardButton(text="No", callback_data="notice_to_admin")
+        #     ]
+        #     keyboard = types.InlineKeyboardMarkup(row_width=3)
+        #     keyboard.add(*buttons)
+        #     await message.answer("Do you want to write your answer?", reply_markup=keyboard)
         else:
-            await message.answer(text="You have already sent 4 answers", show_alert=True)
+            await message.answer("Thanks! Your answers are recorded")
 
     except Exception as e:
-        await message.answer("Something went wrong.. Please contact the admin")
+        await message.answer("[ask_answer] Something went wrong.. Please contact the admin")
 
 
 
@@ -112,7 +133,7 @@ async def write_answer(message: types.Message, state: FSMContext):
 
         if user.answer1 =='':
             user.answer1 = message.text
-            await write_to_database(message, user.session_id, user_id, question=user.question, answer1=user.answer1)
+            await write_to_database(message, user.session_id, user_id, answer1=user.answer1)
         elif user.answer2 =='':
             user.answer2 = message.text
             await write_to_database(message, user.session_id, user_id, answer2=user.answer2)
@@ -124,7 +145,7 @@ async def write_answer(message: types.Message, state: FSMContext):
             await write_to_database(message, user.session_id, user_id, answer4=user.answer4)
 
     except Exception as e:
-        await message.answer("Something went wrong.. Please contact the admin")
+        await message.answer("[write_answer] Something went wrong.. Please contact the admin")
 
     # try:
     #     await message.answer("Is this a mistake????")
@@ -141,9 +162,6 @@ async def write_answer(message: types.Message, state: FSMContext):
 
 async def write_to_database(message: types.Message, session_id, user_id, **kwargs):
 
-    answer_number = ''
-    answer_text = ''
-
     for key, val in kwargs.items():
         if key == 'question':
             question = val
@@ -158,9 +176,9 @@ async def write_to_database(message: types.Message, session_id, user_id, **kwarg
 
     if cursor.rowcount == 0:
         try:
-            insert_data_query = "INSERT INTO users (session_id, user_id, QUESTION, ANSWER1) \
-                                                              VALUES (%s, %s, %s, %s)"
-            val = (session_id, user_id, question, answer_text)
+            insert_data_query = "INSERT INTO users (session_id, user_id, QUESTION) \
+                                                              VALUES (%s, %s, %s)"
+            val = (session_id, user_id, question)
             cursor.execute(insert_data_query, val)
             dbase.commit()
 
@@ -170,7 +188,13 @@ async def write_to_database(message: types.Message, session_id, user_id, **kwarg
 
     else:
         try:
-            if answer_number == 'answer2':
+            if answer_number == 'answer1':
+                update_data_query = "UPDATE users SET ANSWER1 = %s WHERE session_id = %s"
+                val = (answer_text, session_id)
+                cursor.execute(update_data_query, val)
+                dbase.commit()
+
+            elif answer_number == 'answer2':
                 update_data_query = "UPDATE users SET ANSWER2 = %s WHERE session_id = %s"
                 val = (answer_text, session_id)
                 cursor.execute(update_data_query, val)
@@ -190,7 +214,7 @@ async def write_to_database(message: types.Message, session_id, user_id, **kwarg
 
 
         except Exception as e:
-            await message.answer("Something went wrong.. Please contact the admin")
+            await message.answer("[write_to_database] Something went wrong.. Please contact the admin")
             # await message.reply(message, 'Something went wrong.. Please contact the admin')
 
 

@@ -190,6 +190,7 @@ async def inline_query(query: types.InlineQuery):
                        results=results, cache_time=120, is_personal=True)
 
 
+
 @dp.message_handler(commands="mypoll")
 async def my_poll(message: types.Message):
     await bot.send_message(test_group, "here 111")

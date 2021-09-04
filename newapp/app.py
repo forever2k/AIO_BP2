@@ -96,6 +96,7 @@ async def on_startup(dp):
     # asyncio.create_task(bot_schedule())
 
 
+
 async def on_shutdown(dp):
     logging.warning('Bye! Shutting down webhook connection')
 

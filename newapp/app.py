@@ -5,7 +5,7 @@ from aiogram import Bot, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import Dispatcher, FSMContext
 from aiogram.types import BotCommand
-from aiogram.utils import executor
+from aiogram.utils import executor, deep_linking
 from aiogram.utils.executor import start_webhook
 import mysql.connector
 from random import randint
@@ -68,13 +68,14 @@ dp.register_message_handler(get_question, state=GetData.waiting_for_get_question
 dp.register_message_handler(write_answer, state=GetData.waiting_for_write_answer)
 
 
-
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 
 dp.register_callback_query_handler(start_session, text="start_session")
 dp.register_callback_query_handler(close_session, text="close_session")
 dp.register_callback_query_handler(get_answer, text="get_answer")
 dp.register_callback_query_handler(notice_to_admin, text="notice_to_admin")
+
+
 
 
 async def main():

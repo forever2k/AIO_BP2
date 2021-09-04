@@ -223,13 +223,6 @@ async def write_to_database(message: types.Message, session_id, user_id, **kwarg
 
 
 
-
-
-
-
-
-
-
 # async def get_question(message: types.Message, state: FSMContext):
 #     if len(message.text) < 5:
 #         await message.answer("Пожалуйста, напишите корректный вопрос, используя клавиатуру ниже.")

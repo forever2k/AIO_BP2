@@ -12,7 +12,8 @@ from random import randint
 from aiogram.utils.exceptions import BotBlocked
 from newapp.config import *
 from newapp.handlers.common import *
-from newapp.handlers.get_data import *
+from newapp.handlers.get_data_from_database import *
+from newapp.handlers.get_data_from_user import *
 from bt import *
 
 
@@ -43,7 +44,7 @@ logging.basicConfig(level=logging.DEBUG)
 # dp = Dispatcher(bot)
 
 
-cursor = dbase.cursor()
+# cursor = dbase.cursor()
 
 
 async def set_commands(bot: Bot):
@@ -62,10 +63,12 @@ dp.register_message_handler(cmd_cancel, Text(equals="отмена", ignore_case=
 dp.register_message_handler(ask_start, commands=["ask"], state="*")
 dp.register_message_handler(cmd_random, commands=["random"], state="*")
 dp.register_message_handler(send_random_value, commands="random_value", state="*")
-dp.register_message_handler(secret_command, IDFilter(user_id=me), commands="abracadabra")
+dp.register_message_handler(secret_command, IDFilter(user_id=me), commands="secret")
 dp.register_message_handler(get_question, state=GetData.waiting_for_get_question)
 # dp.register_message_handler(ask_answer, state=GetData.waiting_for_ask_answer)
 dp.register_message_handler(write_answer, state=GetData.waiting_for_write_answer)
+dp.register_message_handler(get_quiz_from_database, state=GetDataFromDatabase.waiting_for_get_session_id)
+dp.register_message_handler(ask_session_id, IDFilter(user_id=me), commands="asksecret")
 
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)

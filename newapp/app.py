@@ -69,6 +69,7 @@ dp.register_message_handler(get_question, state=GetData.waiting_for_get_question
 dp.register_message_handler(write_answer, state=GetData.waiting_for_write_answer)
 dp.register_message_handler(get_quiz_from_database, state=GetDataFromDatabase.waiting_for_get_session_id)
 dp.register_message_handler(ask_session_id, IDFilter(user_id=me), commands="asksecret")
+dp.register_message_handler(ask_edit_quiz, state="*")
 
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
@@ -77,6 +78,8 @@ dp.register_callback_query_handler(start_session, text="start_session")
 dp.register_callback_query_handler(close_session, text="close_session")
 dp.register_callback_query_handler(get_answer, text="get_answer")
 dp.register_callback_query_handler(notice_to_admin, text="notice_to_admin")
+dp.register_callback_query_handler(edit_quiz, cb.filter())
+
 
 
 

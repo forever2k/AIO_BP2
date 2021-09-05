@@ -26,12 +26,13 @@ async def get_quiz_from_database(message: types.Message, state: FSMContext):
     session_id = message.text
     # await bot.send_message(test_group, message.text)
 
-    data_by_session_id = "SELECT * FROM users WHERE session_id = '227722043_375645'"
-    cursor.execute(data_by_session_id)
+    data_by_session_id = "SELECT * FROM users WHERE session_id = %s"
+    cursor.execute(data_by_session_id, (session_id,))
 
-    for (user_id, QUESTION, ANSWER1, session_id, ANSWER2, ANSWER3, ANSWER4) in cursor:
+    for (user_id, QUESTION, ANSWER1, session_id, ANSWER2, ANSWER3, ANSWER4, Datetime) in cursor:
         await message.answer(f'User_id = {user_id},\n'
                              f'session_id = {session_id},\n'
+                             f'Datetime = {Datetime},\n'
                              f'QUESTION = {QUESTION},\n'
                              f'ANSWER1 = {ANSWER1},\n'
                              f'ANSWER2 = {ANSWER2},\n'
@@ -45,4 +46,26 @@ async def get_quiz_from_database(message: types.Message, state: FSMContext):
     #     await message.answer(f"User_id = {user_id}, QUESTION = {QUESTION}")
 
     await state.finish()
+    await ask_edit_quiz(message, session_id)
 
+
+
+async def ask_edit_quiz(message: types.Message, session_id):
+    buttons = [
+        types.InlineKeyboardButton(text="YES", callback_data=cb.new(id=5, action="like")),
+        types.InlineKeyboardButton(text="NO", callback_data="close_session"),
+        types.InlineKeyboardButton(text="Cancel", callback_data="close_session"),
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    keyboard.add(*buttons)
+    await message.answer("Do you want to edit the Quiz?", reply_markup=keyboard)
+
+
+async def edit_quiz(call: types.CallbackQuery, callback_data: dict):
+    # session_id = callback_data["session_id"]
+    # await call.message.answer("here !!!!!!!!!!!!!!!!!!!")
+    # await bot.send_message(test_group, f"current Session_id = {session_id}")
+    post_id = callback_data["id"]
+    action = callback_data["action"]
+    await bot.send_message(test_group, f"current Session_id = {post_id}")
+    await bot.send_message(test_group, f"current Session_id = {action}")

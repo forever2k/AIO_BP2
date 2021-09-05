@@ -1,5 +1,8 @@
 from random import randint
 
+from aiogram.utils.callback_data import CallbackData
+
+
 def generate_number(id):
     id_generate = str(id) + "_"
     for i in range(0, 6):
@@ -17,3 +20,6 @@ class User:
         self.answer3 = ''
         self.answer4 = ''
         self.session_id = ''
+
+
+cb= CallbackData("post", "id", "action")

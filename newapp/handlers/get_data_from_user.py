@@ -6,6 +6,7 @@ from aiogram.utils import exceptions
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
 from newapp.todo import *
+import time
 
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
@@ -176,9 +177,10 @@ async def write_to_database(message: types.Message, session_id, user_id, **kwarg
 
     if cursor.rowcount == 0:
         try:
-            insert_data_query = "INSERT INTO users (session_id, user_id, QUESTION) \
-                                                              VALUES (%s, %s, %s)"
-            val = (session_id, user_id, question)
+            now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            insert_data_query = "INSERT INTO users (session_id, user_id, QUESTION, Datetime) \
+                                                              VALUES (%s, %s, %s, %s)"
+            val = (session_id, user_id, question, now)
             cursor.execute(insert_data_query, val)
             dbase.commit()
 

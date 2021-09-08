@@ -10,7 +10,7 @@ from newapp.config import test_group
 
 
 # @dp.message_handler(commands=['start'], state="*")
-from newapp.todo import user_data
+from newapp.loader import user_data
 
 
 async def cmd_start(message: types.Message, state: FSMContext):

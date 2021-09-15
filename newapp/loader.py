@@ -22,4 +22,4 @@ class User:
         self.session_id = ''
 
 
-cb= CallbackData("transfer_session_if", "session_id")
+cb= CallbackData("transfer_session_id", "session_id")

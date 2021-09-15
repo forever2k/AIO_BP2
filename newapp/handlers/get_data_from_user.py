@@ -60,7 +60,7 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
     # await message.answer("Now write your ANSWER", reply_markup=keyboard)
     await message.answer("You need to write from 2 to 4 answers\n"
                          "Now write and send your first Answer")
-    # await state.finish()
+    await state.finish()
     await ask_answer(message)
 
 
@@ -161,7 +161,7 @@ async def write_answer(message: types.Message, state: FSMContext):
     await ask_answer(message)
 
 
-async def write_to_database(message: types.Message, session_id, user_id, **kwargs):
+async def write_to_database(message: types.Message, session_id, user_id=None, **kwargs):
 
     for key, val in kwargs.items():
         if key == 'question':
@@ -190,7 +190,12 @@ async def write_to_database(message: types.Message, session_id, user_id, **kwarg
 
     else:
         try:
-            if answer_number == 'answer1':
+            if answer_number == 'question':
+                update_data_query = "UPDATE users SET QUESTION = %s WHERE session_id = %s"
+                val = (question, session_id)
+                cursor.execute(update_data_query, val)
+                dbase.commit()
+            elif answer_number == 'answer1':
                 update_data_query = "UPDATE users SET ANSWER1 = %s WHERE session_id = %s"
                 val = (answer_text, session_id)
                 cursor.execute(update_data_query, val)

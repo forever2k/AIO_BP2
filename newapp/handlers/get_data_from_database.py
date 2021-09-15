@@ -5,7 +5,9 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
+from newapp.handlers.get_data_from_user import write_to_database
 from newapp.loader import *
+
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
 # available_answers = ["ответ1", "ответ2", "ответ3"]
@@ -48,6 +50,7 @@ async def get_quiz_from_database(message: types.Message, state: FSMContext):
 
     await get_data(message=message, session_id=session_id, whole_quiz='Yes')
     await state.finish()
+    await bot.send_message(test_group, f'HEREEEEEEEEEEEEEEEEE 2222222222222222 {session_id}')
     await ask_edit_quiz(message, session_id)
 
 
@@ -103,4 +106,17 @@ async def edit_quiz_question(call: types.CallbackQuery, callback_data: dict):
     await call.message.answer(question)
     await call.message.answer(f'Please write correct Question for Session_id {session_id}')
     await GetDataFromDatabase.waiting_for_correct_question.set()
+
+
+
+async def send_correct_question(message: types.Message, state: FSMContext):
+
+
+    edit_question = message.text
+    # session_id = session_id
+
+    await bot.send_message(test_group, f'HEREEEEEEEEEEEEEEEEE  7 7 7 ! ! ! !')
+
+    # await write_to_database(message, session_id, question=edit_question)
+
 

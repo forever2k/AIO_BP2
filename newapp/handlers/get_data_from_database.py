@@ -98,10 +98,18 @@ async def ask_edit_quiz(message: types.Message, session_id):
     await message.answer("Do you want to edit the Quiz?", reply_markup=keyboard)
 
 
-async def edit_quiz_question(call: types.CallbackQuery, callback_data: dict):
+async def edit_quiz_question(call: types.CallbackQuery, callback_data: dict, admin_data=admin_data):
+
     session_id = callback_data["session_id"]
+
+    current_data = 'current_data'
+    admin_data[current_data] = Admin()
+    admin = admin_data[current_data]
+    admin.session_id = session_id
+
     # await bot.send_message(test_group, f"current Session_id = {session_id}")
     question = await get_data(call=call, session_id=session_id, chosen_quiz='Yes', entity='QUESTION')
+
     await call.message.answer(f'Question for Session_id {session_id} was:')
     await call.message.answer(question)
     await call.message.answer(f'Please write correct Question for Session_id {session_id}')
@@ -109,14 +117,40 @@ async def edit_quiz_question(call: types.CallbackQuery, callback_data: dict):
 
 
 
-async def send_correct_question(message: types.Message, state: FSMContext):
-
+async def send_correct_question(message: types.Message, state: FSMContext, admin_data=admin_data):
 
     edit_question = message.text
-    # session_id = session_id
+    admin = admin_data['current_data']
+    admin.question = edit_question
+    session_id = admin.session_id
 
-    await bot.send_message(test_group, f'HEREEEEEEEEEEEEEEEEE  7 7 7 ! ! ! !')
+    await write_to_database(message, session_id, question=edit_question)
 
-    # await write_to_database(message, session_id, question=edit_question)
+    await send_correct_answers(message)
 
+
+
+async def send_correct_answers(message: types.Message, admin_data=admin_data):
+
+    admin = admin_data['current_data']
+    session_id = admin.session_id
+
+    for i in range(1, 5):
+
+        entity = 'ANSWER'+ str(i)
+        await message.answer(f'Answer № {i} for Session_id {session_id} was:')
+        answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
+
+        if i == 1:
+            admin.answer1 = answer
+            await write_to_database(message, session_id, answer1=admin.answer1)
+        elif i == 2:
+            admin.answer2 = answer
+            await write_to_database(message, session_id, answer2=admin.answer1)
+        elif i == 3:
+            admin.answer3 = answer
+            await write_to_database(message, session_id, answer3=admin.answer1)
+        elif i == 4:
+            admin.answer4 = answer
+            await write_to_database(message, session_id, answer4=admin.answer1)
 

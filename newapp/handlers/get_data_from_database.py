@@ -18,6 +18,7 @@ cursor = dbase.cursor()
 class GetDataFromDatabase(StatesGroup):
     waiting_for_get_session_id = State()
     waiting_for_correct_question = State()
+    waiting_for_correct_answer = State()
 
 
 async def ask_session_id(message: types.Message):
@@ -50,7 +51,7 @@ async def get_quiz_from_database(message: types.Message, state: FSMContext):
 
     await get_data(message=message, session_id=session_id, whole_quiz='Yes')
     await state.finish()
-    await bot.send_message(test_group, f'HEREEEEEEEEEEEEEEEEE 2222222222222222 {session_id}')
+    # await bot.send_message(test_group, f'HEREEEEEEEEEEEEEEEEE 2222222222222222 {session_id}')
     await ask_edit_quiz(message, session_id)
 
 
@@ -73,17 +74,21 @@ async def get_data(message: types.Message=None, call: types.CallbackQuery=None, 
         data_by_session_id = "SELECT * FROM users WHERE session_id = %s"
         cursor.execute(data_by_session_id, (session_id,))
 
+        await bot.send_message(test_group, f'HERE 333333333333333 {entity} AND {session_id}')
+
         for (user_id, QUESTION, ANSWER1, session_id, ANSWER2, ANSWER3, ANSWER4, Datetime) in cursor:
-            if entity == 'QUESTION':
-                return QUESTION
-            elif entity == 'ANSWER1':
-                await call.message.answer(ANSWER1)
-            elif entity == 'ANSWER2':
-                await call.message.answer(ANSWER2)
-            elif entity == 'ANSWER3':
-                await call.message.answer(ANSWER3)
-            elif entity == 'ANSWER4':
-                await call.message.answer(ANSWER4)
+                if entity == 'QUESTION':
+                    await bot.send_message(test_group, f'HERE 666666666666666 {QUESTION}')
+                    return QUESTION
+                elif entity == 'ANSWER1':
+                    await bot.send_message(test_group, f'HERE 5555555 {ANSWER1}')
+                    return ANSWER1
+                elif entity == 'ANSWER2':
+                    return ANSWER2
+                elif entity == 'ANSWER3':
+                    return ANSWER3
+                elif entity == 'ANSWER4':
+                    return ANSWER4
 
 
 
@@ -108,7 +113,7 @@ async def edit_quiz_question(call: types.CallbackQuery, callback_data: dict, adm
     admin.session_id = session_id
 
     # await bot.send_message(test_group, f"current Session_id = {session_id}")
-    question = await get_data(call=call, session_id=session_id, chosen_quiz='Yes', entity='QUESTION')
+    question = await get_data(session_id=session_id, chosen_quiz='Yes', entity='QUESTION')
 
     await call.message.answer(f'Question for Session_id {session_id} was:')
     await call.message.answer(question)
@@ -126,31 +131,88 @@ async def send_correct_question(message: types.Message, state: FSMContext, admin
 
     await write_to_database(message, session_id, question=edit_question)
 
-    await send_correct_answers(message)
+    await ask_correct_answers(message)
 
 
 
-async def send_correct_answers(message: types.Message, admin_data=admin_data):
+async def send_correct_answer(message: types.Message, state: FSMContext, admin_data=admin_data):
+
+    edit_answer = message.text
+    admin = admin_data['current_data']
+    session_id = admin.session_id
+
+    if admin.answer1 == '':
+        admin.answer1 = edit_answer
+        await write_to_database(message, session_id, answer1=admin.answer1)
+        await ask_correct_answers(message)
+    elif admin.answer2 == '':
+        admin.answer2 = edit_answer
+        await write_to_database(message, session_id, answer2=admin.answer2)
+        await ask_correct_answers(message)
+    elif admin.answer3 == '':
+        admin.answer3 = edit_answer
+        await write_to_database(message, session_id, answer3=admin.answer3)
+        await ask_correct_answers(message)
+    elif admin.answer4 == '':
+        admin.answer4 = edit_answer
+        await write_to_database(message, session_id, answer4=admin.answer4)
+        await ask_correct_answers(message)
+
+
+
+
+async def ask_correct_answers(message: types.Message, admin_data=admin_data):
 
     admin = admin_data['current_data']
     session_id = admin.session_id
 
-    for i in range(1, 5):
+    if admin.answer1 == '':
+        entity = 'ANSWER1'
+        await message.answer(f'{entity} for Session_id {session_id} was:')
+        text_answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
+        if text_answer == None:
+            await message.answer(f'Answer for {entity} = NONE')
+            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await GetDataFromDatabase.waiting_for_correct_answer.set()
+        else:
+            await message.answer(text_answer)
+            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await GetDataFromDatabase.waiting_for_correct_answer.set()
+    elif admin.answer2 == '':
+        entity = 'ANSWER2'
+        await message.answer(f'{entity} for Session_id {session_id} was:')
+        text_answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
+        if text_answer == None:
+            await message.answer(f'Answer for {entity} = NONE')
+            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await GetDataFromDatabase.waiting_for_correct_answer.set()
+        else:
+            await message.answer(text_answer)
+            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await GetDataFromDatabase.waiting_for_correct_answer.set()
+    elif admin.answer3 == '':
+        entity = 'ANSWER3'
+        await message.answer(f'{entity} for Session_id {session_id} was:')
+        text_answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
+        if text_answer == None:
+            await message.answer(f'Answer for {entity} = NONE')
+            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await GetDataFromDatabase.waiting_for_correct_answer.set()
+        else:
+            await message.answer(text_answer)
+            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await GetDataFromDatabase.waiting_for_correct_answer.set()
+    elif admin.answer4 == '':
+        entity = 'ANSWER4'
+        await message.answer(f'{entity} for Session_id {session_id} was:')
+        text_answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
+        if text_answer == None:
+            await message.answer(f'Answer for {entity} = NONE')
+            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await GetDataFromDatabase.waiting_for_correct_answer.set()
+        else:
+            await message.answer(text_answer)
+            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await GetDataFromDatabase.waiting_for_correct_answer.set()
 
-        entity = 'ANSWER'+ str(i)
-        await message.answer(f'Answer № {i} for Session_id {session_id} was:')
-        answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
-
-        if i == 1:
-            admin.answer1 = answer
-            await write_to_database(message, session_id, answer1=admin.answer1)
-        elif i == 2:
-            admin.answer2 = answer
-            await write_to_database(message, session_id, answer2=admin.answer1)
-        elif i == 3:
-            admin.answer3 = answer
-            await write_to_database(message, session_id, answer3=admin.answer1)
-        elif i == 4:
-            admin.answer4 = answer
-            await write_to_database(message, session_id, answer4=admin.answer1)
 

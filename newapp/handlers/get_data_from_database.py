@@ -27,6 +27,7 @@ async def ask_session_id(message: types.Message):
 
 
 async def get_quiz_from_database(message: types.Message, state: FSMContext):
+
     session_id = message.text
     # await bot.send_message(test_group, message.text)
 
@@ -49,10 +50,25 @@ async def get_quiz_from_database(message: types.Message, state: FSMContext):
     # for (user_id, QUESTION) in cursor:
     #     await message.answer(f"User_id = {user_id}, QUESTION = {QUESTION}")
 
-    await get_data(message=message, session_id=session_id, whole_quiz='Yes')
-    await state.finish()
-    # await bot.send_message(test_group, f'HEREEEEEEEEEEEEEEEEE 2222222222222222 {session_id}')
-    await ask_edit_quiz(message, session_id)
+    quiz = await get_data(message=message, session_id=session_id, whole_quiz='Yes')
+
+    if len(quiz) > 0:
+        await message.answer(f'User_id = {quiz["user_id"]} \n'
+                             f'session_id = {quiz["session_id"]} \n'
+                             f'Datetime = {quiz["Datetime"]} \n'
+                             f'QUESTION = {quiz["QUESTION"]} \n'
+                             f'ANSWER1 = {quiz["ANSWER1"]} \n'
+                             f'ANSWER2 = {quiz["ANSWER2"]} \n'
+                             f'ANSWER3 = {quiz["ANSWER3"]} \n'
+                             f'ANSWER4 = {quiz["ANSWER4"]} \n')
+
+        await state.finish()
+        # await bot.send_message(test_group, f'HEREEEEEEEEEEEEEEEEE 2222222222222222 {session_id}')
+        await ask_edit_quiz(message, session_id)
+    else:
+        await message.answer(f'len(quiz) < 0 .. :(')
+        await ask_session_id(message)
+
 
 
 async def get_data(message: types.Message=None, call: types.CallbackQuery=None, session_id=None, whole_quiz=None, chosen_quiz=None, entity=None):
@@ -61,15 +77,28 @@ async def get_data(message: types.Message=None, call: types.CallbackQuery=None, 
         data_by_session_id = "SELECT * FROM users WHERE session_id = %s"
         cursor.execute(data_by_session_id, (session_id,))
 
+        quiz = {}
+
         for (user_id, QUESTION, ANSWER1, session_id, ANSWER2, ANSWER3, ANSWER4, Datetime) in cursor:
-            await message.answer(f'User_id = {user_id} \n'
-                                 f'session_id = {session_id} \n'
-                                 f'Datetime = {Datetime} \n'
-                                 f'QUESTION = {QUESTION} \n'
-                                 f'ANSWER1 = {ANSWER1} \n'
-                                 f'ANSWER2 = {ANSWER2} \n'
-                                 f'ANSWER3 = {ANSWER3} \n'
-                                 f'ANSWER4 = {ANSWER4}')
+            quiz['user_id'] = user_id
+            quiz['session_id'] = session_id
+            quiz['Datetime'] = Datetime
+            quiz['QUESTION'] = QUESTION
+            quiz['ANSWER1'] = ANSWER1
+            quiz['ANSWER2'] = ANSWER2
+            quiz['ANSWER3'] = ANSWER3
+            quiz['ANSWER4'] = ANSWER4
+
+        return quiz
+
+            # await message.answer(f'User_id = {user_id} \n'
+            #                      f'session_id = {session_id} \n'
+            #                      f'Datetime = {Datetime} \n'
+            #                      f'QUESTION = {QUESTION} \n'
+            #                      f'ANSWER1 = {ANSWER1} \n'
+            #                      f'ANSWER2 = {ANSWER2} \n'
+            #                      f'ANSWER3 = {ANSWER3} \n'
+            #                      f'ANSWER4 = {ANSWER4}')
     elif chosen_quiz == 'Yes':
         data_by_session_id = "SELECT * FROM users WHERE session_id = %s"
         cursor.execute(data_by_session_id, (session_id,))
@@ -156,7 +185,7 @@ async def send_correct_answer(message: types.Message, state: FSMContext, admin_d
     elif admin.answer4 == '':
         admin.answer4 = edit_answer
         await write_to_database(message, session_id, answer4=admin.answer4)
-        await ask_correct_answers(message)
+        await state.finish()
 
 
 
@@ -213,6 +242,8 @@ async def ask_correct_answers(message: types.Message, admin_data=admin_data):
         else:
             await message.answer(text_answer)
             await message.answer(f'Please write correct {entity} for Session_id {session_id}')
-            await GetDataFromDatabase.waiting_for_correct_answer.set()
 
 
+
+async def check_admin_data(message: types.Message, admin_data=admin_data):
+    await message.answer(len(admin_data))

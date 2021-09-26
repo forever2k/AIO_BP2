@@ -72,6 +72,7 @@ dp.register_message_handler(send_correct_question, state=GetDataFromDatabase.wai
 dp.register_message_handler(send_correct_answer, state=GetDataFromDatabase.waiting_for_correct_answer)
 dp.register_message_handler(ask_session_id, IDFilter(user_id=me), commands="asksecret")
 dp.register_message_handler(ask_edit_quiz, commands="78978954645756856474758689", state="*")
+dp.register_message_handler(check_admin_data, commands="checkdata", state="*")
 
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)

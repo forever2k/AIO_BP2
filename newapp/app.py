@@ -15,6 +15,7 @@ from newapp.handlers.common import *
 from newapp.handlers.get_data_from_database import *
 from newapp.handlers.get_data_from_user import *
 from bt import *
+from quizer import my_poll
 
 
 # test_group = -1001153348142
@@ -73,7 +74,7 @@ dp.register_message_handler(send_correct_answer, state=GetDataFromDatabase.waiti
 dp.register_message_handler(ask_session_id, IDFilter(user_id=me), commands="asksecret")
 dp.register_message_handler(ask_edit_quiz, commands="78978954645756856474758689", state="*")
 dp.register_message_handler(check_admin_data, commands="checkdata", state="*")
-
+dp.register_message_handler(my_poll, commands="mypoll", state="*")
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 

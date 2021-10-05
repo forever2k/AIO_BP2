@@ -64,7 +64,7 @@ async def get_quiz_from_database(message: types.Message, state: FSMContext):
 
         await state.finish()
         # await bot.send_message(test_group, f'HEREEEEEEEEEEEEEEEEE 2222222222222222 {session_id}')
-        await ask_edit_quiz(message, session_id)
+        await ask_for_quiz(message, session_id, quiz)
     else:
         await message.answer(f'len(quiz) < 0 .. :(')
         await ask_session_id(message)
@@ -121,15 +121,15 @@ async def get_data(message: types.Message=None, call: types.CallbackQuery=None, 
 
 
 
-async def ask_edit_quiz(message: types.Message, session_id):
+async def ask_for_quiz(message: types.Message, session_id, quiz):
     buttons = [
-        types.InlineKeyboardButton(text="YES", callback_data=cb.new(session_id=session_id)),
-        types.InlineKeyboardButton(text="NO", callback_data="close_session"),
+        types.InlineKeyboardButton(text="Edit", callback_data=cb.new(session_id=session_id)),
+        types.InlineKeyboardButton(text="Send poll", callback_data=cb2.new(session_id=session_id, quiz=quiz)),
         types.InlineKeyboardButton(text="Cancel", callback_data="close_session"),
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
-    await message.answer("Do you want to edit the Quiz?", reply_markup=keyboard)
+    await message.answer("What do you want to do with the Quiz?", reply_markup=keyboard)
 
 
 async def edit_quiz_question(call: types.CallbackQuery, callback_data: dict, admin_data=admin_data):

@@ -15,8 +15,7 @@ from newapp.handlers.common import *
 from newapp.handlers.get_data_from_database import *
 from newapp.handlers.get_data_from_user import *
 from bt import *
-from quizer import my_poll
-
+from quizer import my_poll, send_poll
 
 # test_group = -1001153348142
 # test = -1001364950026
@@ -72,7 +71,7 @@ dp.register_message_handler(get_quiz_from_database, state=GetDataFromDatabase.wa
 dp.register_message_handler(send_correct_question, state=GetDataFromDatabase.waiting_for_correct_question)
 dp.register_message_handler(send_correct_answer, state=GetDataFromDatabase.waiting_for_correct_answer)
 dp.register_message_handler(ask_session_id, IDFilter(user_id=me), commands="asksecret")
-dp.register_message_handler(ask_edit_quiz, commands="78978954645756856474758689", state="*")
+dp.register_message_handler(ask_for_quiz, commands="78978954645756856474758689", state="*")
 dp.register_message_handler(check_admin_data, commands="checkdata", state="*")
 dp.register_message_handler(my_poll, commands="mypoll", state="*")
 
@@ -83,6 +82,7 @@ dp.register_callback_query_handler(close_session, text="close_session")
 dp.register_callback_query_handler(get_answer, text="get_answer")
 dp.register_callback_query_handler(notice_to_admin, text="notice_to_admin")
 dp.register_callback_query_handler(edit_quiz_question, cb.filter())
+dp.register_callback_query_handler(send_poll, cb2.filter())
 
 
 

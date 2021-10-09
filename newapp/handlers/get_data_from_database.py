@@ -26,6 +26,7 @@ async def ask_session_id(message: types.Message):
     await GetDataFromDatabase.waiting_for_get_session_id.set()
 
 
+
 async def get_quiz_from_database(message: types.Message, state: FSMContext):
 
     session_id = message.text
@@ -89,6 +90,14 @@ async def get_data(message: types.Message=None, call: types.CallbackQuery=None, 
             quiz['ANSWER3'] = ANSWER3
             quiz['ANSWER4'] = ANSWER4
 
+        admin_data["session_id"] = quiz[session_id]
+        admin_data["question"] = quiz[QUESTION]
+        admin_data["answer1"] = quiz[ANSWER1]
+        admin_data["answer2"] = quiz[ANSWER2]
+        admin_data["answer3"] = quiz[ANSWER3]
+        admin_data["answer4"] = quiz[ANSWER4]
+
+
         return quiz
 
             # await message.answer(f'User_id = {user_id} \n'
@@ -122,6 +131,8 @@ async def get_data(message: types.Message=None, call: types.CallbackQuery=None, 
 
 
 async def ask_for_quiz(message: types.Message, session_id, quiz):
+    await bot.send_message(test_group, "here 111")
+    await bot.send_message(test_group, quiz)
     buttons = [
         types.InlineKeyboardButton(text="Edit", callback_data=cb.new(session_id=session_id)),
         types.InlineKeyboardButton(text="Send poll", callback_data=cb2.new(session_id=session_id, quiz=quiz)),

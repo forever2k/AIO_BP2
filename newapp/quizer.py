@@ -19,6 +19,7 @@ async def send_poll(call: types.CallbackQuery, test_group, admin_data=admin_data
     ANSWER3 = admin_data["answer3"]
     ANSWER4 = admin_data["answer4"]
 
+
     await bot.send_message(test_group, "here 111")
     await call.bot.send_poll(test_group, question=QUESTION, options=[ANSWER1, ANSWER2, ANSWER3, ANSWER4],
                                 allows_multiple_answers=False)

@@ -10,7 +10,7 @@ async def my_poll(message: types.Message):
     await ask_session_id(message)
 
 
-async def send_poll(call: types.CallbackQuery, test_group, admin_data=admin_data):
+async def send_poll(call: types.CallbackQuery, test_group=test_group, admin_data=admin_data):
 
     session_id = admin_data['session_id']
     QUESTION = admin_data['question']
@@ -19,10 +19,22 @@ async def send_poll(call: types.CallbackQuery, test_group, admin_data=admin_data
     ANSWER3 = admin_data["answer3"]
     ANSWER4 = admin_data["answer4"]
 
+    options = []
 
-    await bot.send_message(test_group, "here 111")
-    await call.bot.send_poll(test_group, question=QUESTION, options=[ANSWER1, ANSWER2, ANSWER3, ANSWER4],
-                                allows_multiple_answers=False)
+    if admin_data["answer1"]:
+        options.append(admin_data["answer1"])
+    if admin_data["answer2"]:
+        options.append(admin_data["answer2"])
+    if admin_data["answer3"]:
+        options.append(admin_data["answer3"])
+    if admin_data["answer4"]:
+        options.append(admin_data["answer4"])
+
+    try:
+        await call.bot.send_poll(test_group, question=QUESTION, options=options,
+                                    allows_multiple_answers=False)
+    except Exception as e:
+        await call.message.answer("We could not send the Poll :(  Maybe don`t enough answers")
 
 
 

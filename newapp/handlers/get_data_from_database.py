@@ -65,14 +65,14 @@ async def get_quiz_from_database(message: types.Message, state: FSMContext):
 
         await state.finish()
         # await bot.send_message(test_group, f'HEREEEEEEEEEEEEEEEEE 2222222222222222 {session_id}')
-        await ask_for_quiz(message, session_id, quiz)
+        await ask_for_quiz(message, session_id)
     else:
         await message.answer(f'len(quiz) < 0 .. :(')
         await ask_session_id(message)
 
 
 
-async def get_data(message: types.Message=None, call: types.CallbackQuery=None, session_id=None, whole_quiz=None, chosen_quiz=None, entity=None):
+async def get_data(message: types.Message=None, call: types.CallbackQuery=None, session_id=None, whole_quiz=None, chosen_quiz=None, entity=None, admin_data=admin_data):
 
     if whole_quiz == 'Yes':
         data_by_session_id = "SELECT * FROM users WHERE session_id = %s"
@@ -90,12 +90,12 @@ async def get_data(message: types.Message=None, call: types.CallbackQuery=None, 
             quiz['ANSWER3'] = ANSWER3
             quiz['ANSWER4'] = ANSWER4
 
-        admin_data["session_id"] = quiz[session_id]
-        admin_data["question"] = quiz[QUESTION]
-        admin_data["answer1"] = quiz[ANSWER1]
-        admin_data["answer2"] = quiz[ANSWER2]
-        admin_data["answer3"] = quiz[ANSWER3]
-        admin_data["answer4"] = quiz[ANSWER4]
+        admin_data["session_id"] = quiz['session_id']
+        admin_data["question"] = quiz['QUESTION']
+        admin_data["answer1"] = quiz['ANSWER1']
+        admin_data["answer2"] = quiz['ANSWER2']
+        admin_data["answer3"] = quiz['ANSWER3']
+        admin_data["answer4"] = quiz['ANSWER4']
 
 
         return quiz
@@ -130,12 +130,10 @@ async def get_data(message: types.Message=None, call: types.CallbackQuery=None, 
 
 
 
-async def ask_for_quiz(message: types.Message, session_id, quiz):
-    await bot.send_message(test_group, "here 111")
-    await bot.send_message(test_group, quiz)
+async def ask_for_quiz(message: types.Message, session_id):
     buttons = [
         types.InlineKeyboardButton(text="Edit", callback_data=cb.new(session_id=session_id)),
-        types.InlineKeyboardButton(text="Send poll", callback_data=cb2.new(session_id=session_id, quiz=quiz)),
+        types.InlineKeyboardButton(text="Send poll", callback_data="send_poll"),
         types.InlineKeyboardButton(text="Cancel", callback_data="close_session"),
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=1)

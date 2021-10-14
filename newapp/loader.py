@@ -33,4 +33,3 @@ class Admin:
 
 
 cb= CallbackData("transfer_session_id", "session_id")
-cb2= CallbackData("transfer_quiz", "session_id", "quiz")

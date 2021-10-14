@@ -82,7 +82,7 @@ dp.register_callback_query_handler(close_session, text="close_session")
 dp.register_callback_query_handler(get_answer, text="get_answer")
 dp.register_callback_query_handler(notice_to_admin, text="notice_to_admin")
 dp.register_callback_query_handler(edit_quiz_question, cb.filter())
-dp.register_callback_query_handler(send_poll, cb2.filter())
+dp.register_callback_query_handler(send_poll, text="send_poll")
 
 
 

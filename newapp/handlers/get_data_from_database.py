@@ -51,7 +51,17 @@ async def get_quiz_from_database(message: types.Message, state: FSMContext):
     # for (user_id, QUESTION) in cursor:
     #     await message.answer(f"User_id = {user_id}, QUESTION = {QUESTION}")
 
-    quiz = await get_data(message=message, session_id=session_id, whole_quiz='Yes')
+    # try:
+    #     quiz = await get_data(message=message, session_id=session_id, whole_quiz='Yes')
+    # except Exception as e:
+    #     await message.answer('You sent the wrong session_id. Please try again')
+    #     return
+
+    try:
+        quiz = await get_data(message=message, session_id=session_id, whole_quiz='Yes')
+    except Exception as e:
+        await message.answer('You sent the wrong session_id. Please try again')
+        return
 
     if len(quiz) > 0:
         await message.answer(f'User_id = {quiz["user_id"]} \n'
@@ -189,12 +199,20 @@ async def send_correct_answer(message: types.Message, state: FSMContext, admin_d
         await ask_correct_answers(message)
     elif admin.answer3 == '':
         admin.answer3 = edit_answer
-        await write_to_database(message, session_id, answer3=admin.answer3)
-        await ask_correct_answers(message)
+        if admin.answer3 == 'None':
+            await message.answer('NEED WRITE THIS PART OF CODE ! !')
+            await state.finish()
+        else:
+            await write_to_database(message, session_id, answer3=admin.answer3)
+            await ask_correct_answers(message)
     elif admin.answer4 == '':
         admin.answer4 = edit_answer
-        await write_to_database(message, session_id, answer4=admin.answer4)
-        await state.finish()
+        if admin.answer3 == 'None':
+            await message.answer('NEED WRITE THIS PART OF CODE ! !')
+            await state.finish()
+        else:
+            await write_to_database(message, session_id, answer4=admin.answer4)
+            await state.finish()
 
 
 
@@ -234,7 +252,7 @@ async def ask_correct_answers(message: types.Message, admin_data=admin_data):
         text_answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
         if text_answer == None:
             await message.answer(f'Answer for {entity} = NONE')
-            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "None" if you don`t send ANSWER3')
             await GetDataFromDatabase.waiting_for_correct_answer.set()
         else:
             await message.answer(text_answer)

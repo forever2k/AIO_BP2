@@ -122,14 +122,10 @@ async def get_data(message: types.Message=None, call: types.CallbackQuery=None, 
         data_by_session_id = "SELECT * FROM users WHERE session_id = %s"
         cursor.execute(data_by_session_id, (session_id,))
 
-        await bot.send_message(test_group, f'HERE 333333333333333 {entity} AND {session_id}')
-
         for (user_id, QUESTION, ANSWER1, session_id, ANSWER2, ANSWER3, ANSWER4, Datetime) in cursor:
                 if entity == 'QUESTION':
-                    await bot.send_message(test_group, f'HERE 666666666666666 {QUESTION}')
                     return QUESTION
                 elif entity == 'ANSWER1':
-                    await bot.send_message(test_group, f'HERE 5555555 {ANSWER1}')
                     return ANSWER1
                 elif entity == 'ANSWER2':
                     return ANSWER2
@@ -199,16 +195,16 @@ async def send_correct_answer(message: types.Message, state: FSMContext, admin_d
         await ask_correct_answers(message)
     elif admin.answer3 == '':
         admin.answer3 = edit_answer
-        if admin.answer3 == 'None':
-            await message.answer('NEED WRITE THIS PART OF CODE ! !')
+        if admin.answer3.lower() == 'none':
+            await write_to_database(message, session_id, answer3=None)
             await state.finish()
         else:
             await write_to_database(message, session_id, answer3=admin.answer3)
             await ask_correct_answers(message)
     elif admin.answer4 == '':
         admin.answer4 = edit_answer
-        if admin.answer3 == 'None':
-            await message.answer('NEED WRITE THIS PART OF CODE ! !')
+        if admin.answer4.lower() == 'none':
+            await write_to_database(message, session_id, answer4=None)
             await state.finish()
         else:
             await write_to_database(message, session_id, answer4=admin.answer4)
@@ -252,11 +248,11 @@ async def ask_correct_answers(message: types.Message, admin_data=admin_data):
         text_answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
         if text_answer == None:
             await message.answer(f'Answer for {entity} = NONE')
-            await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "None" if you don`t send ANSWER3')
+            await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "none" if you don`t send ANSWER3')
             await GetDataFromDatabase.waiting_for_correct_answer.set()
         else:
             await message.answer(text_answer)
-            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "none" if you don`t send ANSWER3')
             await GetDataFromDatabase.waiting_for_correct_answer.set()
     elif admin.answer4 == '':
         entity = 'ANSWER4'
@@ -264,11 +260,11 @@ async def ask_correct_answers(message: types.Message, admin_data=admin_data):
         text_answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
         if text_answer == None:
             await message.answer(f'Answer for {entity} = NONE')
-            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "none" if you don`t send ANSWER4')
             await GetDataFromDatabase.waiting_for_correct_answer.set()
         else:
             await message.answer(text_answer)
-            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
+            await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "none" if you don`t send ANSWER4')
 
 
 

@@ -168,7 +168,6 @@ async def write_to_database(message: types.Message, session_id, user_id=None, **
             answer_number = key
             question = val
         else:
-            await bot.send_message(test_group, f'HERE 4444444444444 ')
             answer_number = key
             answer_text = val
 

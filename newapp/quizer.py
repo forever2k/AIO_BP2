@@ -1,3 +1,4 @@
+import datetime
 import logging
 from aiogram import types
 from newapp.bt import bot
@@ -19,6 +20,8 @@ async def send_poll(call: types.CallbackQuery, test_group=test_group, admin_data
     ANSWER3 = admin_data["answer3"]
     ANSWER4 = admin_data["answer4"]
 
+    close_date = datetime.datetime.now() + datetime.timedelta(minutes=11)
+
     options = []
 
     if admin_data["answer1"]:
@@ -32,7 +35,7 @@ async def send_poll(call: types.CallbackQuery, test_group=test_group, admin_data
 
     try:
         await call.bot.send_poll(test_group, question=QUESTION, options=options,
-                                    allows_multiple_answers=False)
+                                    allows_multiple_answers=False, close_date=close_date)
     except Exception as e:
         await call.message.answer("We could not send the Poll :(  Maybe don`t enough answers")
 

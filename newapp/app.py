@@ -57,6 +57,10 @@ async def set_commands(bot: Bot):
     await bot.set_my_commands(commands)
 
 
+async def set_comm2(message: types.Message):
+    await set_commands(bot)
+    await message.answer("commands set success!")
+
 dp.register_message_handler(cmd_start, commands="start", state="*")
 dp.register_message_handler(cmd_cancel, commands="cancel", state="*")
 dp.register_message_handler(cmd_cancel, Text(equals="отмена", ignore_case=True), state="*")
@@ -74,6 +78,7 @@ dp.register_message_handler(ask_session_id, IDFilter(user_id=me), commands="asks
 dp.register_message_handler(ask_for_quiz, commands="78978954645756856474758689", state="*")
 dp.register_message_handler(check_admin_data, commands="checkdata", state="*")
 dp.register_message_handler(my_poll, commands="mypoll", state="*")
+dp.register_message_handler(set_comm2, commands=["comm2"], state="*")
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 
@@ -96,8 +101,9 @@ async def main():
     # dp.register_message_handler(rrr, commands="rrrr")
 
     # Установка команд бота
-    await set_commands(bot)
+    # await set_commands(bot)
 
+    logging.warning('It`s the main fuction. Does it work?')
 
 
 async def on_startup(dp):
@@ -119,6 +125,7 @@ if __name__ == '__main__':
         asyncio.run(main())
     else:
         executor.start_polling(dp, skip_updates=True)
+        asyncio.run(main())
 
 
 

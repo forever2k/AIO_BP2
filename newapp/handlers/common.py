@@ -7,6 +7,7 @@ from aiogram.utils import exceptions
 from aiogram.utils.exceptions import BotBlocked
 from newapp.bt import bot
 from newapp.config import test_group
+from aiogram.utils.markdown import link
 
 
 # @dp.message_handler(commands=['start'], state="*")
@@ -94,4 +95,12 @@ async def error_bot_blocked(update: types.Update, exception: BotBlocked):
 async def secret_command(message: types.Message):
     await message.answer("Поздравляю! Эта команда доступна только администратору бота.")
 
+
+
+async def testing(message: types.Message):
+    markup = types.InlineKeyboardMarkup()
+    switch_button = types.InlineKeyboardButton(text='Try', url='https://t.me/Btf2NeDetBot?start')
+    markup.add(switch_button)
+    # await message.answer("Chose chat ", reply_markup=markup)
+    await bot.send_message(test_group, "Chose chat ", reply_markup=markup)
 

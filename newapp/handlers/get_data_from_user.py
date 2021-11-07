@@ -36,7 +36,10 @@ async def start_session(call: types.CallbackQuery):
 
 async def get_question(message: types.Message, state: FSMContext, user_data=user_data):
     if len(message.text) < 5:
-        await message.answer("Пожалуйста, напишите корректный вопрос, используя клавиатуру ниже.")
+        await message.answer("You wrote a very short answer. Please try again.")
+        return
+    elif len(message.text) > 500:
+        await message.answer("You wrote a very big answer. Please try again.")
         return
 
     user_id = message.from_user.id
@@ -112,8 +115,11 @@ async def get_answer(call: types.CallbackQuery):
 
 
 async def write_answer(message: types.Message, state: FSMContext):
-    if len(message.text) < 5:
-        await message.answer("Пожалуйста, напишите ответ, используя клавиатуру ниже.")
+    if len(message.text) < 2:
+        await message.answer("You wrote a very short answer. Please try again.")
+        return
+    elif len(message.text) > 100:
+        await message.answer("You wrote a very big answer. Please try again.")
         return
     # await state.update_data(chosen_answer=message.text.lower())
     # user_data = await state.get_data()

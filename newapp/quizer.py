@@ -36,6 +36,12 @@ async def send_poll(call: types.CallbackQuery, test_group=test_group, admin_data
     try:
         await call.bot.send_poll(test_group, question=QUESTION, options=options,
                                     allows_multiple_answers=False, close_date=close_date)
+
+        markup = types.InlineKeyboardMarkup()
+        switch_button = types.InlineKeyboardButton(text='TRY!', url='https://t.me/Btf2NeDetBot?start')
+        markup.add(switch_button)
+        await bot.send_message(test_group, 'Do you want to see your own poll here?', reply_markup=markup)
+
     except Exception as e:
         await call.message.answer("We could not send the Poll :(  Maybe don`t enough answers")
 

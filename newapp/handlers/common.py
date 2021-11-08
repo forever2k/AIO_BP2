@@ -98,6 +98,8 @@ async def secret_command(message: types.Message):
 
 
 async def testing(message: types.Message):
+
+    # Handler for testing new features
     markup = types.InlineKeyboardMarkup()
     switch_button = types.InlineKeyboardButton(text='Try', url='https://t.me/Btf2NeDetBot?start')
     markup.add(switch_button)

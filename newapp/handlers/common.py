@@ -16,7 +16,7 @@ from newapp.loader import user_data
 
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.finish()
-    await message.answer("Hi my friend! \n"
+    await message.answer(f"Hello {message.from_user.first_name}!\n"
                          "Ask me and I can ask the whole World!",
                          reply_markup=types.ReplyKeyboardRemove()
     )
@@ -98,11 +98,6 @@ async def secret_command(message: types.Message):
 
 
 async def testing(message: types.Message):
-
     # Handler for testing new features
-    markup = types.InlineKeyboardMarkup()
-    switch_button = types.InlineKeyboardButton(text='Try', url='https://t.me/Btf2NeDetBot?start')
-    markup.add(switch_button)
-    # await message.answer("Chose chat ", reply_markup=markup)
-    await bot.send_message(test_group, "Chose chat ", reply_markup=markup)
+    await message.answer(message.as_json())
 

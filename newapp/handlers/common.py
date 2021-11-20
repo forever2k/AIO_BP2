@@ -101,3 +101,14 @@ async def testing(message: types.Message):
     # Handler for testing new features
     await message.answer(message.as_json())
 
+async def testing2(message: types.Message):
+    # Handler for testing new features
+    updates = await bot.get_updates(offset=-1, timeout=1)
+    await bot.send_message(test_group, len(updates))
+
+    for update in updates:
+        await bot.send_message(test_group, update)
+
+    # updates = await bot.get_updates(offset=-1, timeout=1)
+    # await bot.send_message(test_group, updates)
+

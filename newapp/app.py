@@ -78,7 +78,8 @@ dp.register_message_handler(ask_session_id, IDFilter(user_id=me), commands="asks
 dp.register_message_handler(check_admin_data, IDFilter(user_id=me), commands="checkdata", state="*")
 dp.register_message_handler(my_poll, commands="mypoll", state="*")
 dp.register_message_handler(set_comm2, commands=["comm2"], state="*")
-dp.register_message_handler(testing, commands="testing", state="*")
+dp.register_message_handler(testing, IDFilter(user_id=me), commands="testing", state="*")
+dp.register_message_handler(testing2, IDFilter(user_id=me), commands="testing2", state="*")
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 

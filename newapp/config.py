@@ -11,7 +11,7 @@ from aiogram.utils.exceptions import BotBlocked
 USE_WEBHOOK = False
 
 test_group = -1001153348142
-test = -1001364950026
+test_channel = -1001364950026
 
 
 if USE_WEBHOOK == False:

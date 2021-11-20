@@ -267,6 +267,7 @@ async def write_to_database(message: types.Message, session_id, user_id=None, **
 #     user_id = message.from_user.id
 #     bd_id = generate_number(user_id)
 #
+
 #     try:
 #
 #         sql = "INSERT INTO users (bd_id, user_id, QUESTION, ANSWER) \

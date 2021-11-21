@@ -34,7 +34,7 @@ async def send_poll(call: types.CallbackQuery, test_channel=test_channel, admin_
         options.append(admin_data["answer4"])
 
     try:
-        text = "* do you want to see your own poll here? ►►► CLICK HERE ◄◄◄"
+        text = "►►► SEND YOUR OWN POLL HERE ◄◄◄"
 
         markup = types.InlineKeyboardMarkup()
         switch_button = types.InlineKeyboardButton(text=text, url='https://t.me/Btf2NeDetBot?start')
@@ -42,9 +42,7 @@ async def send_poll(call: types.CallbackQuery, test_channel=test_channel, admin_
 
         await call.bot.send_poll(test_channel, question=QUESTION, options=options,
                                  allows_multiple_answers=False, close_date=close_date,
-                                 explanation='it`s the explanation',
-                                 explanation_parse_mode='it`s the explanation_parse_mode',
-                                 explanation_entities=['111111111','222222222222'], reply_markup=markup)
+                                 reply_markup=markup)
 
         # await bot.send_message(test_channel, '<i>*** Do you want to see your own poll here? ***</i>', reply_markup=markup, parse_mode=types.ParseMode.HTML)
 

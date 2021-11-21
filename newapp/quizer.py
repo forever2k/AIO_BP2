@@ -34,8 +34,8 @@ async def send_poll(call: types.CallbackQuery, test_channel=test_channel, admin_
         options.append(admin_data["answer4"])
 
     try:
-        text = "*** Do you want to see your own poll here? *** \n"\
-               "TRY!"
+        text = "* do you want to see your own poll here? ►►► CLICK HERE ◄◄◄"
+
         markup = types.InlineKeyboardMarkup()
         switch_button = types.InlineKeyboardButton(text=text, url='https://t.me/Btf2NeDetBot?start')
         markup.add(switch_button)

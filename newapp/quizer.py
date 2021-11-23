@@ -40,7 +40,7 @@ async def send_poll(call: types.CallbackQuery, test_channel=test_channel, admin_
         switch_button = types.InlineKeyboardButton(text=text, url='https://t.me/Btf2NeDetBot?start')
         markup.add(switch_button)
 
-        await call.bot.send_poll(test_channel, question=QUESTION, options=options,
+        await bot.send_poll(test_channel, question=QUESTION, options=options,
                                  allows_multiple_answers=False, close_date=close_date,
                                  reply_markup=markup)
 

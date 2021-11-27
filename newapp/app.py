@@ -89,8 +89,8 @@ dp.register_callback_query_handler(get_answer, text="get_answer")
 dp.register_callback_query_handler(notice_to_admin, text="notice_to_admin")
 dp.register_callback_query_handler(edit_quiz_question, cb.filter())
 dp.register_callback_query_handler(send_poll, text="send_poll")
-
-
+dp.register_callback_query_handler(test_edit_callback, text="test_edit_callback")
+dp.register_callback_query_handler(test_delete_callback, text="test_delete_callback")
 
 
 

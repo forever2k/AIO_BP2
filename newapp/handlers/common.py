@@ -100,6 +100,16 @@ async def secret_command(message: types.Message):
 async def testing(message: types.Message):
     # Handler for testing new features
     await message.answer(message.as_json())
+    await message.answer(f"message id: {message.message_id}")
+
+    buttons = [
+        types.InlineKeyboardButton(text="test EDIT callback :)", callback_data="test_edit_callback"),
+        types.InlineKeyboardButton(text="test DELETE callback :)", callback_data="test_delete_callback")
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    keyboard.add(*buttons)
+    await message.answer("Are you ready?", reply_markup=keyboard)
+
 
 async def testing2(message: types.Message):
     # Handler for testing new features
@@ -111,4 +121,31 @@ async def testing2(message: types.Message):
 
     # updates = await bot.get_updates(offset=-1, timeout=1)
     # await bot.send_message(test_group, updates)
+
+
+async def test_edit_callback(call: types.CallbackQuery):
+    # await call.message.answer("It`s test callback")
+
+    buttons = [
+        types.InlineKeyboardButton(text="NEW test callback :)", callback_data="test_edit_callback")
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    keyboard.add(*buttons)
+
+    await bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=keyboard)
+
+
+async def test_delete_callback(call: types.CallbackQuery):
+    # await call.message.answer("It`s test callback")
+
+    await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+
+    buttons = [
+        types.InlineKeyboardButton(text="NEW test callback instead of deleted one:)", callback_data="test_delete_callback")
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    keyboard.add(*buttons)
+
+
+    await call.message.answer("Are you ready?", reply_markup=keyboard)
 

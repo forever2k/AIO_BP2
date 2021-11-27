@@ -32,8 +32,8 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
 
 async def ask_start(message: types.Message):
     buttons = [
-        types.InlineKeyboardButton(text="YES!", callback_data="start_session"),
-        types.InlineKeyboardButton(text="NO :(", callback_data="close_session")
+        types.InlineKeyboardButton(text="\U0001F916  YES!", callback_data="start_session"),
+        types.InlineKeyboardButton(text="\U0001F603 NO :(", callback_data="close_session")
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
@@ -44,7 +44,7 @@ async def ask_start(message: types.Message):
 
 async def close_session(call: types.CallbackQuery):
     await call.message.answer("It`s the close_session")
-    await call.answer(text="Buy!", show_alert=True)
+    await call.answer(text="\U0001F603 Buy!", show_alert=True)
     # или просто await call.answer()
 
 
@@ -126,8 +126,15 @@ async def testing2(message: types.Message):
 async def test_edit_callback(call: types.CallbackQuery):
     # await call.message.answer("It`s test callback")
 
+    # buttons = [
+    #     types.InlineKeyboardButton(text="NEW test callback :)", callback_data="test_edit_callback")
+    # ]
+    # keyboard = types.InlineKeyboardMarkup(row_width=1)
+    # keyboard.add(*buttons)
+
     buttons = [
-        types.InlineKeyboardButton(text="NEW test callback :)", callback_data="test_edit_callback")
+        types.InlineKeyboardButton(text="test EDIT callback : )", callback_data="test_edit_callback"),
+        types.InlineKeyboardButton(text="test DELETE callback : )", callback_data="test_delete_callback")
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)
@@ -140,8 +147,15 @@ async def test_delete_callback(call: types.CallbackQuery):
 
     await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
 
+    # buttons = [
+    #     types.InlineKeyboardButton(text="NEW test callback instead of deleted one:)", callback_data="test_delete_callback")
+    # ]
+    # keyboard = types.InlineKeyboardMarkup(row_width=1)
+    # keyboard.add(*buttons)
+
     buttons = [
-        types.InlineKeyboardButton(text="NEW test callback instead of deleted one:)", callback_data="test_delete_callback")
+        types.InlineKeyboardButton(text="test EDIT callback  :)", callback_data="test_edit_callback"),
+        types.InlineKeyboardButton(text="test DELETE callback  :)", callback_data="test_delete_callback")
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     keyboard.add(*buttons)

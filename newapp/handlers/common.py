@@ -37,15 +37,16 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
 
 
 async def description(call: types.CallbackQuery):
-    await call.message.answer("\U0001F4E2 It`s the description")
     # await call.answer(text="\U0001F603 Buy!", show_alert=True)
     # или просто await call.answer()
     buttons = [
-        types.InlineKeyboardButton(text="\U00002B05  Back", callback_data="start_session") ]
+        types.InlineKeyboardButton(text="\U00002B05  Back", callback_data="switcher") ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
     await call.message.answer("\U0001F4E2 It`s the description", reply_markup=keyboard)
 
+async def switcher(call: types.CallbackQuery):
+    await cmd_start(call.message)
 
 
 async def close_session(call: types.CallbackQuery):

@@ -14,13 +14,20 @@ from aiogram.utils.markdown import link
 from newapp.loader import user_data
 
 
-async def cmd_start(message: types.Message, state: FSMContext):
-    await state.finish()
+async def cmd_start(message: types.Message):
+    # await state.finish()
+
+    buttons = [
+        types.InlineKeyboardButton(text="\U00002618  Ask a question", callback_data="start_session"),
+        types.InlineKeyboardButton(text="\U0001F3F5  See my last question", callback_data="close_session"),
+        types.InlineKeyboardButton(text="\U0001F4D5  Description", callback_data="description"),
+        types.InlineKeyboardButton(text="\U00002699 Settings", callback_data="close_session")
+    ]
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    keyboard.add(*buttons)
     await message.answer(f"Hello {message.from_user.first_name}!\n"
                          "Ask me and I can ask the whole World!",
-                         reply_markup=types.ReplyKeyboardRemove()
-    )
-    await ask_start(message)
+                         reply_markup=keyboard)
 
 
 
@@ -29,16 +36,15 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
     await message.answer("Action canceled", reply_markup=types.ReplyKeyboardRemove())
 
 
-
-async def ask_start(message: types.Message):
+async def description(call: types.CallbackQuery):
+    await call.message.answer("\U0001F4E2 It`s the description")
+    # await call.answer(text="\U0001F603 Buy!", show_alert=True)
+    # или просто await call.answer()
     buttons = [
-        types.InlineKeyboardButton(text="\U0001F916  YES!", callback_data="start_session"),
-        types.InlineKeyboardButton(text="\U0001F603 NO :(", callback_data="close_session")
-    ]
-    keyboard = types.InlineKeyboardMarkup(row_width=1)
+        types.InlineKeyboardButton(text="\U00002B05  Back", callback_data="start_session") ]
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
-    await message.answer("Are you ready?", reply_markup=keyboard)
-
+    await call.message.answer("\U0001F4E2 It`s the description", reply_markup=keyboard)
 
 
 

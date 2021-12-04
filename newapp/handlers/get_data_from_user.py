@@ -112,7 +112,9 @@ async def ask_answer(message: types.Message):
 
 
 async def get_answer(call: types.CallbackQuery):
-    await call.message.answer("Now write your ANSWER")
+    # await call.message.answer("Now write your ANSWER")
+    await bot.edit_message_text("Now write your ANSWER", chat_id=call.message.chat.id,
+                                message_id=call.message.message_id)
     await GetData.waiting_for_write_answer.set()
 
 

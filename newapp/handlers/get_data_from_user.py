@@ -27,7 +27,9 @@ async def start_session(call: types.CallbackQuery):
     # for name in available_questions:
     #     keyboard.add(name)
     # await call.message.answer("Send me your question:", reply_markup=keyboard)
-    await call.message.answer("Send me your question:")
+    await bot.edit_message_text("Send me your question here:", chat_id=call.message.chat.id,
+                                message_id=call.message.message_id)
+    # await call.message.answer("Send me your question here:")
     await GetData.waiting_for_get_question.set()
     # await call.answer(text="Thanks!", show_alert=True)
     # или просто await call.answer()

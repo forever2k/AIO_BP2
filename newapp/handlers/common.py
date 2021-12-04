@@ -17,6 +17,13 @@ from newapp.loader import user_data
 async def cmd_start(message: types.Message):
     # await state.finish()
 
+    keyboard = await main_menu_keyboard()
+
+    await message.answer(f"Hello {message.chat.first_name}!\n"
+                         "Ask me and I can ask the whole World!",
+                         reply_markup=keyboard)
+
+async def main_menu_keyboard():
     buttons = [
         types.InlineKeyboardButton(text="\U00002618  Ask a question", callback_data="start_session"),
         types.InlineKeyboardButton(text="\U0001F3F5  See my last question", callback_data="close_session"),
@@ -25,9 +32,8 @@ async def cmd_start(message: types.Message):
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
-    await message.answer(f"Hello {message.from_user.first_name}!\n"
-                         "Ask me and I can ask the whole World!",
-                         reply_markup=keyboard)
+
+    return keyboard
 
 
 
@@ -40,13 +46,25 @@ async def description(call: types.CallbackQuery):
     # await call.answer(text="\U0001F603 Buy!", show_alert=True)
     # или просто await call.answer()
     buttons = [
-        types.InlineKeyboardButton(text="\U00002B05  Back", callback_data="switcher") ]
+        types.InlineKeyboardButton(text="\U00002B05  Back", callback_data="switcher_to_main_menu") ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
-    await call.message.answer("\U0001F4E2 It`s the description", reply_markup=keyboard)
 
-async def switcher(call: types.CallbackQuery):
-    await cmd_start(call.message)
+    await bot.edit_message_text("\U0001F4E2 It`s the description", chat_id=call.message.chat.id, message_id=call.message.message_id,
+                                        reply_markup=keyboard)
+
+    # await bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
+    #                                     reply_markup=keyboard)
+    #
+    # await call.message.answer("\U0001F4E2 It`s the description", reply_markup=keyboard)
+
+
+async def switcher_to_main_menu(call: types.CallbackQuery):
+    keyboard = await main_menu_keyboard()
+    await bot.edit_message_text(f"Hello {call.message.chat.first_name}!\n"
+                         "Ask me and I can ask the whole World!", chat_id=call.message.chat.id,
+                                message_id=call.message.message_id,
+                                reply_markup=keyboard)
 
 
 async def close_session(call: types.CallbackQuery):

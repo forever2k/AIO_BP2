@@ -1,5 +1,6 @@
 import logging
 from random import randint
+from typing import Union
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text, IDFilter
@@ -14,16 +15,17 @@ from aiogram.utils.markdown import link
 from newapp.loader import user_data
 
 
-async def cmd_start(message: types.Message):
-    # await state.finish()
+async def cmd_start(message: types.Message, state: FSMContext):
+    await state.finish()
 
-    keyboard = await main_menu_keyboard()
+    keyboard = await main_menu_inline_keyboard()
 
     await message.answer(f"Hello {message.chat.first_name}!\n"
                          "Ask me and I can ask the whole World!",
                          reply_markup=keyboard)
 
-async def main_menu_keyboard():
+
+async def main_menu_inline_keyboard():
     buttons = [
         types.InlineKeyboardButton(text="\U00002618  Ask a question", callback_data="start_session"),
         types.InlineKeyboardButton(text="\U0001F3F5  See my last question", callback_data="close_session"),
@@ -36,6 +38,12 @@ async def main_menu_keyboard():
     return keyboard
 
 
+async def main_menu_usual_keyboard():
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    buttons = ["\U00002618 Main Menu", "\U00002618 Cancel"]
+    keyboard.add(*buttons)
+
+    return keyboard
 
 async def cmd_cancel(message: types.Message, state: FSMContext):
     await state.finish()
@@ -59,12 +67,21 @@ async def description(call: types.CallbackQuery):
     # await call.message.answer("\U0001F4E2 It`s the description", reply_markup=keyboard)
 
 
-async def switcher_to_main_menu(call: types.CallbackQuery):
-    keyboard = await main_menu_keyboard()
-    await bot.edit_message_text(f"Hello {call.message.chat.first_name}!\n"
-                         "Ask me and I can ask the whole World!", chat_id=call.message.chat.id,
-                                message_id=call.message.message_id,
-                                reply_markup=keyboard)
+async def switcher_to_main_menu(message: Union[types.Message, types.CallbackQuery], state: FSMContext):
+    await state.finish()
+    keyboard = await main_menu_inline_keyboard()
+    if isinstance(message, types.Message):
+        await bot.edit_message_text(f"Hello {message.chat.first_name}!\n"
+                                    "Ask me and I can ask the whole World!", chat_id=message.chat.id,
+                                    message_id=message.message_id,
+                                    reply_markup=keyboard)
+
+        if isinstance(message, types.CallbackQuery):
+            call=message
+            await bot.edit_message_text(f"Hello {call.message.chat.first_name}!\n"
+                                        "Ask me and I can ask the whole World!", chat_id=call.message.chat.id,
+                                        message_id=call.message.message_id,
+                                        reply_markup=keyboard)
 
 
 async def close_session(call: types.CallbackQuery):
@@ -188,3 +205,22 @@ async def test_delete_callback(call: types.CallbackQuery):
 
     await call.message.answer("Are you ready?", reply_markup=keyboard)
 
+
+
+#
+#
+# async def cmd_start(message: Union[types.Message, types.CallbackQuery], state: FSMContext):
+#     await state.finish()
+#
+#     keyboard = await main_menu_keyboard()
+#
+#     if isinstance(message, types.Message):
+#         await message.answer(f"Hello {message.chat.first_name}!\n"
+#                              "Ask me and I can ask the whole World!",
+#                              reply_markup=keyboard)
+#
+#     if isinstance(message, types.CallbackQuery):
+#         call=message
+#         await call.message.answer(f"Hello {call.message.chat.first_name}!\n"
+#                              "Ask me and I can ask the whole World!",
+#                              reply_markup=keyboard)

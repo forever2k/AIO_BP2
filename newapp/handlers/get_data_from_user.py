@@ -5,6 +5,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
+from newapp.handlers.common import main_menu_usual_keyboard, switcher_to_main_menu, cmd_start
 from newapp.loader import *
 import time
 
@@ -27,32 +28,39 @@ async def start_session(call: types.CallbackQuery):
     # for name in available_questions:
     #     keyboard.add(name)
     # await call.message.answer("Send me your question:", reply_markup=keyboard)
-    await bot.edit_message_text("Send me your question here:", chat_id=call.message.chat.id,
-                                message_id=call.message.message_id)
-    # await call.message.answer("Send me your question here:")
+
+    await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+
+    keyboard = await main_menu_usual_keyboard()
+
+    # await bot.edit_message_text("Send me your question here:", chat_id=call.message.chat.id,
+    #                             message_id=call.message.message_id, reply_markup=keyboard)
+
+    await call.message.answer("Send me your question here:", reply_markup=keyboard)
     await GetData.waiting_for_get_question.set()
     # await call.answer(text="Thanks!", show_alert=True)
     # или просто await call.answer()
 
 
-
 async def get_question(message: types.Message, state: FSMContext, user_data=user_data):
-    if len(message.text) < 5:
+    if message.text == '\U00002618 Main Menu':
+        await cmd_start(message, state)
+    elif len(message.text) < 5:
         await message.answer("You wrote a very short answer. Please try again.")
         return
     elif len(message.text) > 500:
         await message.answer("You wrote a very big answer. Please try again.")
         return
+    else:
+        user_id = message.from_user.id
+        user_data[user_id] = User(message.text)
+        user = user_data[user_id]
+        session_id = generate_number(user_id)
+        user.session_id = session_id
 
-    user_id = message.from_user.id
-    user_data[user_id] = User(message.text)
-    user = user_data[user_id]
-    session_id = generate_number(user_id)
-    user.session_id = session_id
+        await write_to_database(message, user.session_id, user_id, question=user.question)
 
-    await write_to_database(message, user.session_id, user_id, question=user.question)
-
-    await state.finish()
+        await state.finish()
 
     # await state.update_data(chosen_question=message.text.lower())
     # user_data = await state.get_data()
@@ -63,10 +71,9 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
     #     keyboard.add(size)
     # await GetData.waiting_for_write_answer.set()
     # await message.answer("Now write your ANSWER", reply_markup=keyboard)
-    await message.answer("You need to write from 2 to 4 answers\n"
-                         "Now write and send your first Answer")
-    await state.finish()
-    await ask_answer(message)
+        await message.answer("You need to write from 2 to 4 answers\n"
+                             "Now write and send your first Answer")
+        await ask_answer(message)
 
 
 async def keyboard_answer(message: types.Message, number_question):

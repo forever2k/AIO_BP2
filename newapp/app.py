@@ -80,6 +80,8 @@ dp.register_message_handler(my_poll, commands="mypoll", state="*")
 dp.register_message_handler(set_comm2, commands=["comm2"], state="*")
 dp.register_message_handler(testing, IDFilter(user_id=me), commands="testing", state="*")
 dp.register_message_handler(testing2, IDFilter(user_id=me), commands="testing2", state="*")
+dp.register_message_handler(switcher_to_main_menu, lambda message: message.text=="\U00002618 Main Menu", state="*")
+dp.register_message_handler(close_session, lambda message: message.text == "\U00002618 Cancel", state="*")
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 

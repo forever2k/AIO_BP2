@@ -70,18 +70,14 @@ async def description(call: types.CallbackQuery):
 async def switcher_to_main_menu(message: Union[types.Message, types.CallbackQuery], state: FSMContext):
     await state.finish()
     keyboard = await main_menu_inline_keyboard()
-    if isinstance(message, types.Message):
-        await bot.edit_message_text(f"Hello {message.chat.first_name}!\n"
-                                    "Ask me and I can ask the whole World!", chat_id=message.chat.id,
-                                    message_id=message.message_id,
-                                    reply_markup=keyboard)
 
-        if isinstance(message, types.CallbackQuery):
-            call=message
-            await bot.edit_message_text(f"Hello {call.message.chat.first_name}!\n"
-                                        "Ask me and I can ask the whole World!", chat_id=call.message.chat.id,
-                                        message_id=call.message.message_id,
-                                        reply_markup=keyboard)
+    if isinstance(message, types.CallbackQuery):
+        message = message.message
+
+    await bot.edit_message_text(f"Hey {message.chat.first_name}!\n"
+                                "Ask me and I can ask the whole World!", chat_id=message.chat.id,
+                                message_id=message.message_id,
+                                reply_markup=keyboard)
 
 
 async def close_session(call: types.CallbackQuery):

@@ -5,7 +5,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
-from newapp.handlers.common import main_menu_usual_keyboard, switcher_to_main_menu, cmd_start
+from newapp.handlers.common import switcher_to_main_menu, cmd_start
 from newapp.loader import *
 import time
 
@@ -31,12 +31,11 @@ async def start_session(call: types.CallbackQuery):
 
     await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
 
-    keyboard = await main_menu_usual_keyboard()
 
     # await bot.edit_message_text("Send me your question here:", chat_id=call.message.chat.id,
     #                             message_id=call.message.message_id, reply_markup=keyboard)
 
-    await call.message.answer("Send me your question here:", reply_markup=keyboard)
+    await call.message.answer("Send me your question here:")
     await GetData.waiting_for_get_question.set()
     # await call.answer(text="Thanks!", show_alert=True)
     # или просто await call.answer()
@@ -76,14 +75,14 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
         await ask_answer(message)
 
 
-async def keyboard_answer(message: types.Message, number_question):
+async def keyboard_answer(message: types.Message, number_answer):
     buttons = [
         types.InlineKeyboardButton(text="Yes", callback_data="get_answer"),
         types.InlineKeyboardButton(text="No", callback_data="notice_to_admin")
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=3)
     keyboard.add(*buttons)
-    await message.answer(f"Do you want to write your {number_question} answer?", reply_markup=keyboard)
+    await message.answer(f"Do you want to write your {number_answer} answer?", reply_markup=keyboard)
 
 
 

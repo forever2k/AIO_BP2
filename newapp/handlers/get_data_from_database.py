@@ -26,7 +26,6 @@ async def ask_session_id(message: types.Message):
     await GetDataFromDatabase.waiting_for_get_session_id.set()
 
 
-
 async def get_quiz_from_database(message: types.Message, state: FSMContext):
 
     session_id = message.text
@@ -58,7 +57,7 @@ async def get_quiz_from_database(message: types.Message, state: FSMContext):
     #     return
 
     try:
-        quiz = await get_data(message=message, session_id=session_id, whole_quiz='Yes')
+        quiz = await get_data_for_admin(message=message, session_id=session_id, whole_quiz='Yes')
     except Exception as e:
         await message.answer('You sent the wrong session_id. Please try again')
         return
@@ -82,7 +81,7 @@ async def get_quiz_from_database(message: types.Message, state: FSMContext):
 
 
 
-async def get_data(message: types.Message=None, call: types.CallbackQuery=None, session_id=None, whole_quiz=None, chosen_quiz=None, entity=None, admin_data=admin_data):
+async def get_data_for_admin(message: types.Message=None, call: types.CallbackQuery=None, session_id=None, whole_quiz=None, chosen_quiz=None, entity=None, admin_data=admin_data):
 
     if whole_quiz == 'Yes':
         data_by_session_id = "SELECT * FROM users WHERE session_id = %s"
@@ -157,7 +156,7 @@ async def edit_quiz_question(call: types.CallbackQuery, callback_data: dict, adm
     admin.session_id = session_id
 
     # await bot.send_message(test_group, f"current Session_id = {session_id}")
-    question = await get_data(session_id=session_id, chosen_quiz='Yes', entity='QUESTION')
+    question = await get_data_for_admin(session_id=session_id, chosen_quiz='Yes', entity='QUESTION')
 
     await call.message.answer(f'Question for Session_id {session_id} was:')
     await call.message.answer(question)
@@ -221,7 +220,7 @@ async def ask_correct_answers(message: types.Message, admin_data=admin_data):
     if admin.answer1 == '':
         entity = 'ANSWER1'
         await message.answer(f'{entity} for Session_id {session_id} was:')
-        text_answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
+        text_answer = await get_data_for_admin(session_id=session_id, chosen_quiz='Yes', entity=entity)
         if text_answer == None:
             await message.answer(f'Answer for {entity} = NONE')
             await message.answer(f'Please write correct {entity} for Session_id {session_id}')
@@ -233,7 +232,7 @@ async def ask_correct_answers(message: types.Message, admin_data=admin_data):
     elif admin.answer2 == '':
         entity = 'ANSWER2'
         await message.answer(f'{entity} for Session_id {session_id} was:')
-        text_answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
+        text_answer = await get_data_for_admin(session_id=session_id, chosen_quiz='Yes', entity=entity)
         if text_answer == None:
             await message.answer(f'Answer for {entity} = NONE')
             await message.answer(f'Please write correct {entity} for Session_id {session_id}')
@@ -245,7 +244,7 @@ async def ask_correct_answers(message: types.Message, admin_data=admin_data):
     elif admin.answer3 == '':
         entity = 'ANSWER3'
         await message.answer(f'{entity} for Session_id {session_id} was:')
-        text_answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
+        text_answer = await get_data_for_admin(session_id=session_id, chosen_quiz='Yes', entity=entity)
         if text_answer == None:
             await message.answer(f'Answer for {entity} = NONE')
             await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "none" if you don`t send ANSWER3')
@@ -257,7 +256,7 @@ async def ask_correct_answers(message: types.Message, admin_data=admin_data):
     elif admin.answer4 == '':
         entity = 'ANSWER4'
         await message.answer(f'{entity} for Session_id {session_id} was:')
-        text_answer = await get_data(session_id=session_id, chosen_quiz='Yes', entity=entity)
+        text_answer = await get_data_for_admin(session_id=session_id, chosen_quiz='Yes', entity=entity)
         if text_answer == None:
             await message.answer(f'Answer for {entity} = NONE')
             await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "none" if you don`t send ANSWER4')
@@ -270,3 +269,20 @@ async def ask_correct_answers(message: types.Message, admin_data=admin_data):
 
 async def check_admin_data(message: types.Message, admin_data=admin_data):
     await message.answer(len(admin_data))
+
+
+async def get_last_user_session_id(message: types.Message):
+
+    user_id = message.from_user.id
+
+
+async def get_data_for_user(message: types.Message = None, call: types.CallbackQuery = None, user_id=None, session_id=None):
+    await message.answer('HERE 1111111111111')
+    if session_id == None:
+        last_data_by_user_id = "SELECT session_id FROM users WHERE user_id = %s order by Datetime desc limit 1"
+        cursor.execute(last_data_by_user_id, (user_id,))
+
+        session_id = cursor
+
+        await message.answer(session_id)
+

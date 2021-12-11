@@ -11,9 +11,7 @@ from newapp.bt import bot
 from newapp.config import test_group
 import json
 from aiogram.utils.markdown import link
-
-
-# @dp.message_handler(commands=['start'], state="*")
+from newapp.handlers.get_data_from_database import get_data_for_user
 from newapp.loader import user_data
 
 
@@ -30,7 +28,7 @@ async def cmd_start(message: types.Message, state: FSMContext):
 async def main_menu_inline_keyboard():
     buttons = [
         types.InlineKeyboardButton(text="\U00002618  Ask a question", callback_data="start_session"),
-        types.InlineKeyboardButton(text="\U0001F3F5  See my last question", callback_data="close_session"),
+        types.InlineKeyboardButton(text="\U0001F3F5  See my last quiz", callback_data="switcher_get_data_for_user"),
         types.InlineKeyboardButton(text="\U0001F4D5  Description", callback_data="description"),
         types.InlineKeyboardButton(text="\U00002699 Settings", callback_data="close_session")
     ]
@@ -80,6 +78,11 @@ async def switcher_to_main_menu(message: Union[types.Message, types.CallbackQuer
                                 "Ask me and I can ask the whole World!", chat_id=message.chat.id,
                                 message_id=message.message_id,
                                 reply_markup=keyboard)
+
+
+async def switcher_get_data_for_user(call: types.CallbackQuery):
+    await call.message.answer('HERE 22222222222222')
+    await get_data_for_user(call.message)
 
 
 async def close_session(call: types.CallbackQuery):

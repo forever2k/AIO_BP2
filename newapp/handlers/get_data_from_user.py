@@ -5,7 +5,6 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
-from newapp.handlers.common import switcher_to_main_menu, cmd_start
 from newapp.loader import *
 import time
 from typing import Union
@@ -42,9 +41,7 @@ async def start_session(call: types.CallbackQuery):
 
 
 async def get_question(message: types.Message, state: FSMContext, user_data=user_data):
-    if message.text == '\U00002618 Main Menu':
-        await cmd_start(message, state)
-    elif len(message.text) < 5:
+    if len(message.text) < 5:
         await message.answer("You wrote a very short answer. Please try again.")
         return
     elif len(message.text) > 500:
@@ -127,7 +124,7 @@ async def get_answer(message: Union[types.Message, types.CallbackQuery], edit_in
     if edit_indication=='no':
         pass
     else:
-        await bot.edit_message_text("Now write your ANSWER", chat_id=message.chat.id,
+        await bot.edit_message_text("Now write your next ANSWER:", chat_id=message.chat.id,
                                     message_id=message.message_id)
 
     await GetData.waiting_for_write_answer.set()

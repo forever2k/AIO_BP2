@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from random import randint
 from typing import Union
@@ -8,6 +9,7 @@ from aiogram.utils import exceptions
 from aiogram.utils.exceptions import BotBlocked
 from newapp.bt import bot
 from newapp.config import test_group
+import json
 from aiogram.utils.markdown import link
 
 
@@ -159,6 +161,34 @@ async def testing2(message: types.Message):
 
     # updates = await bot.get_updates(offset=-1, timeout=1)
     # await bot.send_message(test_group, updates)
+
+async def testing_edit_message(message: types.Message):
+    await message.answer(message.message_id)
+
+    await message.answer("hello")
+    await asyncio.sleep(1)
+    message2 = await bot.send_message(message.chat.id, 'Test!')
+    await message.answer(message2.message_id)
+
+
+    # await bot.send_message(message.chat.id, message.message_id)
+
+    await asyncio.sleep(1)
+
+
+
+    # final = json.loads(tt.text)
+    # await message.answer(final)
+    #
+    # Dict = final['result']
+    #
+    # for obj in Dict:
+    #     await message.answer(obj['update_id'])
+    #     await message.answer(obj['message']['text'])
+
+    #
+    # await bot.edit_message_text('This is edited message', chat_id=message.chat.id,
+    #                             message_id=edit)
 
 
 async def test_edit_callback(call: types.CallbackQuery):

@@ -8,7 +8,7 @@ from newapp.config import dbase, test_group, me
 from newapp.handlers.common import switcher_to_main_menu, cmd_start
 from newapp.loader import *
 import time
-
+from typing import Union
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
 # available_answers = ["ответ1", "ответ2", "ответ3"]
@@ -71,7 +71,7 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
     # await GetData.waiting_for_write_answer.set()
     # await message.answer("Now write your ANSWER", reply_markup=keyboard)
         await message.answer("You need to write from 2 to 4 answers\n"
-                             "Now write and send your first Answer")
+                             "Now write and send your First Answer:")
         await ask_answer(message)
 
 
@@ -92,9 +92,10 @@ async def ask_answer(message: types.Message):
         user_id = message.from_user.id
         user = user_data[user_id]
         if user.answer1 == '':
-            await keyboard_answer(message, "First")
+            await get_answer(message, edit_indication='no')
         elif user.answer2 == '':
-            await keyboard_answer(message, "Second")
+            await message.answer("Now write and send your Second Answer:")
+            await get_answer(message, edit_indication='no')
         elif user.answer3 == '':
             await keyboard_answer(message, "Third")
         elif user.answer4 == '':
@@ -117,10 +118,18 @@ async def ask_answer(message: types.Message):
 
 
 
-async def get_answer(call: types.CallbackQuery):
+async def get_answer(message: Union[types.Message, types.CallbackQuery], edit_indication=None):
+
+    if isinstance(message, types.CallbackQuery):
+        message = message.message
     # await call.message.answer("Now write your ANSWER")
-    await bot.edit_message_text("Now write your ANSWER", chat_id=call.message.chat.id,
-                                message_id=call.message.message_id)
+
+    if edit_indication=='no':
+        pass
+    else:
+        await bot.edit_message_text("Now write your ANSWER", chat_id=message.chat.id,
+                                    message_id=message.message_id)
+
     await GetData.waiting_for_write_answer.set()
 
 

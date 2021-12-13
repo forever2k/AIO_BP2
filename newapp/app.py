@@ -71,7 +71,7 @@ dp.register_message_handler(secret_command, IDFilter(user_id=me), commands="secr
 dp.register_message_handler(get_question, state=GetData.waiting_for_get_question)
 # dp.register_message_handler(ask_answer, state=GetData.waiting_for_ask_answer)
 dp.register_message_handler(write_answer, state=GetData.waiting_for_write_answer)
-dp.register_message_handler(get_quiz_from_database, state=GetDataFromDatabase.waiting_for_get_session_id)
+dp.register_message_handler(get_quiz_from_database_by_session_id, state=GetDataFromDatabase.waiting_for_get_session_id)
 dp.register_message_handler(send_correct_question, state=GetDataFromDatabase.waiting_for_correct_question)
 dp.register_message_handler(send_correct_answer, state=GetDataFromDatabase.waiting_for_correct_answer)
 dp.register_message_handler(ask_session_id, IDFilter(user_id=me), commands="asksecret")

@@ -81,8 +81,8 @@ async def switcher_to_main_menu(message: Union[types.Message, types.CallbackQuer
 
 
 async def switcher_get_data_for_user(call: types.CallbackQuery):
-    await call.message.answer('HERE 22222222222222')
-    await get_data_for_user(call.message)
+    user_id = call.from_user.id
+    await get_data_for_user(call.message, user_id = user_id)
 
 
 async def close_session(call: types.CallbackQuery):

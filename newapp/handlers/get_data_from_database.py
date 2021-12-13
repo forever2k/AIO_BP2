@@ -26,7 +26,7 @@ async def ask_session_id(message: types.Message):
     await GetDataFromDatabase.waiting_for_get_session_id.set()
 
 
-async def get_quiz_from_database(message: types.Message, state: FSMContext):
+async def get_quiz_from_database_by_session_id(message: types.Message, state: FSMContext):
 
     session_id = message.text
     # await bot.send_message(test_group, message.text)
@@ -277,12 +277,12 @@ async def get_last_user_session_id(message: types.Message):
 
 
 async def get_data_for_user(message: types.Message = None, call: types.CallbackQuery = None, user_id=None, session_id=None):
-    await message.answer('HERE 1111111111111')
+
     if session_id == None:
-        last_data_by_user_id = "SELECT session_id FROM users WHERE user_id = %s order by Datetime desc limit 1"
+        last_data_by_user_id = "SELECT * FROM users WHERE user_id = %s order by Datetime desc limit 1"
         cursor.execute(last_data_by_user_id, (user_id,))
+        quiz = cursor.fetchone()
+        await message.answer(quiz)
 
-        session_id = cursor
-
-        await message.answer(session_id)
+        return quiz
 

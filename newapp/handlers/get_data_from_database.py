@@ -282,7 +282,18 @@ async def get_data_for_user(message: types.Message = None, call: types.CallbackQ
         last_data_by_user_id = "SELECT * FROM users WHERE user_id = %s order by Datetime desc limit 1"
         cursor.execute(last_data_by_user_id, (user_id,))
         quiz = cursor.fetchone()
-        await message.answer(quiz)
+        # await message.answer(quiz)
 
-        return quiz
+        date = quiz[7].date()
+        time = quiz[7].time()
+
+        answer3 = quiz[5] if quiz[5] != None else '-'
+        answer4 = quiz[6] if quiz[6] != None else '-'
+        await message.answer(f'Date & time: {date} {time} \n' 
+                             f'question: {quiz[1]} \n'
+                             f'answer 1: {quiz[2]} \n'
+                             f'answer 2: {quiz[4]} \n'
+                             f'answer 3: {answer3} \n'
+                             f'answer 4: {answer4}')
+
 

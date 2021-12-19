@@ -7,6 +7,7 @@ from newapp.bt import bot
 from newapp.config import dbase, test_group, me
 from newapp.handlers.get_data_from_user import write_to_database
 from newapp.loader import *
+from newapp.keyboard import main_menu_inline_keyboard
 
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
@@ -272,11 +273,15 @@ async def check_admin_data(message: types.Message, admin_data=admin_data):
 
 
 async def get_last_user_session_id(message: types.Message):
-
     user_id = message.from_user.id
 
 
 async def get_data_for_user(message: types.Message = None, call: types.CallbackQuery = None, user_id=None, session_id=None):
+
+    keyboard = await main_menu_inline_keyboard()
+
+    if isinstance(message, types.CallbackQuery):
+        message = message.message
 
     if session_id == None:
         last_data_by_user_id = "SELECT * FROM users WHERE user_id = %s order by Datetime desc limit 1"
@@ -289,11 +294,25 @@ async def get_data_for_user(message: types.Message = None, call: types.CallbackQ
 
         answer3 = quiz[5] if quiz[5] != None else '-'
         answer4 = quiz[6] if quiz[6] != None else '-'
-        await message.answer(f'Date & time: {date} {time} \n' 
+
+
+        await bot.edit_message_text(f'\U0001F929 LAST QUIZ:  \n' 
+                             f'Date & time: {date} {time} \n' 
                              f'question: {quiz[1]} \n'
                              f'answer 1: {quiz[2]} \n'
                              f'answer 2: {quiz[4]} \n'
                              f'answer 3: {answer3} \n'
-                             f'answer 4: {answer4}')
+                             f'answer 4: {answer4} \n\n'
+                             f'What do you want else?', chat_id=message.chat.id,
+                                    message_id=message.message_id,
+                                    reply_markup=keyboard)
+
+
+        # await message.answer(f'Date & time: {date} {time} \n'
+        #                      f'question: {quiz[1]} \n'
+        #                      f'answer 1: {quiz[2]} \n'
+        #                      f'answer 2: {quiz[4]} \n'
+        #                      f'answer 3: {answer3} \n'
+        #                      f'answer 4: {answer4}')
 
 

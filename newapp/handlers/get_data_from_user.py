@@ -5,6 +5,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
+from newapp.keyboards import ask_for_answer_menu
 from newapp.loader import *
 import time
 from typing import Union
@@ -72,14 +73,9 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
         await ask_answer(message)
 
 
-async def keyboard_answer(message: types.Message, number_answer):
-    buttons = [
-        types.InlineKeyboardButton(text="Yes", callback_data="get_answer"),
-        types.InlineKeyboardButton(text="No", callback_data="notice_to_admin")
-    ]
-    keyboard = types.InlineKeyboardMarkup(row_width=3)
-    keyboard.add(*buttons)
-    await message.answer(f"Do you want to write your {number_answer} answer?", reply_markup=keyboard)
+async def ask_for_answer(message: types.Message, number_answer):
+    keyboard = await ask_for_answer_menu()
+    await message.answer(f"Do you want to write down your {number_answer} answer?", reply_markup=keyboard)
 
 
 
@@ -94,9 +90,9 @@ async def ask_answer(message: types.Message):
             await message.answer("Now write and send your Second Answer:")
             await get_answer(message, edit_indication='no')
         elif user.answer3 == '':
-            await keyboard_answer(message, "Third")
+            await ask_for_answer(message, "Third")
         elif user.answer4 == '':
-            await keyboard_answer(message, "Fourth")
+            await ask_for_answer(message, "Fourth")
 
         # if user.answer1 == '' or user.answer2 == '' or user.answer3 == '' or user.answer4 == '':
         #     buttons = [

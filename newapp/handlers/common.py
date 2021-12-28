@@ -12,26 +12,17 @@ from newapp.config import test_group
 import json
 from aiogram.utils.markdown import link
 from newapp.handlers.get_data_from_database import get_data_for_user
-from newapp.keyboard import main_menu_inline_keyboard
+from newapp.keyboards import main_menu_inline_keyboard, description_menu
 from newapp.loader import user_data
 
 
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.finish()
-
     keyboard = await main_menu_inline_keyboard()
-
     await message.answer(f"Hello {message.chat.first_name}!\n"
                          "Ask me and I can ask the whole World!",
                          reply_markup=keyboard)
 
-
-async def main_menu_usual_keyboard():
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    buttons = ["\U00002618 Main Menu", "\U00002618 Cancel"]
-    keyboard.add(*buttons)
-
-    return keyboard
 
 async def cmd_cancel(message: types.Message, state: FSMContext):
     await state.finish()
@@ -39,13 +30,7 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
 
 
 async def description(call: types.CallbackQuery):
-    # await call.answer(text="\U0001F603 Buy!", show_alert=True)
-    # или просто await call.answer()
-    buttons = [
-        types.InlineKeyboardButton(text="\U00002B05  Back", callback_data="switcher_to_main_menu") ]
-    keyboard = types.InlineKeyboardMarkup(row_width=2)
-    keyboard.add(*buttons)
-
+    keyboard = await description_menu()
     await bot.edit_message_text("\U0001F4E2 It`s the description", chat_id=call.message.chat.id, message_id=call.message.message_id,
                                         reply_markup=keyboard)
 
@@ -97,16 +82,16 @@ async def notice_to_admin(call: types.CallbackQuery):
 
 
 
-async def cmd_random(message: types.Message):
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(types.InlineKeyboardButton(text="Press me", callback_data="random_value"))
-    await message.answer("Number from 1 to 10", reply_markup=keyboard)
+# async def cmd_random(message: types.Message):
+#     keyboard = types.InlineKeyboardMarkup()
+#     keyboard.add(types.InlineKeyboardButton(text="Press me", callback_data="random_value"))
+#     await message.answer("Number from 1 to 10", reply_markup=keyboard)
 
 
-async def send_random_value(call: types.CallbackQuery):
-    await call.message.answer(str(randint(1, 10)))
-    await call.answer(text="Thanks!", show_alert=True)
-    # или просто await call.answer()
+# async def send_random_value(call: types.CallbackQuery):
+#     await call.message.answer(str(randint(1, 10)))
+#     await call.answer(text="Thanks!", show_alert=True)
+#     # или просто await call.answer()
 
 
 

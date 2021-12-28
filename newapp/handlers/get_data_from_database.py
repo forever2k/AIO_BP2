@@ -7,8 +7,7 @@ from newapp.bt import bot
 from newapp.config import dbase, test_group, me
 from newapp.handlers.get_data_from_user import write_to_database
 from newapp.loader import *
-from newapp.keyboard import main_menu_inline_keyboard
-
+from newapp.keyboards import main_menu_inline_keyboard, send_poll_menu
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
 # available_answers = ["ответ1", "ответ2", "ответ3"]
@@ -137,13 +136,9 @@ async def get_data_for_admin(message: types.Message=None, call: types.CallbackQu
 
 
 async def ask_for_quiz(message: types.Message, session_id):
-    buttons = [
-        types.InlineKeyboardButton(text="Edit", callback_data=cb.new(session_id=session_id)),
-        types.InlineKeyboardButton(text="Send poll", callback_data="send_poll"),
-        types.InlineKeyboardButton(text="Cancel", callback_data="close_session"),
-    ]
-    keyboard = types.InlineKeyboardMarkup(row_width=1)
-    keyboard.add(*buttons)
+
+    keyboard = await send_poll_menu(session_id)
+
     await message.answer("What do you want to do with the Quiz?", reply_markup=keyboard)
 
 

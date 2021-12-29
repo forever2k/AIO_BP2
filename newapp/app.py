@@ -15,6 +15,7 @@ from newapp.handlers.common import *
 from newapp.handlers.get_data_from_database import *
 from newapp.handlers.get_data_from_user import *
 from bt import *
+from newapp.language_module import check_language, set_rus_language, set_eng_language
 from quizer import my_poll, send_poll
 
 # test_group = -1001153348142
@@ -83,6 +84,7 @@ dp.register_message_handler(testing2, IDFilter(user_id=me), commands="testing2",
 dp.register_message_handler(testing_edit_message, IDFilter(user_id=me), commands="testing3", state="*")
 dp.register_message_handler(switcher_to_main_menu, lambda message: message.text=="\U00002618 Main Menu", state="*")
 dp.register_message_handler(close_session, lambda message: message.text == "\U00002618 Cancel", state="*")
+dp.register_message_handler(check_language, commands="check_language")
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 
@@ -97,6 +99,9 @@ dp.register_callback_query_handler(test_edit_callback, text="test_edit_callback"
 dp.register_callback_query_handler(test_delete_callback, text="test_delete_callback")
 dp.register_callback_query_handler(switcher_to_main_menu, text="switcher_to_main_menu")
 dp.register_callback_query_handler(switcher_get_data_for_user, text="switcher_get_data_for_user")
+dp.register_callback_query_handler(settings, text="settings")
+dp.register_callback_query_handler(set_rus_language, text="set_rus_language")
+dp.register_callback_query_handler(set_eng_language, text="set_eng_language")
 
 async def main():
 

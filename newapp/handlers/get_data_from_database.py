@@ -292,13 +292,13 @@ async def get_data_for_user(message: types.Message = None, call: types.CallbackQ
 
 
         await bot.edit_message_text(f'\U0001F929 LAST QUIZ:  \n' 
-                             f'Date & time: {date} {time} \n' 
-                             f'question: {quiz[1]} \n'
-                             f'answer 1: {quiz[2]} \n'
-                             f'answer 2: {quiz[4]} \n'
-                             f'answer 3: {answer3} \n'
-                             f'answer 4: {answer4} \n\n'
-                             f'What do you want else?', chat_id=message.chat.id,
+                             f'🔸 Date & time: {date} {time} \n' 
+                             f'🔸 question: {quiz[1]} \n'
+                             f'🔸 answer 1: {quiz[2]} \n'
+                             f'🔸 answer 2: {quiz[4]} \n'
+                             f'🔸 answer 3: {answer3} \n'
+                             f'🔸 answer 4: {answer4} \n\n'
+                             f'🔸 What do you want else?', chat_id=message.chat.id,
                                     message_id=message.message_id,
                                     reply_markup=keyboard)
 

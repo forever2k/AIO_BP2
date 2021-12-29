@@ -2,7 +2,7 @@ import asyncio
 import logging
 from random import randint
 from typing import Union
-from aiogram import Dispatcher, types
+from aiogram import Dispatcher, types, md
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text, IDFilter
 from aiogram.utils import exceptions
@@ -12,16 +12,20 @@ from newapp.config import test_group
 import json
 from aiogram.utils.markdown import link
 from newapp.handlers.get_data_from_database import get_data_for_user
-from newapp.keyboards import main_menu_inline_keyboard, description_menu
+from newapp.keyboards import main_menu_inline_keyboard, description_menu, settings_menu
+from newapp.language_module import set_default_language
 from newapp.loader import user_data
 
 
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.finish()
+
     keyboard = await main_menu_inline_keyboard()
     await message.answer(f"Hello {message.chat.first_name}!\n"
                          "Ask me and I can ask the whole World!",
                          reply_markup=keyboard)
+
+    await set_default_language(message)
 
 
 async def cmd_cancel(message: types.Message, state: FSMContext):
@@ -38,6 +42,18 @@ async def description(call: types.CallbackQuery):
     #                                     reply_markup=keyboard)
     #
     # await call.message.answer("\U0001F4E2 It`s the description", reply_markup=keyboard)
+
+
+async def settings(call: types.CallbackQuery):
+    keyboard = await settings_menu()
+    await bot.edit_message_text("\U0001F4E2 Choose language", chat_id=call.message.chat.id, message_id=call.message.message_id,
+                                        reply_markup=keyboard)
+
+# async def set_russian(call: types.CallbackQuery):
+#
+#     data_by_session_id = "SELECT * FROM users WHERE session_id = %s"
+#     cursor.execute(data_by_session_id, (session_id,))
+
 
 
 async def switcher_to_main_menu(message: Union[types.Message, types.CallbackQuery], state: FSMContext):
@@ -110,7 +126,6 @@ async def error_bot_blocked(update: types.Update, exception: BotBlocked):
 # чей ID указан в файле конфигурации.
 async def secret_command(message: types.Message):
     await message.answer("Поздравляю! Эта команда доступна только администратору бота.")
-
 
 
 async def testing(message: types.Message):

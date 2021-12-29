@@ -6,7 +6,7 @@ async def main_menu_inline_keyboard():
         types.InlineKeyboardButton(text="\U00002618  Ask a question", callback_data="start_session"),
         types.InlineKeyboardButton(text="\U0001F3F5  See my last quiz", callback_data="switcher_get_data_for_user"),
         types.InlineKeyboardButton(text="\U0001F4D5  Description", callback_data="description"),
-        types.InlineKeyboardButton(text="\U00002699 Settings", callback_data="close_session")
+        types.InlineKeyboardButton(text="\U00002699 Settings", callback_data="settings")
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
@@ -58,8 +58,8 @@ async def ask_for_answer_menu():
 
 async def settings_menu():
     buttons = [
-        types.InlineKeyboardButton(text="Русский", callback_data="set_russian"),
-        types.InlineKeyboardButton(text="English", callback_data="set_english")
+        types.InlineKeyboardButton(text="🇷🇺 Русский", callback_data="set_rus_language"),
+        types.InlineKeyboardButton(text="🇬🇧 English", callback_data="set_eng_language")
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=3)
     keyboard.add(*buttons)

@@ -16,6 +16,7 @@ from newapp.handlers.get_data_from_database import *
 from newapp.handlers.get_data_from_user import *
 from bt import *
 from newapp.language_module import check_language, set_rus_language, set_eng_language
+from newapp.menu_switchers import switcher_to_main_menu, switcher_get_data_for_user
 from quizer import my_poll, send_poll
 
 # test_group = -1001153348142

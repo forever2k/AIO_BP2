@@ -1,5 +1,9 @@
+from aiogram.dispatcher import FSMContext
+
 from newapp.config import dbase
 from aiogram import Dispatcher, types, md
+
+from newapp.menu_switchers import switcher_to_main_menu
 
 cursor = dbase.cursor()
 
@@ -35,13 +39,13 @@ async def set_default_language(message: types.Message):
             dbase.commit()
 
 
-async def set_rus_language(call: types.CallbackQuery):
+async def set_rus_language(call: types.CallbackQuery, state: FSMContext):
     user_id = call.from_user.id
     results_user_exists = await check_user_settings_exists(user_id)
 
     if results_user_exists > 0:
-        update_language = "UPDATE user_settings SET rus_language = %s WHERE user_id = %s"
-        val = (True, user_id)
+        update_language = "UPDATE user_settings SET rus_language = %s, eng_language = %s WHERE user_id = %s"
+        val = (True, False, user_id)
         cursor.execute(update_language, val)
         dbase.commit()
     else:
@@ -51,14 +55,16 @@ async def set_rus_language(call: types.CallbackQuery):
         cursor.execute(set_language, val)
         dbase.commit()
 
+    await switcher_to_main_menu(call, state)
 
-async def set_eng_language(call: types.CallbackQuery):
+
+async def set_eng_language(call: types.CallbackQuery, state: FSMContext):
     user_id = call.from_user.id
     results_user_exists = await check_user_settings_exists(user_id)
 
     if results_user_exists > 0:
-        update_language = "UPDATE user_settings SET eng_language = %s WHERE user_id = %s"
-        val = (True, user_id)
+        update_language = "UPDATE user_settings SET rus_language = %s, eng_language = %s WHERE user_id = %s"
+        val = (False, True, user_id)
         cursor.execute(update_language, val)
         dbase.commit()
     else:
@@ -67,6 +73,8 @@ async def set_eng_language(call: types.CallbackQuery):
         val = (user_id, True)
         cursor.execute(set_language, val)
         dbase.commit()
+
+    await switcher_to_main_menu(call, state)
 
 
 

@@ -50,8 +50,9 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
         return
     else:
         user_id = message.from_user.id
-        user_data[user_id] = User(message.text)
+        user_data[user_id] = User()
         user = user_data[user_id]
+        user.question = message.text
         session_id = generate_number(user_id)
         user.session_id = session_id
 

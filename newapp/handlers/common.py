@@ -14,7 +14,7 @@ from aiogram.utils.markdown import link
 from newapp.handlers.get_data_from_database import get_data_for_user
 from newapp.keyboards import main_menu_inline_keyboard, description_menu, settings_menu
 from newapp.language_module import set_default_language
-from newapp.loader import user_data
+from newapp.loader import user_data, user_data_settings
 
 
 async def cmd_start(message: types.Message, state: FSMContext):
@@ -204,6 +204,10 @@ async def test_delete_callback(call: types.CallbackQuery):
     await call.message.answer("Are you ready?", reply_markup=keyboard)
 
 
+async def test_view_user_data_settings(message: types.Message, user_data_settings=user_data_settings):
+    user_id = message.from_user.id
+    user = user_data_settings[user_id]
+    await message.answer(user.language)
 
 #
 #

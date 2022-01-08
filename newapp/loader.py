@@ -11,16 +11,21 @@ def generate_number(id):
 
 
 user_data = {}
+user_data_settings = {}
 admin_data = {}
 
 class User:
-    def __init__(self, question):
-        self.question = question
+    def __init__(self):
+        self.question = ''
         self.answer1 = ''
         self.answer2 = ''
         self.answer3 = ''
         self.answer4 = ''
         self.session_id = ''
+
+class User_settings:
+    def __init__(self):
+        self.language = ''
 
 class Admin:
     def __init__(self):

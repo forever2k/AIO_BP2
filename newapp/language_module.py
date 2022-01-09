@@ -1,3 +1,4 @@
+from typing import Union
 from aiogram.dispatcher import FSMContext
 from newapp.loader import *
 from newapp.config import dbase
@@ -22,6 +23,7 @@ async def set_users_dictionary(user_id, user_data_settings=user_data_settings, *
     for key, val in kwargs.items():
         if key == 'lang':
             user.language = val
+
 
 async def set_default_language(message: types.Message, user_data_settings=user_data_settings):
     locale = message.from_user.locale
@@ -100,6 +102,33 @@ async def set_eng_language(call: types.CallbackQuery, state: FSMContext):
     await set_users_dictionary(user_id, lang='eng')
 
     await switcher_to_main_menu(call, state)
+
+
+async def check_current_user_language(message: Union[types.Message, types.CallbackQuery], user_data_settings=user_data_settings):
+    if isinstance(message, types.Message):
+        user_id = message.from_user.id
+    elif isinstance(message, types.CallbackQuery):
+        call = message
+        message = call.message
+        user_id = call.from_user.id
+
+    await call.message.answer(user_id)
+
+    if user_id in user_data_settings:
+        await message.answer('HERE 3333333333333333')
+        user = user_data_settings[user_id]
+        current_user_language = user.language
+    else:
+        await message.answer('HERE 1111111111111S')
+        await set_default_language(message)
+        user = user_data_settings[user_id]
+        current_user_language = user.language
+
+    return current_user_language
+
+
+
+
 
 
 

@@ -13,7 +13,8 @@ import json
 from aiogram.utils.markdown import link
 from newapp.handlers.get_data_from_database import get_data_for_user
 from newapp.keyboards import main_menu_inline_keyboard, description_menu, settings_menu
-from newapp.language_module import set_default_language
+from newapp.language_module import set_default_language, \
+    check_current_user_language
 from newapp.loader import user_data, user_data_settings
 
 
@@ -25,7 +26,7 @@ async def cmd_start(message: types.Message, state: FSMContext):
                          "Ask me and I can ask the whole World!",
                          reply_markup=keyboard)
 
-    await set_default_language(message)
+    # await set_default_language(message)
 
 
 async def cmd_cancel(message: types.Message, state: FSMContext):
@@ -209,8 +210,34 @@ async def test_view_user_data_settings(message: types.Message, user_data_setting
     user = user_data_settings[user_id]
     await message.answer(user.language)
 
+
+async def test_check_current_user_language_mes(message: types.Message,
+                                            user_data_settings=user_data_settings):
+    lang = await check_current_user_language(message)
+    await message.answer(lang)
+
+
+async def test_check_current_user_language_call(call: types.CallbackQuery,
+                                            user_data_settings=user_data_settings):
+    lang = await check_current_user_language(call)
+    await call.message.answer(lang)
 #
-#
+
+async def test_check_language(call: types.CallbackQuery):
+    locale = call.message.from_user.locale.language
+    await call.message.answer('hereeeeeeeee 88888888888')
+
+    await call.message.reply(md.text(
+        md.bold('Info about your language:'),
+        md.text('🔸', md.bold('Code:'), md.code(locale.language)),
+        md.text('🔸', md.bold('Territory:'),
+                md.code(locale.territory or 'Unknown')),
+        md.text('🔸', md.bold('Language name:'), md.code(locale.language_name)),
+        md.text('🔸', md.bold('English language name:'),
+                md.code(locale.english_name)),
+        sep='\n',
+    ))
+
 # async def cmd_start(message: Union[types.Message, types.CallbackQuery], state: FSMContext):
 #     await state.finish()
 #

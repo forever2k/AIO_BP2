@@ -223,11 +223,22 @@ async def test_check_current_user_language_call(call: types.CallbackQuery,
     await call.message.answer(lang)
 #
 
-async def test_check_language(call: types.CallbackQuery):
-    locale = call.message.from_user.locale.language
-    await call.message.answer('hereeeeeeeee 88888888888')
+async def test_switcher_check_language(call: types.CallbackQuery):
+    await test_check_language(call)
 
-    await call.message.reply(md.text(
+async def test_check_language(message: Union[types.Message, types.CallbackQuery]):
+
+    if isinstance(message, types.Message):
+        locale = message.from_user.locale
+    elif isinstance(message, types.CallbackQuery):
+        call = message
+        locale = call.from_user.locale
+        message = call.message
+
+
+    await message.answer('hereeeeeeeee 88888888888')
+
+    await message.reply(md.text(
         md.bold('Info about your language:'),
         md.text('🔸', md.bold('Code:'), md.code(locale.language)),
         md.text('🔸', md.bold('Territory:'),

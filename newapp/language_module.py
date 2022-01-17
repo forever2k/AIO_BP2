@@ -25,9 +25,16 @@ async def set_users_dictionary(user_id, user_data_settings=user_data_settings, *
             user.language = val
 
 
-async def set_default_language(message: types.Message, user_data_settings=user_data_settings):
-    locale = message.from_user.locale
-    user_id = message.from_user.id
+
+async def set_default_language(message: Union[types.Message, types.CallbackQuery], user_data_settings=user_data_settings):
+    if isinstance(message, types.Message):
+        user_id = message.from_user.id
+        locale = message.from_user.locale
+    elif isinstance(message, types.CallbackQuery):
+        call = message
+        locale = call.from_user.locale
+        message = call.message
+        user_id = call.from_user.id
 
     results_user_exists = await check_user_settings_exists(user_id)
 

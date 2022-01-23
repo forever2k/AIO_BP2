@@ -15,7 +15,7 @@ from newapp.handlers.common import *
 from newapp.handlers.get_data_from_database import *
 from newapp.handlers.get_data_from_user import *
 from bt import *
-from newapp.language_module import check_language, set_rus_language, set_eng_language
+from newapp.language_module import set_rus_language, set_eng_language
 from newapp.menu_switchers import switcher_to_main_menu, switcher_get_data_for_user
 from quizer import my_poll, send_poll
 
@@ -84,11 +84,11 @@ dp.register_message_handler(testing, IDFilter(user_id=me), commands="testing", s
 dp.register_message_handler(testing2, IDFilter(user_id=me), commands="testing2", state="*")
 dp.register_message_handler(testing_edit_message, IDFilter(user_id=me), commands="testing3", state="*")
 dp.register_message_handler(test_view_user_data_settings, IDFilter(user_id=me), commands="testing4", state="*")
-dp.register_message_handler(test_check_current_user_language_mes, IDFilter(
-    user_id=me), commands="testing5", state="*")
+# dp.register_message_handler(test_check_current_user_language_mes, IDFilter(
+#     user_id=me), commands="testing5", state="*")
 dp.register_message_handler(switcher_to_main_menu, lambda message: message.text=="\U00002618 Main Menu", state="*")
 dp.register_message_handler(close_session, lambda message: message.text == "\U00002618 Cancel", state="*")
-dp.register_message_handler(check_language, commands="check_language")
+# dp.register_message_handler(check_language, commands="check_language")
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 
@@ -101,7 +101,7 @@ dp.register_callback_query_handler(edit_quiz_question, cb.filter())
 dp.register_callback_query_handler(send_poll, text="send_poll")
 dp.register_callback_query_handler(test_edit_callback, text="test_edit_callback")
 dp.register_callback_query_handler(test_delete_callback, text="test_delete_callback")
-dp.register_callback_query_handler(test_check_current_user_language_call, text="test_check_current_user_language_call")
+# dp.register_callback_query_handler(test_check_current_user_language_call, text="test_check_current_user_language_call")
 dp.register_callback_query_handler(test_switcher_check_language,
                                    text="test_switcher_check_language")
 dp.register_callback_query_handler(switcher_to_main_menu, text="switcher_to_main_menu")

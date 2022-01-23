@@ -1,7 +1,8 @@
 from typing import Union
 from aiogram.dispatcher import FSMContext
+from newapp.bt import bot
 from newapp.loader import *
-from newapp.config import dbase
+from newapp.config import dbase, test_group
 from aiogram import Dispatcher, types, md
 from newapp.menu_switchers import switcher_to_main_menu
 
@@ -26,7 +27,8 @@ async def set_users_dictionary(user_id, user_data_settings=user_data_settings, *
 
 
 
-async def set_default_language(message: Union[types.Message, types.CallbackQuery], user_data_settings=user_data_settings):
+async def set_default_language(message: Union[types.Message,
+                                              types.CallbackQuery] ):
     if isinstance(message, types.Message):
         user_id = message.from_user.id
         locale = message.from_user.locale
@@ -69,6 +71,7 @@ async def set_default_language(message: Union[types.Message, types.CallbackQuery
 
 
 async def set_rus_language(call: types.CallbackQuery, state: FSMContext):
+    lang = 'rus'
     user_id = call.from_user.id
     results_user_exists = await check_user_settings_exists(user_id)
 
@@ -87,10 +90,11 @@ async def set_rus_language(call: types.CallbackQuery, state: FSMContext):
 
     await set_users_dictionary(user_id, lang='rus')
 
-    await switcher_to_main_menu(call, state)
+    await switcher_to_main_menu(call, lang, state)
 
 
 async def set_eng_language(call: types.CallbackQuery, state: FSMContext):
+    lang = 'eng'
     user_id = call.from_user.id
     results_user_exists = await check_user_settings_exists(user_id)
 
@@ -108,10 +112,11 @@ async def set_eng_language(call: types.CallbackQuery, state: FSMContext):
 
     await set_users_dictionary(user_id, lang='eng')
 
-    await switcher_to_main_menu(call, state)
+    await switcher_to_main_menu(call, lang, state)
 
 
 async def check_current_user_language(message: Union[types.Message, types.CallbackQuery], user_data_settings=user_data_settings):
+
     if isinstance(message, types.Message):
         user_id = message.from_user.id
     elif isinstance(message, types.CallbackQuery):
@@ -119,14 +124,11 @@ async def check_current_user_language(message: Union[types.Message, types.Callba
         message = call.message
         user_id = call.from_user.id
 
-    await call.message.answer(user_id)
 
     if user_id in user_data_settings:
-        await message.answer('HERE 3333333333333333')
         user = user_data_settings[user_id]
         current_user_language = user.language
     else:
-        await message.answer('HERE 1111111111111S')
         await set_default_language(message)
         user = user_data_settings[user_id]
         current_user_language = user.language
@@ -135,18 +137,14 @@ async def check_current_user_language(message: Union[types.Message, types.Callba
 
 
 
-
-
-
-
-async def check_language(message: types.Message):
-    locale = message.from_user.locale
-
-    await message.reply(md.text(
-        md.bold('Info about your language:'),
-        md.text('🔸', md.bold('Code:'), md.code(locale.language)),
-        md.text('🔸', md.bold('Territory:'), md.code(locale.territory or 'Unknown')),
-        md.text('🔸', md.bold('Language name:'), md.code(locale.language_name)),
-        md.text('🔸', md.bold('English language name:'), md.code(locale.english_name)),
-        sep='\n',
-    ))
+# async def check_language(message: types.Message):
+#     locale = message.from_user.locale
+#
+#     await message.reply(md.text(
+#         md.bold('Info about your language:'),
+#         md.text('🔸', md.bold('Code:'), md.code(locale.language)),
+#         md.text('🔸', md.bold('Territory:'), md.code(locale.territory or 'Unknown')),
+#         md.text('🔸', md.bold('Language name:'), md.code(locale.language_name)),
+#         md.text('🔸', md.bold('English language name:'), md.code(locale.english_name)),
+#         sep='\n',
+#     ))

@@ -13,17 +13,20 @@ import json
 from aiogram.utils.markdown import link
 from newapp.handlers.get_data_from_database import get_data_for_user
 from newapp.keyboards import main_menu_inline_keyboard, description_menu, settings_menu
-from newapp.language_module import set_default_language, \
-    check_current_user_language
+from newapp.language_module import check_current_user_language
 from newapp.loader import user_data, user_data_settings
+from newapp.text_module import selected_text
 
 
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.finish()
 
+    lang = await check_current_user_language(message)
+    text = await selected_text(lang)
+
     keyboard = await main_menu_inline_keyboard()
-    await message.answer(f"Hello {message.chat.first_name}!\n"
-                         "Ask me and I can ask the whole World!",
+    await message.answer(f"{text[0]} {message.chat.first_name}!\n"
+                         f"{text[1]}",
                          reply_markup=keyboard)
 
     # await set_default_language(message)
@@ -211,16 +214,16 @@ async def test_view_user_data_settings(message: types.Message, user_data_setting
     await message.answer(user.language)
 
 
-async def test_check_current_user_language_mes(message: types.Message,
-                                            user_data_settings=user_data_settings):
-    lang = await check_current_user_language(message)
-    await message.answer(lang)
-
-
-async def test_check_current_user_language_call(call: types.CallbackQuery,
-                                            user_data_settings=user_data_settings):
-    lang = await check_current_user_language(call)
-    await call.message.answer(lang)
+# async def test_check_current_user_language_mes(message: types.Message,
+#                                             user_data_settings=user_data_settings):
+#     lang = await check_current_user_language(message)
+#     await message.answer(lang)
+#
+#
+# async def test_check_current_user_language_call(call: types.CallbackQuery,
+#                                             user_data_settings=user_data_settings):
+#     lang = await check_current_user_language(call)
+#     await call.message.answer(lang)
 #
 
 async def test_switcher_check_language(call: types.CallbackQuery):

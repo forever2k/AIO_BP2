@@ -43,8 +43,8 @@ async def cmd_start(message: Union[types.Message, types.CallbackQuery], state: F
     text = await selected_text(lang)
 
     keyboard = await main_menu_inline_keyboard()
-    await message.answer(f"{text[0]} {message.chat.first_name}!\n"
-                         f"{text[1]}",
+    await message.answer(f"{text['First'][0]} {message.chat.first_name}!\n"
+                         f"{text['First'][1]}",
                          reply_markup=keyboard)
 
     # await set_default_language(message)

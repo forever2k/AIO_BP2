@@ -27,7 +27,7 @@ async def description_menu():
     # await call.answer(text="\U0001F603 Buy!", show_alert=True)
     # или просто await call.answer()
     buttons = [
-        types.InlineKeyboardButton(text="\U00002B05  Back", callback_data="switcher_to_main_menu") ]
+        types.InlineKeyboardButton(text="\U00002B05  Back", callback_data="cmd_start") ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
 

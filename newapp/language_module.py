@@ -27,16 +27,16 @@ async def set_users_dictionary(user_id, user_data_settings=user_data_settings, *
 
 
 
-async def set_default_language(message: Union[types.Message,
-                                              types.CallbackQuery] ):
-    if isinstance(message, types.Message):
-        user_id = message.from_user.id
-        locale = message.from_user.locale
-    elif isinstance(message, types.CallbackQuery):
-        call = message
-        locale = call.from_user.locale
-        message = call.message
-        user_id = call.from_user.id
+async def set_default_language(lang, user_id):
+    # if isinstance(message, types.Message):
+    #     user_id = message.from_user.id
+    #     locale = message.from_user.locale
+    #
+    # elif isinstance(message, types.CallbackQuery):
+    #     call = message
+    #     locale = call.from_user.locale
+    #     user_id = call.from_user.id
+
 
     results_user_exists = await check_user_settings_exists(user_id)
 
@@ -46,19 +46,19 @@ async def set_default_language(message: Union[types.Message,
         results_user_language = cursor.fetchone()
 
         if results_user_language[0] == 1:
-            await set_users_dictionary(user_id, lang='rus')
+            await set_users_dictionary(user_id, lang='ru')
         else:
-            await set_users_dictionary(user_id, lang='eng')
+            await set_users_dictionary(user_id, lang='en')
 
     else:
-        if locale.english_name == 'Russian':
+        if lang == 'ru':
             default_language = "INSERT INTO user_settings (user_id, rus_language) \
                                                                   VALUES (%s, %s)"
             val = (user_id, True)
             cursor.execute(default_language, val)
             dbase.commit()
 
-            await set_users_dictionary(user_id, lang='rus')
+            await set_users_dictionary(user_id, lang=lang)
 
         else:
             default_language = "INSERT INTO user_settings (user_id, eng_language) \
@@ -67,11 +67,11 @@ async def set_default_language(message: Union[types.Message,
             cursor.execute(default_language, val)
             dbase.commit()
 
-            await set_users_dictionary(user_id, lang='eng')
+            await set_users_dictionary(user_id, lang='en')
 
 
 async def set_rus_language(call: types.CallbackQuery, state: FSMContext):
-    lang = 'rus'
+    lang = 'ru'
     user_id = call.from_user.id
     results_user_exists = await check_user_settings_exists(user_id)
 
@@ -88,13 +88,13 @@ async def set_rus_language(call: types.CallbackQuery, state: FSMContext):
         cursor.execute(set_language, val)
         dbase.commit()
 
-    await set_users_dictionary(user_id, lang='rus')
+    await set_users_dictionary(user_id, lang='ru')
 
     await switcher_to_main_menu(call, lang, state)
 
 
 async def set_eng_language(call: types.CallbackQuery, state: FSMContext):
-    lang = 'eng'
+    lang = 'en'
     user_id = call.from_user.id
     results_user_exists = await check_user_settings_exists(user_id)
 
@@ -110,26 +110,27 @@ async def set_eng_language(call: types.CallbackQuery, state: FSMContext):
         cursor.execute(set_language, val)
         dbase.commit()
 
-    await set_users_dictionary(user_id, lang='eng')
+    await set_users_dictionary(user_id, lang='en')
 
     await switcher_to_main_menu(call, lang, state)
 
 
-async def check_current_user_language(message: Union[types.Message, types.CallbackQuery], user_data_settings=user_data_settings):
+async def check_current_user_language(lang, user_id,
+                                      user_data_settings=user_data_settings):
 
-    if isinstance(message, types.Message):
-        user_id = message.from_user.id
-    elif isinstance(message, types.CallbackQuery):
-        call = message
-        message = call.message
-        user_id = call.from_user.id
+    # if isinstance(message, types.Message):
+    #     user_id = message.from_user.id
+    # elif isinstance(message, types.CallbackQuery):
+    #     call = message
+    #     message = call.message
+    #     user_id = call.from_user.id
 
 
     if user_id in user_data_settings:
         user = user_data_settings[user_id]
         current_user_language = user.language
     else:
-        await set_default_language(message)
+        await set_default_language(lang, user_id)
         user = user_data_settings[user_id]
         current_user_language = user.language
 

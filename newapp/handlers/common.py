@@ -18,10 +18,28 @@ from newapp.loader import user_data, user_data_settings
 from newapp.text_module import selected_text
 
 
-async def cmd_start(message: types.Message, state: FSMContext):
+async def cmd_start(message: Union[types.Message, types.CallbackQuery], state: FSMContext):
     await state.finish()
 
-    lang = await check_current_user_language(message)
+    if isinstance(message, types.Message):
+        user_id = message.from_user.id
+        locale = message.from_user.locale
+        lang = locale.language
+
+        await bot.send_message(test_group, user_id)
+        await bot.send_message(test_group, locale.language)
+
+    elif isinstance(message, types.CallbackQuery):
+        call = message
+        locale = call.from_user.locale
+        lang = locale.language
+        user_id = call.from_user.id
+        message = call.message
+
+        await bot.send_message(test_group, user_id)
+        await bot.send_message(test_group, locale.language)
+
+    lang = await check_current_user_language(lang, user_id)
     text = await selected_text(lang)
 
     keyboard = await main_menu_inline_keyboard()

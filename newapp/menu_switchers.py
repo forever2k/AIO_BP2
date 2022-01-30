@@ -14,16 +14,26 @@ async def switcher_to_main_menu(message: Union[types.Message,
                                 state: FSMContext):
     await state.finish()
 
+    # if isinstance(message, types.CallbackQuery):
+    #     await bot.send_message(test_group, 'types.CallbackQuery')
+    #     call = message
+
     lang = await check_current_user_language(message)
     text = await selected_text(lang)
 
-    keyboard = await main_menu_inline_keyboard()
+    # await bot.send_message(test_group, lang)
 
+    keyboard = await main_menu_inline_keyboard(text)
+
+    # if isinstance(message, types.CallbackQuery):
+    #     message = message.message
     if isinstance(message, types.CallbackQuery):
-        message = message.message
+        call = message
+        message = call.message
 
-    await bot.edit_message_text(f"{text['First'][0]} {message.chat.first_name}!\n"
-                                f"{text['First'][1]}", chat_id=message.chat.id,
+    await bot.edit_message_text(f"{text['first'][0]}"
+                                f" {message.chat.first_name}!\n"
+                                f"{text['first'][1]}", chat_id=message.chat.id,
                                 message_id=message.message_id,
                                 reply_markup=keyboard)
 

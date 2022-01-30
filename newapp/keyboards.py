@@ -1,13 +1,16 @@
 from aiogram import types
 
 
-async def main_menu_inline_keyboard():
+async def main_menu_inline_keyboard(text):
     buttons = [
-        types.InlineKeyboardButton(text="\U00002618  Ask a question", callback_data="start_session"),
-        types.InlineKeyboardButton(text="\U0001F3F5  See my last quiz", callback_data="switcher_get_data_for_user"),
-        types.InlineKeyboardButton(text="\U0001F4D5  Description",
+        types.InlineKeyboardButton(text=text['main_menu'][0],
+                                   callback_data="start_session"),
+        types.InlineKeyboardButton(text=text['main_menu'][1],
+                                   callback_data="switcher_get_data_for_user"),
+        types.InlineKeyboardButton(text=text['main_menu'][2],
                                    callback_data="description"),
-        types.InlineKeyboardButton(text="\U00002699 Settings", callback_data="settings")
+        types.InlineKeyboardButton(text=text['main_menu'][3],
+                                   callback_data="settings")
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
@@ -27,7 +30,7 @@ async def description_menu():
     # await call.answer(text="\U0001F603 Buy!", show_alert=True)
     # или просто await call.answer()
     buttons = [
-        types.InlineKeyboardButton(text="\U00002B05  Back", callback_data="cmd_start") ]
+        types.InlineKeyboardButton(text="\U00002B05  Back", callback_data="switcher_to_main_menu") ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
 

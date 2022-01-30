@@ -70,7 +70,6 @@ async def set_default_language(lang, user_id):
 
 
 async def set_rus_language(call: types.CallbackQuery, state: FSMContext):
-    lang = 'ru'
     user_id = call.from_user.id
     results_user_exists = await check_user_settings_exists(user_id)
 
@@ -94,7 +93,6 @@ async def set_rus_language(call: types.CallbackQuery, state: FSMContext):
 
 
 async def set_eng_language(call: types.CallbackQuery, state: FSMContext):
-    lang = 'en'
     user_id = call.from_user.id
     results_user_exists = await check_user_settings_exists(user_id)
 

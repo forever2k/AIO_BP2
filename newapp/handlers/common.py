@@ -18,7 +18,7 @@ from newapp.loader import user_data, user_data_settings
 from newapp.text_module import selected_text
 
 
-async def cmd_start(message: Union[types.Message, types.CallbackQuery], state: FSMContext):
+async def cmd_start(message: types.Message, state: FSMContext):
     await state.finish()
 
     lang = await check_current_user_language(message)
@@ -26,14 +26,10 @@ async def cmd_start(message: Union[types.Message, types.CallbackQuery], state: F
 
     # await bot.send_message(test_group, lang)
 
-    keyboard = await main_menu_inline_keyboard()
+    keyboard = await main_menu_inline_keyboard(text)
 
-    if isinstance(message, types.CallbackQuery):
-        call = message
-        message = call.message
-
-    await message.answer(f"{text['First'][0]} {message.chat.first_name}!\n"
-                         f"{text['First'][1]}",
+    await message.answer(f"{text['first'][0]} {message.chat.first_name}!\n"
+                         f"{text['first'][1]}",
                          reply_markup=keyboard)
 
     # await set_default_language(message)
@@ -56,8 +52,14 @@ async def description(call: types.CallbackQuery):
 
 
 async def settings(call: types.CallbackQuery):
+
+    lang = await check_current_user_language(call)
+    text = await selected_text(lang)
+
     keyboard = await settings_menu()
-    await bot.edit_message_text("\U0001F4E2 Choose language", chat_id=call.message.chat.id, message_id=call.message.message_id,
+    await bot.edit_message_text(text['settings_menu'][0],
+                                chat_id=call.message.chat.id,
+                                message_id=call.message.message_id,
                                         reply_markup=keyboard)
 
 # async def set_russian(call: types.CallbackQuery):

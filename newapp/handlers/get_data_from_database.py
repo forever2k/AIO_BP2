@@ -6,12 +6,13 @@ from aiogram.utils import exceptions
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
 from newapp.handlers.get_data_from_user import write_to_database
+from newapp.language_module import check_current_user_language
 from newapp.loader import *
 from newapp.keyboards import main_menu_inline_keyboard, send_poll_menu
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
 # available_answers = ["ответ1", "ответ2", "ответ3"]
-
+from newapp.text_module import selected_text
 
 cursor = dbase.cursor()
 
@@ -273,7 +274,10 @@ async def get_last_user_session_id(message: types.Message):
 
 async def get_data_for_user(message: types.Message = None, call: types.CallbackQuery = None, user_id=None, session_id=None):
 
-    keyboard = await main_menu_inline_keyboard()
+    lang = await check_current_user_language(message)
+    text = await selected_text(lang)
+
+    keyboard = await main_menu_inline_keyboard(text)
 
     if isinstance(message, types.CallbackQuery):
         message = message.message

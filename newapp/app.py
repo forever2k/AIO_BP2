@@ -92,7 +92,7 @@ dp.register_message_handler(close_session, lambda message: message.text == "\U00
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 
-dp.register_callback_query_handler(cmd_start, text="cmd_start")
+# dp.register_callback_query_handler(cmd_start, text="cmd_start")
 dp.register_callback_query_handler(start_session, text="start_session")
 dp.register_callback_query_handler(close_session, text="close_session")
 dp.register_callback_query_handler(description, text="description")

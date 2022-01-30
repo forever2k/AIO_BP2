@@ -21,28 +21,17 @@ from newapp.text_module import selected_text
 async def cmd_start(message: Union[types.Message, types.CallbackQuery], state: FSMContext):
     await state.finish()
 
-    if isinstance(message, types.Message):
-        user_id = message.from_user.id
-        locale = message.from_user.locale
-        lang = locale.language
-
-        await bot.send_message(test_group, user_id)
-        await bot.send_message(test_group, locale.language)
-
-    elif isinstance(message, types.CallbackQuery):
-        call = message
-        locale = call.from_user.locale
-        lang = locale.language
-        user_id = call.from_user.id
-        message = call.message
-
-        await bot.send_message(test_group, user_id)
-        await bot.send_message(test_group, locale.language)
-
-    lang = await check_current_user_language(lang, user_id)
+    lang = await check_current_user_language(message)
     text = await selected_text(lang)
 
+    # await bot.send_message(test_group, lang)
+
     keyboard = await main_menu_inline_keyboard()
+
+    if isinstance(message, types.CallbackQuery):
+        call = message
+        message = call.message
+
     await message.answer(f"{text['First'][0]} {message.chat.first_name}!\n"
                          f"{text['First'][1]}",
                          reply_markup=keyboard)

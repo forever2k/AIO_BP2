@@ -5,13 +5,16 @@ from newapp.bt import bot
 from newapp.config import test_group
 from newapp.handlers.get_data_from_database import get_data_for_user
 from newapp.keyboards import main_menu_inline_keyboard
+from newapp.language_module import check_current_user_language
 from newapp.text_module import selected_text
 
 
 async def switcher_to_main_menu(message: Union[types.Message,
-                                               types.CallbackQuery], lang,
+                                               types.CallbackQuery],
                                 state: FSMContext):
     await state.finish()
+
+    lang = await check_current_user_language(message)
     text = await selected_text(lang)
 
     keyboard = await main_menu_inline_keyboard()

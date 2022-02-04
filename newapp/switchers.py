@@ -40,4 +40,4 @@ async def switcher_to_main_menu(message: Union[types.Message,
 
 async def switcher_get_data_for_user(call: types.CallbackQuery):
     user_id = call.from_user.id
-    await get_data_for_user(call.message, user_id=user_id)
+    await get_data_for_user(call, user_id=user_id)

@@ -88,7 +88,7 @@ async def set_rus_language(call: types.CallbackQuery, state: FSMContext):
 
     await set_users_dictionary(user_id, lang='ru')
 
-    from newapp.menu_switchers import switcher_to_main_menu
+    from newapp.switchers import switcher_to_main_menu
     await switcher_to_main_menu(call, state)
 
 
@@ -110,7 +110,7 @@ async def set_eng_language(call: types.CallbackQuery, state: FSMContext):
 
     await set_users_dictionary(user_id, lang='en')
 
-    from newapp.menu_switchers import switcher_to_main_menu
+    from newapp.switchers import switcher_to_main_menu
     await switcher_to_main_menu(call, state)
 
 

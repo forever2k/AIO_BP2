@@ -26,11 +26,12 @@ async def main_menu_usual_keyboard():
     return keyboard
 
 
-async def description_menu():
+async def description_menu(text):
     # await call.answer(text="\U0001F603 Buy!", show_alert=True)
     # или просто await call.answer()
     buttons = [
-        types.InlineKeyboardButton(text="\U00002B05  Back", callback_data="switcher_to_main_menu") ]
+        types.InlineKeyboardButton(text=text['description_menu'][0],
+                                   callback_data="switcher_to_main_menu") ]
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     keyboard.add(*buttons)
 
@@ -60,9 +61,10 @@ async def ask_for_answer_menu():
     return keyboard
 
 
-async def settings_menu():
+async def settings_menu(text):
     buttons = [
-        types.InlineKeyboardButton(text="🇷🇺 Русский", callback_data="set_rus_language"),
+        types.InlineKeyboardButton(text=text['settings_menu'][1],
+                                   callback_data="set_rus_language"),
         types.InlineKeyboardButton(text="🇬🇧 English", callback_data="set_eng_language")
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=3)

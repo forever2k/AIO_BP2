@@ -14,7 +14,14 @@ async def russian_text():
                                                        "последний вопрос",
                           "\U0001F4D5  Описание",
                           "\U00002699 Настройки"],
-            'settings_menu': ["\U0001F4E2 Выбирите язык"]}
+            'settings_menu': ["\U0001F4E2 Выбирите язык", "🇷🇺 Русский"],
+            'description_menu': ["\U00002B05  Назад", "\U0001F4E2 Это "
+                                                      "описание"],
+
+            'last_quize': ["\U0001F929 Последний КВИЗ:", "🔸 Дата и время:",
+                                              "🔸 вопрос:", "🔸 ответ 1:",
+                           "🔸 ответ 2:", "🔸 ответ 3:", "🔸 ответ 4:", "🔸 Что "
+                                                                        "хотите еще?"]}
     return text
 
 
@@ -24,7 +31,13 @@ async def english_text():
                                                         "quiz",
                           "\U0001F4D5  Description",
                           "\U00002699 Settings"],
-            'settings_menu': ["\U0001F4E2 Choose language"]}
+            'settings_menu': ["\U0001F4E2 Choose language", "🇷🇺 Russian"],
+            'description_menu': ["\U00002B05  Back", "\U0001F4E2 It`s the "
+                                                     "description"],
+            'last_quize': ["\U0001F929 LAST QUIZ:", "🔸 Date & time:",
+                                              "🔸 question:", "🔸 answer 1:",
+                           "🔸 answer 2:", "🔸 answer 3:", "🔸 answer 4:",
+                           "🔸 What do you want else?"]}
     return text
 
     buttons = [

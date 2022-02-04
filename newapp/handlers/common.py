@@ -41,8 +41,14 @@ async def cmd_cancel(message: types.Message, state: FSMContext):
 
 
 async def description(call: types.CallbackQuery):
-    keyboard = await description_menu()
-    await bot.edit_message_text("\U0001F4E2 It`s the description", chat_id=call.message.chat.id, message_id=call.message.message_id,
+
+    lang = await check_current_user_language(call)
+    text = await selected_text(lang)
+    keyboard = await description_menu(text)
+
+    await bot.edit_message_text(text["description_menu"][1],
+                                chat_id=call.message.chat.id,
+                                message_id=call.message.message_id,
                                         reply_markup=keyboard)
 
     # await bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
@@ -56,7 +62,7 @@ async def settings(call: types.CallbackQuery):
     lang = await check_current_user_language(call)
     text = await selected_text(lang)
 
-    keyboard = await settings_menu()
+    keyboard = await settings_menu(text)
     await bot.edit_message_text(text['settings_menu'][0],
                                 chat_id=call.message.chat.id,
                                 message_id=call.message.message_id,

@@ -272,7 +272,10 @@ async def get_last_user_session_id(message: types.Message):
     user_id = message.from_user.id
 
 
-async def get_data_for_user(message: types.Message = None, call: types.CallbackQuery = None, user_id=None, session_id=None):
+async def get_data_for_user(message, user_id=None,
+                            session_id=None):
+
+    # await bot.send_message(test_group, message)
 
     lang = await check_current_user_language(message)
     text = await selected_text(lang)
@@ -295,14 +298,15 @@ async def get_data_for_user(message: types.Message = None, call: types.CallbackQ
         answer4 = quiz[6] if quiz[6] != None else '-'
 
 
-        await bot.edit_message_text(f'\U0001F929 LAST QUIZ:  \n' 
-                             f'🔸 Date & time: {date} {time} \n' 
-                             f'🔸 question: {quiz[1]} \n'
-                             f'🔸 answer 1: {quiz[2]} \n'
-                             f'🔸 answer 2: {quiz[4]} \n'
-                             f'🔸 answer 3: {answer3} \n'
-                             f'🔸 answer 4: {answer4} \n\n'
-                             f'🔸 What do you want else?', chat_id=message.chat.id,
+        await bot.edit_message_text(f'{text["last_quize"][0]}  \n' 
+                             f'{text["last_quize"][1]} {date} {time} \n' 
+                             f'{text["last_quize"][2]} {quiz[1]} \n'
+                             f'{text["last_quize"][3]} {quiz[2]} \n'
+                             f'{text["last_quize"][4]} {quiz[4]} \n'
+                             f'{text["last_quize"][5]} {answer3} \n'
+                             f'{text["last_quize"][6]} {answer4} \n\n'
+                             f'{text["last_quize"][7]}',
+                                    chat_id=message.chat.id,
                                     message_id=message.message_id,
                                     reply_markup=keyboard)
 

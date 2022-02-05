@@ -6,13 +6,14 @@ from aiogram.utils import exceptions
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
 from newapp.keyboards import ask_for_answer_menu
+from newapp.language_module import check_current_user_language
 from newapp.loader import *
 import time
 from typing import Union
 
 # available_questions = ["вопрос1", "вопрос3", "вопрос3"]
 # available_answers = ["ответ1", "ответ2", "ответ3"]
-
+from newapp.text_module import selected_text
 
 cursor = dbase.cursor()
 
@@ -29,24 +30,30 @@ async def start_session(call: types.CallbackQuery):
     #     keyboard.add(name)
     # await call.message.answer("Send me your question:", reply_markup=keyboard)
 
+    lang = await check_current_user_language(call)
+    text = await selected_text(lang)
+
     await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
 
 
     # await bot.edit_message_text("Send me your question here:", chat_id=call.message.chat.id,
     #                             message_id=call.message.message_id, reply_markup=keyboard)
 
-    await call.message.answer("Send me your question here:")
+    await call.message.answer(text["ask_world"][0])
     await GetData.waiting_for_get_question.set()
     # await call.answer(text="Thanks!", show_alert=True)
     # или просто await call.answer()
 
 
 async def get_question(message: types.Message, state: FSMContext, user_data=user_data):
+    lang = await check_current_user_language(message)
+    text = await selected_text(lang)
+
     if len(message.text) < 5:
-        await message.answer("You wrote a very short answer. Please try again.")
+        await message.answer(text["ask_world"][1])
         return
     elif len(message.text) > 500:
-        await message.answer("You wrote a very big answer. Please try again.")
+        await message.answer(text["ask_world"][2])
         return
     else:
         user_id = message.from_user.id
@@ -69,31 +76,37 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
     #     keyboard.add(size)
     # await GetData.waiting_for_write_answer.set()
     # await message.answer("Now write your ANSWER", reply_markup=keyboard)
-        await message.answer("You need to write from 2 to 4 answers\n"
-                             "Now write and send your First Answer:")
+        await message.answer(f'{text["ask_world"][5]}'
+                             f'{text["ask_world"][6]}')
         await ask_answer(message)
 
 
 async def ask_for_answer(message: types.Message, number_answer):
+    lang = await check_current_user_language(message)
+    text = await selected_text(lang)
     keyboard = await ask_for_answer_menu()
-    await message.answer(f"Do you want to write down your {number_answer} answer?", reply_markup=keyboard)
+    await message.answer(f'{text["ask_world"][10]} {number_answer}?',
+                         reply_markup=keyboard)
 
 
 
 
 async def ask_answer(message: types.Message):
+    lang = await check_current_user_language(message)
+    text = await selected_text(lang)
+
     try:
         user_id = message.from_user.id
         user = user_data[user_id]
         if user.answer1 == '':
             await get_answer(message, edit_indication='no')
         elif user.answer2 == '':
-            await message.answer("Now write and send your Second Answer:")
+            await message.answer(text["ask_world"][7])
             await get_answer(message, edit_indication='no')
         elif user.answer3 == '':
-            await ask_for_answer(message, "Third")
+            await ask_for_answer(message, text["ask_world"][8])
         elif user.answer4 == '':
-            await ask_for_answer(message, "Fourth")
+            await ask_for_answer(message, text["ask_world"][9])
 
         # if user.answer1 == '' or user.answer2 == '' or user.answer3 == '' or user.answer4 == '':
         #     buttons = [
@@ -128,11 +141,14 @@ async def get_answer(message: Union[types.Message, types.CallbackQuery], edit_in
 
 
 async def write_answer(message: types.Message, state: FSMContext):
+    lang = await check_current_user_language(message)
+    text = await selected_text(lang)
+
     if len(message.text) < 2:
-        await message.answer("You wrote a very short answer. Please try again.")
+        await message.answer(text["ask_world"][3])
         return
     elif len(message.text) > 100:
-        await message.answer("You wrote a very big answer. Please try again.")
+        await message.answer(text["ask_world"][4])
         return
     # await state.update_data(chosen_answer=message.text.lower())
     # user_data = await state.get_data()

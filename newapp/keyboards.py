@@ -1,5 +1,7 @@
 from aiogram import types
 
+from newapp.loader import cb, cb_number_answer
+
 
 async def main_menu_inline_keyboard(text):
     buttons = [
@@ -50,10 +52,11 @@ async def send_poll_menu(session_id):
     return keyboard
 
 
-async def ask_for_answer_menu():
+async def ask_for_answer_menu(text, number_answer):
     buttons = [
-        types.InlineKeyboardButton(text="Yes", callback_data="get_answer"),
-        types.InlineKeyboardButton(text="No", callback_data="notice_to_admin")
+        types.InlineKeyboardButton(text=text['various'][0], callback_data=cb_number_answer.new(number_answer=number_answer)),
+        types.InlineKeyboardButton(text=text['various'][1],
+                                   callback_data="notice_to_admin")
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=3)
     keyboard.add(*buttons)

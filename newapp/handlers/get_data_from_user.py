@@ -84,7 +84,7 @@ async def get_question(message: types.Message, state: FSMContext, user_data=user
 async def ask_for_answer(message: types.Message, number_answer):
     lang = await check_current_user_language(message)
     text = await selected_text(lang)
-    keyboard = await ask_for_answer_menu()
+    keyboard = await ask_for_answer_menu(text, number_answer)
     await message.answer(f'{text["ask_world"][10]} {number_answer}?',
                          reply_markup=keyboard)
 
@@ -104,9 +104,11 @@ async def ask_answer(message: types.Message):
             await message.answer(text["ask_world"][7])
             await get_answer(message, edit_indication='no')
         elif user.answer3 == '':
-            await ask_for_answer(message, text["ask_world"][8])
+            number_answer = 'Third'
+            await ask_for_answer(message, number_answer, text["ask_world"][8])
         elif user.answer4 == '':
-            await ask_for_answer(message, text["ask_world"][9])
+            number_answer = 'Fourth'
+            await ask_for_answer(message, number_answer, text["ask_world"][9])
 
         # if user.answer1 == '' or user.answer2 == '' or user.answer3 == '' or user.answer4 == '':
         #     buttons = [
@@ -126,6 +128,8 @@ async def ask_answer(message: types.Message):
 
 
 async def get_answer(message: Union[types.Message, types.CallbackQuery], edit_indication=None):
+    lang = await check_current_user_language(message)
+    text = await selected_text(lang)
 
     if isinstance(message, types.CallbackQuery):
         message = message.message
@@ -134,7 +138,8 @@ async def get_answer(message: Union[types.Message, types.CallbackQuery], edit_in
     if edit_indication=='no':
         pass
     else:
-        await bot.edit_message_text("Now write your next ANSWER:", chat_id=message.chat.id,
+        await bot.edit_message_text(text["ask_world"][11],
+                                    chat_id=message.chat.id,
                                     message_id=message.message_id)
 
     await GetData.waiting_for_write_answer.set()
@@ -181,7 +186,7 @@ async def write_answer(message: types.Message, state: FSMContext):
             await write_to_database(message, user.session_id, user_id, answer4=user.answer4)
 
     except Exception as e:
-        await message.answer("[write_answer] Something went wrong.. Please contact the admin")
+        await message.answer("Something went wrong.. Please contact the admin")
 
     # try:
     #     await message.answer("Is this a mistake????")
@@ -257,7 +262,7 @@ async def write_to_database(message: types.Message, session_id, user_id=None, **
 
 
         except Exception as e:
-            await message.answer("[write_to_database] Something went wrong.. Please contact the admin")
+            await message.answer("Something went wrong.. Please contact the admin")
             # await message.reply(message, 'Something went wrong.. Please contact the admin')
 
 

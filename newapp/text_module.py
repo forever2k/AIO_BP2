@@ -27,10 +27,10 @@ async def russian_text():
                            "Вы написали слишком большой вопрос. Пожалуйста, "
                           "повторите попытку",
                           "Вы написали слишком короткий вариант ответа. "
-                          "Пожалуйста, "
-                          "повторите попытку",
+                          "Пожалуйста, повторите попытку",
                           "Вы написали слишком большой вариант ответа. Пожалуйста, "
                           "повторите попытку",
+                          # 5:
                           "\U0001F7E1 Теперь Вам нужно написать от 2 до 4 "
                                                "вариантов ответов."
                                                "\n",
@@ -39,7 +39,10 @@ async def russian_text():
                           "Ответа:",
                           "Третий вариант Ответа",
                           "Четвертый вариант Ответа",
-                          "\U0001F7E1 Вы хотите записать свой"]}
+                          # 10:
+                          "\U0001F7E1 Вы хотите записать свой",
+                          "\U0001F7E1 Сейчас отправьте свой следующий вариант Ответа"],
+            'various': ["Да", "Нет"]}
     return text
 
 
@@ -63,14 +66,17 @@ async def english_text():
                           "again",
                           "You wrote a very big possible answer. Please try "
                           "again",
+                          #5:
                           "\U0001F7E1 Now you need to write from 2 to 4 "
-                          "possible "
-                          "answers.\n",
+                          "possible answers.\n",
                           "Now send your First possible Answer:",
                           "\U0001F7E1 Now send your Second possible Answer:",
                           "Third possible Answer",
                           "Fourth possible Answer",
-                          "\U0001F7E1 Do you want to write down your"]}
+                          #10:
+                          "\U0001F7E1 Do you want to write down your",
+                          "\U0001F7E1 Now write your next ANSWER:"],
+            'various': ["Yes", "No"]}
     return text
 
     buttons = [

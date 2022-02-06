@@ -38,3 +38,4 @@ class Admin:
 
 
 cb = CallbackData("transfer_session_id", "session_id")
+cb_number_answer = CallbackData("transfer_number_of_answer", "number_answer")

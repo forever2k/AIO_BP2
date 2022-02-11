@@ -41,7 +41,11 @@ async def russian_text():
                           "Четвертый вариант Ответа",
                           # 10:
                           "\U0001F7E1 Вы хотите записать свой",
-                          "\U0001F7E1 Сейчас отправьте свой следующий вариант Ответа"],
+                          "вариант Ответа?",
+                          "Третий",
+                          "Четвертый",
+                          "Отправьте свой",
+                          "вариант Ответа:"],
             'various': ["Да", "Нет"]}
     return text
 
@@ -75,14 +79,18 @@ async def english_text():
                           "Fourth possible Answer",
                           #10:
                           "\U0001F7E1 Do you want to write down your",
-                          "\U0001F7E1 Now write your next ANSWER:"],
+                          "possible Answer?",
+                          "Third",
+                          "Fourth",
+                          "Send your",
+                          "possible Answer:"],
             'various': ["Yes", "No"]}
     return text
 
-    buttons = [
-        types.InlineKeyboardButton(text="\U00002618  Ask a question", callback_data="start_session"),
-        types.InlineKeyboardButton(text="\U0001F3F5  See my last quiz", callback_data="switcher_get_data_for_user"),
-        types.InlineKeyboardButton(text="\U0001F4D5  Description",
-                                   callback_data="description"),
-        types.InlineKeyboardButton(text="\U00002699 Settings", callback_data="settings")
-    ]
+    # buttons = [
+    #     types.InlineKeyboardButton(text="\U00002618  Ask a question", callback_data="start_session"),
+    #     types.InlineKeyboardButton(text="\U0001F3F5  See my last quiz", callback_data="switcher_get_data_for_user"),
+    #     types.InlineKeyboardButton(text="\U0001F4D5  Description",
+    #                                callback_data="description"),
+    #     types.InlineKeyboardButton(text="\U00002699 Settings", callback_data="settings")
+    # ]

@@ -85,7 +85,8 @@ async def ask_for_answer(message: types.Message, number_answer):
     lang = await check_current_user_language(message)
     text = await selected_text(lang)
     keyboard = await ask_for_answer_menu(text, number_answer)
-    await message.answer(f'{text["ask_world"][10]} {number_answer}?',
+    await message.answer(f'{text["ask_world"][10]} {number_answer} '
+                         f'{text["ask_world"][11]}',
                          reply_markup=keyboard)
 
 
@@ -104,11 +105,11 @@ async def ask_answer(message: types.Message):
             await message.answer(text["ask_world"][7])
             await get_answer(message, edit_indication='no')
         elif user.answer3 == '':
-            number_answer = 'Third'
-            await ask_for_answer(message, number_answer, text["ask_world"][8])
+            number_answer = text["ask_world"][12]
+            await ask_for_answer(message, number_answer)
         elif user.answer4 == '':
-            number_answer = 'Fourth'
-            await ask_for_answer(message, number_answer, text["ask_world"][9])
+            number_answer = text["ask_world"][13]
+            await ask_for_answer(message, number_answer)
 
         # if user.answer1 == '' or user.answer2 == '' or user.answer3 == '' or user.answer4 == '':
         #     buttons = [
@@ -127,7 +128,9 @@ async def ask_answer(message: types.Message):
 
 
 
-async def get_answer(message: Union[types.Message, types.CallbackQuery], edit_indication=None):
+async def get_answer(message: Union[types.Message, types.CallbackQuery],
+                     callback_data: dict = None, edit_indication=None):
+
     lang = await check_current_user_language(message)
     text = await selected_text(lang)
 
@@ -138,7 +141,15 @@ async def get_answer(message: Union[types.Message, types.CallbackQuery], edit_in
     if edit_indication=='no':
         pass
     else:
-        await bot.edit_message_text(text["ask_world"][11],
+
+        try:
+            number_answer = callback_data["number_answer"]
+        except Exception as e:
+            await bot.send_message(test_group, "[get_answer] Something went "
+                                               "wrong.. Please "
+                                               "contact the admin")
+
+        await bot.edit_message_text(f'{text["ask_world"][14]} {number_answer} {text["ask_world"][15]}',
                                     chat_id=message.chat.id,
                                     message_id=message.message_id)
 

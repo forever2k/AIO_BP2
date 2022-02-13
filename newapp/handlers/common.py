@@ -12,6 +12,7 @@ from newapp.config import test_group
 import json
 from aiogram.utils.markdown import link
 from newapp.handlers.get_data_from_database import get_data_for_user
+from newapp.handlers.get_data_from_user import thanks_to_user
 from newapp.keyboards import main_menu_inline_keyboard, description_menu, settings_menu
 from newapp.language_module import check_current_user_language
 from newapp.loader import user_data, user_data_settings
@@ -80,7 +81,10 @@ async def close_session(call: types.CallbackQuery):
     # или просто await call.answer()
 
 
-async def notice_to_admin(call: types.CallbackQuery):
+async def notice_to_admin(call: types.CallbackQuery=None):
+
+    await thanks_to_user(call)
+
     user_id = call.from_user.id
     user = user_data[user_id]
 

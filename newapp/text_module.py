@@ -45,7 +45,11 @@ async def russian_text():
                           "Третий",
                           "Четвертый",
                           "Отправьте свой",
-                          "вариант Ответа:"],
+                          # 15:
+                          "вариант Ответа:",
+                          "Спасибо! Ваш КВИЗ записан и отправлен на "
+                          "рассмотрение.\n"
+                          "После прохождения модерации мы опубликуем его"],
             'various': ["Да", "Нет"]}
     return text
 
@@ -83,7 +87,12 @@ async def english_text():
                           "Third",
                           "Fourth",
                           "Send your",
-                          "possible Answer:"],
+                          #15:
+                          "possible Answer:",
+                          "Thanks! Your QUIZ has been recorded and submitted "
+                          "for review\n"
+                          "After passing the moderation procedure, we will "
+                          "publish it"],
             'various': ["Yes", "No"]}
     return text
 

@@ -283,6 +283,7 @@ async def write_to_database(message: types.Message, session_id, user_id=None, **
 
 
 async def thanks_to_user(message: Union[types.Message, types.CallbackQuery]):
+
     lang = await check_current_user_language(message)
     text = await selected_text(lang)
 

@@ -40,17 +40,18 @@ async def russian_text():
                           "Третий вариант Ответа",
                           "Четвертый вариант Ответа",
                           # 10:
-                          "\U0001F7E1 Вы хотите записать свой",
+                          "Вы хотите записать свой",
                           "вариант Ответа?",
                           "Третий",
                           "Четвертый",
-                          "Отправьте свой",
+                          "\U0001F7E1 Сейчас отправьте свой",
                           # 15:
                           "вариант Ответа:",
                           "Спасибо! Ваш КВИЗ записан и отправлен на "
                           "рассмотрение.\n"
                           "После прохождения модерации мы опубликуем его"],
-            'various': ["Да", "Нет"]}
+            'various': ["Да", "Нет"],
+            'close_session': ["Сессия завершена", "\U0001F603 Пока!"]}
     return text
 
 
@@ -82,18 +83,19 @@ async def english_text():
                           "Third possible Answer",
                           "Fourth possible Answer",
                           #10:
-                          "\U0001F7E1 Do you want to write down your",
+                          "Do you want to write down your",
                           "possible Answer?",
                           "Third",
                           "Fourth",
-                          "Send your",
+                          "\U0001F7E1 Now send your",
                           #15:
                           "possible Answer:",
                           "Thanks! Your QUIZ has been recorded and submitted "
-                          "for review\n"
+                          "for review.\n"
                           "After passing the moderation procedure, we will "
                           "publish it"],
-            'various': ["Yes", "No"]}
+            'various': ["Yes", "No"],
+            'close_session': ["Session is finished", "\U0001F603 Buy!"]}
     return text
 
     # buttons = [

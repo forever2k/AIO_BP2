@@ -38,7 +38,8 @@ async def cmd_start(message: types.Message, state: FSMContext):
 
 async def cmd_cancel(message: types.Message, state: FSMContext):
     await state.finish()
-    await message.answer("Action canceled", reply_markup=types.ReplyKeyboardRemove())
+    await close_session(message)
+    # await message.answer("Action canceled", reply_markup=types.ReplyKeyboardRemove())
 
 
 async def description(call: types.CallbackQuery):
@@ -75,15 +76,33 @@ async def settings(call: types.CallbackQuery):
 #     cursor.execute(data_by_session_id, (session_id,))
 
 
-async def close_session(call: types.CallbackQuery):
-    await call.message.answer("It`s the close_session")
-    await call.answer(text="\U0001F603 Buy!", show_alert=True)
+async def close_session(message: Union[types.Message, types.CallbackQuery]):
+
+    lang = await check_current_user_language(message)
+    text = await selected_text(lang)
+
+    if isinstance(message, types.CallbackQuery):
+        call = message
+        message = message.message
+
+    await bot.delete_message(chat_id=message.chat.id,
+                             message_id=message.message_id)
+
+    # await bot.edit_message_text(text["close_session"][0],
+    #                             chat_id=message.chat.id,
+    #                             message_id=message.message_id,
+    #                             reply_markup=types.ReplyKeyboardRemove())
+
+    await message.answer(text["close_session"][0], reply_markup=types.ReplyKeyboardRemove())
+
+    try:
+        await call.answer(text=text["close_session"][1], show_alert=True)
+    except:
+        pass
     # или просто await call.answer()
 
 
 async def notice_to_admin(call: types.CallbackQuery=None):
-
-    await thanks_to_user(call)
 
     user_id = call.from_user.id
     user = user_data[user_id]
@@ -94,6 +113,7 @@ async def notice_to_admin(call: types.CallbackQuery=None):
         # await bot.send_message(test_group, 'New question was recevied')
         # await bot.send_message(me, 'New question was recevied')
         await close_session(call)
+        await thanks_to_user(call)
 
     except exceptions.BotBlocked:
         logging.error(f"Target [ID:{test_group}]: blocked by user")

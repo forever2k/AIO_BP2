@@ -51,7 +51,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 async def set_commands(bot: Bot):
     commands = [
-        BotCommand(command="/ask", description="Ask a question"),
+        BotCommand(command="/start", description="Start"),
         BotCommand(command="/cancel", description="Cancel"),
         # BotCommand(command="/rrrr", description="rrrr")
 

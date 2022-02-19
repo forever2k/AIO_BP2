@@ -5,6 +5,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
 from newapp.bt import bot
 from newapp.config import dbase, test_group, me
+from newapp.handlers.common import thanks_to_user
 from newapp.keyboards import ask_for_answer_menu
 from newapp.language_module import check_current_user_language
 from newapp.loader import *
@@ -281,21 +282,6 @@ async def write_to_database(message: types.Message, session_id, user_id=None, **
         # await message.answer("check_session_query_val != 0 ! ! ! ")
         # await message.reply(message, 'check_session_query_val != 0 ! ! ! ')
 
-
-async def thanks_to_user(message: Union[types.Message, types.CallbackQuery]):
-
-    lang = await check_current_user_language(message)
-    text = await selected_text(lang)
-
-    if isinstance(message, types.Message):
-        user_id = message.from_user.id
-
-    elif isinstance(message, types.CallbackQuery):
-        call = message
-        user_id = call.from_user.id
-        message = call.message
-
-    await message.answer(text["ask_world"][16])
 
 
 

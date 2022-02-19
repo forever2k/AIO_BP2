@@ -111,6 +111,7 @@ dp.register_callback_query_handler(switcher_get_data_for_user, text="switcher_ge
 dp.register_callback_query_handler(settings, text="settings")
 dp.register_callback_query_handler(set_rus_language, text="set_rus_language")
 dp.register_callback_query_handler(set_eng_language, text="set_eng_language")
+dp.register_callback_query_handler(thanks_to_user, text="thanks_to_user")
 
 async def main():
 

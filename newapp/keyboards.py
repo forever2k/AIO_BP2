@@ -56,7 +56,7 @@ async def ask_for_answer_menu(text, number_answer):
     buttons = [
         types.InlineKeyboardButton(text=text['various'][0], callback_data=cb_number_answer.new(number_answer=number_answer)),
         types.InlineKeyboardButton(text=text['various'][1],
-                                   callback_data="notice_to_admin")
+                                   callback_data="thanks_to_user")
     ]
     keyboard = types.InlineKeyboardMarkup(row_width=3)
     keyboard.add(*buttons)

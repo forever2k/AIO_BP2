@@ -10,9 +10,6 @@ from aiogram.utils.exceptions import BotBlocked
 from newapp.bt import bot
 from newapp.config import test_group
 import json
-from aiogram.utils.markdown import link
-from newapp.handlers.get_data_from_database import get_data_for_user
-from newapp.handlers.get_data_from_user import thanks_to_user
 from newapp.keyboards import main_menu_inline_keyboard, description_menu, settings_menu
 from newapp.language_module import check_current_user_language
 from newapp.loader import user_data, user_data_settings
@@ -102,9 +99,26 @@ async def close_session(message: Union[types.Message, types.CallbackQuery]):
     # или просто await call.answer()
 
 
-async def notice_to_admin(call: types.CallbackQuery=None):
+async def thanks_to_user(message: Union[types.Message, types.CallbackQuery]):
+    lang = await check_current_user_language(message)
+    text = await selected_text(lang)
 
-    user_id = call.from_user.id
+    if isinstance(message, types.Message):
+        user_id = message.from_user.id
+
+    elif isinstance(message, types.CallbackQuery):
+        call = message
+        user_id = call.from_user.id
+        message = call.message
+
+    await message.answer(text["ask_world"][16])
+    await close_session(message)
+    await notice_to_admin(message)
+
+
+async def notice_to_admin(message: types.Message):
+
+    user_id = message.chat.id
     user = user_data[user_id]
 
     try:
@@ -112,12 +126,11 @@ async def notice_to_admin(call: types.CallbackQuery=None):
         await bot.send_message(test_group, f"A new message has been received with Session_id = {user.session_id}", disable_notification=False)
         # await bot.send_message(test_group, 'New question was recevied')
         # await bot.send_message(me, 'New question was recevied')
-        await close_session(call)
-        await thanks_to_user(call)
+        # await thanks_to_user(call)
 
     except exceptions.BotBlocked:
         logging.error(f"Target [ID:{test_group}]: blocked by user")
-        await close_session(call)
+        # await close_session(call)
 
 
 

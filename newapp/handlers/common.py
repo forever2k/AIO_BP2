@@ -147,7 +147,6 @@ async def notice_to_admin(message: types.Message):
 
 
 
-
 # async def cmd_random(message: types.Message):
 #     keyboard = types.InlineKeyboardMarkup()
 #     keyboard.add(types.InlineKeyboardButton(text="Press me", callback_data="random_value"))

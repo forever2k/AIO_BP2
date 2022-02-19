@@ -75,8 +75,18 @@ async def settings(call: types.CallbackQuery):
 
 async def close_session(message: Union[types.Message, types.CallbackQuery]):
 
+    # await bot.send_message(test_group, "HERE 111")
+    # await bot.send_message(test_group, message)
+    #
+    # if isinstance(message, types.CallbackQuery):
+    #     await bot.send_message(test_group, "HERE 333")
+    #     call = message
+    #     message = message.message
+
     lang = await check_current_user_language(message)
     text = await selected_text(lang)
+
+    # await bot.send_message(test_group, "HERE 222")
 
     if isinstance(message, types.CallbackQuery):
         call = message
@@ -103,13 +113,16 @@ async def thanks_to_user(message: Union[types.Message, types.CallbackQuery]):
     lang = await check_current_user_language(message)
     text = await selected_text(lang)
 
-    if isinstance(message, types.Message):
-        user_id = message.from_user.id
-
-    elif isinstance(message, types.CallbackQuery):
-        call = message
-        user_id = call.from_user.id
-        message = call.message
+    # if isinstance(message, types.Message):
+    #     user_id = message.from_user.id
+    #
+    # elif isinstance(message, types.CallbackQuery):
+    #     await bot.send_message(test_group, f"HERE 8888")
+    #     await bot.send_message(test_group, message)
+    #
+    #     call = message
+    #     user_id = call.from_user.id
+    #     message = call.message
 
     await message.answer(text["ask_world"][16])
     await close_session(message)
@@ -118,7 +131,7 @@ async def thanks_to_user(message: Union[types.Message, types.CallbackQuery]):
 
 async def notice_to_admin(message: types.Message):
 
-    user_id = message.chat.id
+    user_id = message.from_user.id
     user = user_data[user_id]
 
     try:

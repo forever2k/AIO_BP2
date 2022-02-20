@@ -113,20 +113,20 @@ async def thanks_to_user(message: Union[types.Message, types.CallbackQuery]):
     lang = await check_current_user_language(message)
     text = await selected_text(lang)
 
+    await notice_to_admin(message)
+
     # if isinstance(message, types.Message):
     #     user_id = message.from_user.id
     #
-    # elif isinstance(message, types.CallbackQuery):
-    #     await bot.send_message(test_group, f"HERE 8888")
-    #     await bot.send_message(test_group, message)
-    #
-    #     call = message
-    #     user_id = call.from_user.id
-    #     message = call.message
+    if isinstance(message, types.CallbackQuery):
+        call = message
+        message = call.message
+
+        await bot.delete_message(chat_id=message.chat.id,
+                                 message_id=message.message_id)
 
     await message.answer(text["ask_world"][16])
-    await close_session(message)
-    await notice_to_admin(message)
+
 
 
 async def notice_to_admin(message: types.Message):
@@ -136,7 +136,11 @@ async def notice_to_admin(message: types.Message):
 
     try:
         # await call.answer("Is this a mistake????")
-        await bot.send_message(test_group, f"A new message has been received with Session_id = {user.session_id}", disable_notification=False)
+        await bot.send_message(test_group, f"A new message has been received "
+                                           f"with Session_id:", disable_notification=False)
+        await bot.send_message(test_group, user.session_id,
+                               disable_notification=False)
+
         # await bot.send_message(test_group, 'New question was recevied')
         # await bot.send_message(me, 'New question was recevied')
         # await thanks_to_user(call)

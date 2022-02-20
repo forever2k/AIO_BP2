@@ -121,9 +121,9 @@ async def main():
     # dp.register_message_handler(rrr, commands="rrrr")
 
     # Установка команд бота
-    # await set_commands(bot)
+    await set_commands(bot)
 
-    logging.warning('It`s the main fuction. Does it work?')
+    logging.warning('It`s the main function. Does it work?')
 
 
 async def on_startup(dp):

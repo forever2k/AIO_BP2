@@ -1,5 +1,4 @@
 from random import randint
-
 from aiogram.utils.callback_data import CallbackData
 
 

@@ -15,8 +15,14 @@ async def russian_text():
                           "\U0001F4D5  Описание",
                           "\U00002699 Настройки"],
             'settings_menu': ["\U0001F4E2 Выбирите язык", "🇷🇺 Русский"],
-            'description_menu': ["\U00002B05  Назад", "\U0001F4E2 Это "
-                                                      "описание"],
+            'description_menu': ["\U00002B05  Назад",
+                                 "\U0001F4E2  Хотите узнать мнение других людей в отношении своего личного вопроса, но при этом остаться анонимным\U00002753 \U0001F440 \n\n"
+                                 "\U0001F4A0  Тогда оставьте боту-помощнику свой вопрос и от 2 до 4 возможных вариантов ответов - КВИЗ.\n"
+                                 "\U0001F4A0  После того как вопрос и ответы будут проверены модератором, они будут опубликованы в общем чате, где все желающие участники смогут выбрать (проголосовать) один понравившийся вариант ответа.\n"
+                                 "\U0001F4A0  Вам останется лишь наблюдать со стороны за результатами КВИЗа.\n"
+                                 "\U0001F4A0  Дополнительно все желающие, в том числе и Вы, можете оставлять комментарии для каждого КВИЗа и/или дополнять информацию \U0001F525 \n"
+                                 "\U0001F4A0  Время для голосавания ограничено 24 часами \U000023F3 \n\n"
+                                 "\U0001F4A0  Попробуй прямо сейчас! /start \U0001F929 \U0001F929 \U0001F929"],
             'last_quize': ["\U0001F49C Последний КВИЗ:", "🔸 Дата и время:",
                                               "🔸 вопрос:", "🔸 ответ 1:",
                            "🔸 ответ 2:", "🔸 ответ 3:", "🔸 ответ 4:",
@@ -62,8 +68,14 @@ async def english_text():
                           "\U0001F4D5  Description",
                           "\U00002699 Settings"],
             'settings_menu': ["\U0001F4E2 Choose language", "🇷🇺 Russian"],
-            'description_menu': ["\U00002B05  Back", "\U0001F4E2 It`s the "
-                                                     "description"],
+            'description_menu': ["\U00002B05  Back",
+                                 "\U0001F4E2  Do you want to know the opinion of other people regarding your personal question, but at the same time remain anonymous\U00002753 \U0001F440 \n\n"
+                                 "\U0001F4A0  Then leave your question to the assistant bot and from 2 to 4 possible answers - a QUIZ.\n"
+                                 "\U0001F4A0  After the question and answers are checked by the moderator, they will be published in the general chat, where all interested participants will be able to choose (vote) one answer option they like.\n"
+                                 "\U0001F4A0  You will only have to observe the results of the QUIZ from the side.\n"
+                                 "\U0001F4A0  Additionally, everyone, including you, can leave comments for each quiz and/or supplement the information \U0001F525 \n"
+                                 "\U0001F4A0  Voting time is limited to 24 hours \U000023F3 \n\n"
+                                 "\U0001F4A0  Try it right now! /start \U0001F929 \U0001F929 \U0001F929"],
             'last_quize': ["\U0001F49C LAST QUIZ:", "🔸 Date & time:",
                                               "🔸 question:", "🔸 answer 1:",
                            "🔸 answer 2:", "🔸 answer 3:", "🔸 answer 4:",

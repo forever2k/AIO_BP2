@@ -20,7 +20,7 @@ async def send_poll(call: types.CallbackQuery, test_channel=test_channel, admin_
     ANSWER3 = admin_data["answer3"]
     ANSWER4 = admin_data["answer4"]
 
-    close_date = datetime.datetime.now() + datetime.timedelta(minutes=11)
+    close_date = datetime.datetime.now() + datetime.timedelta(minutes=1)
 
     options = []
 
@@ -34,7 +34,7 @@ async def send_poll(call: types.CallbackQuery, test_channel=test_channel, admin_
         options.append(admin_data["answer4"])
 
     try:
-        text = "►►► SEND YOUR OWN POLL HERE ◄◄◄"
+        text = "►►► ОТПРАВИТЬ МОЙ КВИЗ ◄◄◄"
 
         markup = types.InlineKeyboardMarkup()
         switch_button = types.InlineKeyboardButton(text=text, url='https://t.me/Btf2NeDetBot?start')
@@ -47,7 +47,8 @@ async def send_poll(call: types.CallbackQuery, test_channel=test_channel, admin_
         # await bot.send_message(test_channel, '<i>*** Do you want to see your own poll here? ***</i>', reply_markup=markup, parse_mode=types.ParseMode.HTML)
 
     except Exception as e:
-        await call.message.answer("We could not send the Poll :(  Maybe don`t enough answers")
+        await call.message.answer("We could not send the QUIZ :(  Maybe don`t "
+                                  "enough answers")
 
 
 

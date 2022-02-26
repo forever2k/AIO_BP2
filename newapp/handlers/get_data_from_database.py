@@ -297,18 +297,29 @@ async def get_data_for_user(message, user_id=None,
         answer3 = quiz[5] if quiz[5] != None else '-'
         answer4 = quiz[6] if quiz[6] != None else '-'
 
+        await bot.delete_message(chat_id= message.chat.id,
+                                 message_id=message.message_id)
 
-        await bot.edit_message_text(f'{text["last_quize"][0]}  \n' 
+        await message.answer(f'{text["last_quize"][0]}  \n' 
                              f'{text["last_quize"][1]} {date} {time} \n' 
                              f'{text["last_quize"][2]} {quiz[1]} \n'
                              f'{text["last_quize"][3]} {quiz[2]} \n'
                              f'{text["last_quize"][4]} {quiz[4]} \n'
                              f'{text["last_quize"][5]} {answer3} \n'
                              f'{text["last_quize"][6]} {answer4} \n\n'
-                             f'{text["last_quize"][7]}',
-                                    chat_id=message.chat.id,
-                                    message_id=message.message_id,
-                                    reply_markup=keyboard)
+                             f'{text["last_quize"][7]}', reply_markup=keyboard)
+
+        # await bot.edit_message_text(f'{text["last_quize"][0]}  \n'
+        #                      f'{text["last_quize"][1]} {date} {time} \n'
+        #                      f'{text["last_quize"][2]} {quiz[1]} \n'
+        #                      f'{text["last_quize"][3]} {quiz[2]} \n'
+        #                      f'{text["last_quize"][4]} {quiz[4]} \n'
+        #                      f'{text["last_quize"][5]} {answer3} \n'
+        #                      f'{text["last_quize"][6]} {answer4} \n\n'
+        #                      f'{text["last_quize"][7]}',
+        #                             chat_id=message.chat.id,
+        #                             message_id=message.message_id,
+        #                             reply_markup=keyboard)
 
 
         # await message.answer(f'Date & time: {date} {time} \n'

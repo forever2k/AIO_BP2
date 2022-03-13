@@ -34,8 +34,6 @@ async def start_session(call: types.CallbackQuery):
     lang = await check_current_user_language(call)
     text = await selected_text(lang)
 
-    await bot.send_message(test_group, "HERE 2222")
-
     await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
 
 

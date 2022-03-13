@@ -1,7 +1,11 @@
+import random
+
+def define_word(list):
+    num = random.randint(0, len(list)-1)
+    return list[num]
 
 
 async def selected_text(lang):
-
     if lang == 'ru':
         return await russian_text()
     else:
@@ -9,6 +13,7 @@ async def selected_text(lang):
 
 
 async def russian_text():
+
     text = {'first': ['Эй', "Спроси меня и я смогу спросить весь Мир!"],
             'main_menu': ["\U00002618  Спросить Мир", "\U0001F3F5  Мой "
                                                        "последний вопрос",
@@ -18,9 +23,14 @@ async def russian_text():
             'description_menu': ["\U00002B05  Назад",
                                  "\U0001F4E2  Хотите узнать мнение других людей в отношении своего личного вопроса, но при этом остаться анонимным\U00002753 \U0001F440 \n\n"
                                  "\U0001F4A0  Тогда оставьте боту-помощнику свой вопрос и от 2 до 4 возможных вариантов ответов - КВИЗ.\n"
-                                 "\U0001F4A0  После того как вопрос и ответы будут проверены модератором, они будут опубликованы в общем чате, где все желающие участники смогут выбрать (проголосовать) один понравившийся вариант ответа.\n"
+                                 "\U0001F4A0  После того как вопрос и ответы "
+                                 "будут проверены модератором, они будут "
+                                 "опубликованы в общем чате, где все желающие участники смогут выбрать (проголосовать за) один понравившийся вариант ответа.\n"
                                  "\U0001F4A0  Вам останется лишь наблюдать со стороны за результатами КВИЗа.\n"
-                                 "\U0001F4A0  Дополнительно все желающие, в том числе и Вы, можете оставлять комментарии для каждого КВИЗа и/или дополнять информацию \U0001F525 \n"
+                                 "\U0001F4A0  Дополнительно все желающие, "
+                                 "в том числе и Вы, можете оставлять "
+                                 "комментарии для любого КВИЗа и/или дополнять "
+                                 "информацию \U0001F525 \n"
                                  "\U0001F4A0  Время для голосавания ограничено 24 часами \U000023F3 \n\n"
                                  "\U0001F4A0  Попробуй прямо сейчас! /start \U0001F929 \U0001F929 \U0001F929"],
             'last_quize': ["\U0001F49C Последний КВИЗ:", "🔸 Дата и время:",
@@ -53,8 +63,7 @@ async def russian_text():
                           "\U0001F7E1 Сейчас отправьте свой",
                           # 15:
                           "вариант Ответа:",
-                          "Спасибо! Ваш КВИЗ записан и отправлен на "
-                          "рассмотрение.\n"
+                          f"Спасибо! Ваш {define_word(['чудесный', 'классный', 'очаровательный', 'восхитительный'])} КВИЗ отправлен на рассмотрение.\n"
                           "После прохождения модерации мы опубликуем его"],
             'various': ["Да", "Нет"],
             'close_session': ["Сессия завершена", "\U0001F603 Пока!"]}
@@ -71,9 +80,15 @@ async def english_text():
             'description_menu': ["\U00002B05  Back",
                                  "\U0001F4E2  Do you want to know the opinion of other people regarding your personal question, but at the same time remain anonymous\U00002753 \U0001F440 \n\n"
                                  "\U0001F4A0  Then leave your question to the assistant bot and from 2 to 4 possible answers - a QUIZ.\n"
-                                 "\U0001F4A0  After the question and answers are checked by the moderator, they will be published in the general chat, where all interested participants will be able to choose (vote) one answer option they like.\n"
+                                 "\U0001F4A0  After the question and answers "
+                                 "are checked by the moderator, they will be "
+                                 "published in the general chat, where all "
+                                 "interested participants will be able to "
+                                 "choose (vote for) one answer option they like.\n"
                                  "\U0001F4A0  You will only have to observe the results of the QUIZ from the side.\n"
-                                 "\U0001F4A0  Additionally, everyone, including you, can leave comments for each quiz and/or supplement the information \U0001F525 \n"
+                                 "\U0001F4A0  Additionally, everyone, "
+                                 "including you, can leave comments for any "
+                                 "quiz and/or supplement the information \U0001F525 \n"
                                  "\U0001F4A0  Voting time is limited to 24 hours \U000023F3 \n\n"
                                  "\U0001F4A0  Try it right now! /start \U0001F929 \U0001F929 \U0001F929"],
             'last_quize': ["\U0001F49C LAST QUIZ:", "🔸 Date & time:",
@@ -102,8 +117,7 @@ async def english_text():
                           "\U0001F7E1 Now send your",
                           #15:
                           "possible Answer:",
-                          "Thanks! Your QUIZ has been recorded and submitted "
-                          "for review.\n"
+                          f"Thanks! Your {define_word(['wonderful', 'cool', 'charming', 'delightful'])} QUIZ has been submitted for review.\n"
                           "After passing the moderation procedure, we will "
                           "publish it"],
             'various': ["Yes", "No"],

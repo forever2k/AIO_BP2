@@ -7,13 +7,12 @@ from newapp.handlers.get_data_from_database import ask_session_id
 from newapp.loader import admin_data
 
 async def my_poll(message: types.Message):
-    # await send_poll(message, test_group)
     await ask_session_id(message)
 
 
 async def send_poll(call: types.CallbackQuery, test_channel=test_channel, admin_data=admin_data):
 
-    session_id = admin_data['session_id']
+    # session_id = admin_data['session_id']
     QUESTION = admin_data['question']
     ANSWER1 = admin_data["answer1"]
     ANSWER2 = admin_data["answer2"]
@@ -44,15 +43,9 @@ async def send_poll(call: types.CallbackQuery, test_channel=test_channel, admin_
                                  allows_multiple_answers=False, close_date=close_date,
                                  reply_markup=markup)
 
-        # await bot.send_message(test_channel, '<i>*** Do you want to see your own poll here? ***</i>', reply_markup=markup, parse_mode=types.ParseMode.HTML)
-
     except Exception as e:
+        await bot.send_message(test_group,
+                               f"There is a mistake in modul - 'send_poll':"
+                               f" {e}")
         await call.message.answer("We could not send the QUIZ :(  Maybe don`t "
                                   "enough answers")
-
-
-
-# async def send_poll(message: types.Message, test_group):
-#     await bot.send_message(test_group, "here 111")
-#     await message.bot.send_poll(test_group, question='my question', options=['qqq', 'www'],
-#                                 allows_multiple_answers=False)

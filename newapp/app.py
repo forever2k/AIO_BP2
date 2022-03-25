@@ -66,10 +66,6 @@ async def set_comm2(message: types.Message):
 dp.register_message_handler(cmd_start, commands="start", state="*")
 dp.register_message_handler(cmd_cancel, commands="cancel", state="*")
 dp.register_message_handler(cmd_cancel, Text(equals="отмена", ignore_case=True), state="*")
-# dp.register_message_handler(ask_start, commands=["ask"], state="*")
-# dp.register_message_handler(cmd_random, commands=["random"], state="*")
-# dp.register_message_handler(send_random_value, commands="random_value", state="*")
-dp.register_message_handler(secret_command, IDFilter(user_id=me), commands="secret")
 dp.register_message_handler(get_question, state=GetData.waiting_for_get_question)
 # dp.register_message_handler(ask_answer, state=GetData.waiting_for_ask_answer)
 dp.register_message_handler(write_answer, state=GetData.waiting_for_write_answer)
@@ -78,34 +74,22 @@ dp.register_message_handler(send_correct_question, state=GetDataFromDatabase.wai
 dp.register_message_handler(send_correct_answer, state=GetDataFromDatabase.waiting_for_correct_answer)
 dp.register_message_handler(ask_session_id, IDFilter(user_id=me), commands="asksecret")
 dp.register_message_handler(check_admin_data, IDFilter(user_id=me), commands="checkdata", state="*")
-dp.register_message_handler(my_poll, commands="mypoll", state="*")
-dp.register_message_handler(set_comm2, commands=["comm2"], state="*")
-dp.register_message_handler(testing, IDFilter(user_id=me), commands="testing", state="*")
-dp.register_message_handler(testing2, IDFilter(user_id=me), commands="testing2", state="*")
-dp.register_message_handler(testing_edit_message, IDFilter(user_id=me), commands="testing3", state="*")
-dp.register_message_handler(test_view_user_data_settings, IDFilter(user_id=me), commands="testing4", state="*")
-# dp.register_message_handler(test_check_current_user_language_mes, IDFilter(
-#     user_id=me), commands="testing5", state="*")
+dp.register_message_handler(my_poll, IDFilter(user_id=me), commands="mypoll",
+                            state="*")
+dp.register_message_handler(set_comm2, IDFilter(user_id=me),commands=[
+    "comm2"], state="*")
 dp.register_message_handler(switcher_to_main_menu, lambda message: message.text=="\U00002618 Main Menu", state="*")
 dp.register_message_handler(close_session, lambda message: message.text == "\U00002618 Cancel", state="*")
-# dp.register_message_handler(check_language, commands="check_language")
 
 dp.register_errors_handler(error_bot_blocked, exception=BotBlocked)
 
-# dp.register_callback_query_handler(cmd_start, text="cmd_start")
 dp.register_callback_query_handler(start_session, text="start_session")
 dp.register_callback_query_handler(close_session, text="close_session")
 dp.register_callback_query_handler(description, text="description")
-# dp.register_callback_query_handler(get_answer, text="get_answer")
 dp.register_callback_query_handler(get_answer, cb_number_answer.filter())
 dp.register_callback_query_handler(notice_to_admin, text="notice_to_admin")
 dp.register_callback_query_handler(edit_quiz_question, cb.filter())
 dp.register_callback_query_handler(send_poll, text="send_poll")
-dp.register_callback_query_handler(test_edit_callback, text="test_edit_callback")
-dp.register_callback_query_handler(test_delete_callback, text="test_delete_callback")
-# dp.register_callback_query_handler(test_check_current_user_language_call, text="test_check_current_user_language_call")
-dp.register_callback_query_handler(test_switcher_check_language,
-                                   text="test_switcher_check_language")
 dp.register_callback_query_handler(switcher_to_main_menu, text="switcher_to_main_menu")
 dp.register_callback_query_handler(switcher_get_data_for_user, text="switcher_get_data_for_user")
 dp.register_callback_query_handler(settings, text="settings")
@@ -115,22 +99,13 @@ dp.register_callback_query_handler(thanks_to_user, text="thanks_to_user")
 
 async def main():
 
-    # Регистрация хэндлеров
-    # register(dp)
-
-    # dp.register_message_handler(rrr, commands="rrrr")
-
-    # Установка команд бота
     await set_commands(bot)
-
-    logging.warning('It`s the main function. Does it work?')
 
 
 async def on_startup(dp):
     logging.warning('Starting connection')
     await bot.set_webhook(WEBHOOK_URL)
     # asyncio.create_task(bot_schedule())
-
 
 
 async def on_shutdown(dp):

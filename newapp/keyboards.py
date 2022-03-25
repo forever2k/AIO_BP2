@@ -28,8 +28,6 @@ async def main_menu_usual_keyboard():
 
 
 async def description_menu(text):
-    # await call.answer(text="\U0001F603 Buy!", show_alert=True)
-    # или просто await call.answer()
     buttons = [
         types.InlineKeyboardButton(text=text['description_menu'][0],
                                    callback_data="switcher_to_main_menu") ]

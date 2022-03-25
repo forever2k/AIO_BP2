@@ -32,6 +32,8 @@ async def russian_text():
                                  "комментарии для любого КВИЗа и/или дополнять "
                                  "информацию \U0001F525 \n"
                                  "\U0001F4A0  Время для голосавания ограничено 24 часами \U000023F3 \n\n"
+                                 "\U0000203C  ЗАПРЕЩЕНО: спам, флуд, "
+                                 "любого рода оскорбления, расизм и реклама. \U0000203C \n\n"
                                  "\U0001F4A0  Попробуй прямо сейчас! /start \U0001F929 \U0001F929 \U0001F929"],
             'last_quize': ["\U0001F49C Последний КВИЗ:", "🔸 Дата и время:",
                                               "🔸 вопрос:", "🔸 ответ 1:",
@@ -76,7 +78,7 @@ async def english_text():
                                                         "quiz",
                           "\U0001F4D5  Description",
                           "\U00002699 Settings"],
-            'settings_menu': ["\U0001F4E2 Choose language", "🇷🇺 Russian"],
+            'settings_menu': ["\U0001F4E2 Choose the language", "🇷🇺 Russian"],
             'description_menu': ["\U00002B05  Back",
                                  "\U0001F4E2  Do you want to know the opinion of other people regarding your personal question, but at the same time remain anonymous\U00002753 \U0001F440 \n\n"
                                  "\U0001F4A0  Then leave your question to the assistant bot and from 2 to 4 possible answers - a QUIZ.\n"
@@ -90,6 +92,9 @@ async def english_text():
                                  "including you, can leave comments for any "
                                  "quiz and/or supplement the information \U0001F525 \n"
                                  "\U0001F4A0  Voting time is limited to 24 hours \U000023F3 \n\n"
+                                 "\U0000203C  PROHIBITED: spam, flood, "
+                                 "any kind of insults, racism and advertising. "
+                                 "\U0000203C \n\n"
                                  "\U0001F4A0  Try it right now! /start \U0001F929 \U0001F929 \U0001F929"],
             'last_quize': ["\U0001F49C LAST QUIZ:", "🔸 Date & time:",
                                               "🔸 question:", "🔸 answer 1:",

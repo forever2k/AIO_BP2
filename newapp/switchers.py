@@ -1,8 +1,7 @@
 from typing import Union
-from aiogram import Dispatcher, types, md
+from aiogram import types
 from aiogram.dispatcher import FSMContext
 from newapp.bt import bot
-from newapp.config import test_group
 from newapp.handlers.get_data_from_database import get_data_for_user
 from newapp.keyboards import main_menu_inline_keyboard
 from newapp.language_module import check_current_user_language
@@ -14,19 +13,11 @@ async def switcher_to_main_menu(message: Union[types.Message,
                                 state: FSMContext):
     await state.finish()
 
-    # if isinstance(message, types.CallbackQuery):
-    #     await bot.send_message(test_group, 'types.CallbackQuery')
-    #     call = message
-
     lang = await check_current_user_language(message)
     text = await selected_text(lang)
 
-    # await bot.send_message(test_group, lang)
-
     keyboard = await main_menu_inline_keyboard(text)
 
-    # if isinstance(message, types.CallbackQuery):
-    #     message = message.message
     if isinstance(message, types.CallbackQuery):
         call = message
         message = call.message

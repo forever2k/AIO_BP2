@@ -33,14 +33,12 @@ else:
         WEBAPP_HOST = '0.0.0.0'
         WEBAPP_PORT = os.environ.get('PORT')
 
-
-
         dbase = mysql.connector.connect(
                 host=os.getenv('myhost'),
                 user=os.getenv('myuser'),
                 passwd=os.getenv('mypass'),
-                port="3306",
-                database="bqcbwpmrbqj7ghxx")
+                port=os.getenv('port'),
+                database=os.getenv('database') )
 
 
 

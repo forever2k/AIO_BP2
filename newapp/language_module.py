@@ -1,9 +1,8 @@
 from typing import Union
 from aiogram.dispatcher import FSMContext
-from newapp.bt import bot
 from newapp.loader import *
-from newapp.config import dbase, test_group
-from aiogram import Dispatcher, types, md
+from newapp.config import dbase
+from aiogram import types
 
 cursor = dbase.cursor()
 
@@ -25,17 +24,7 @@ async def set_users_dictionary(user_id, user_data_settings=user_data_settings, *
             user.language = val
 
 
-
 async def set_default_language(lang, user_id):
-    # if isinstance(message, types.Message):
-    #     user_id = message.from_user.id
-    #     locale = message.from_user.locale
-    #
-    # elif isinstance(message, types.CallbackQuery):
-    #     call = message
-    #     locale = call.from_user.locale
-    #     user_id = call.from_user.id
-
 
     results_user_exists = await check_user_settings_exists(user_id)
 
@@ -117,15 +106,6 @@ async def set_eng_language(call: types.CallbackQuery, state: FSMContext):
 async def check_current_user_language(message: Union[types.Message, types.CallbackQuery],
                                       user_data_settings=user_data_settings):
 
-    # await bot.send_message(test_group, message)
-
-    # if isinstance(message, types.Message):
-    #     user_id = message.from_user.id
-    # elif isinstance(message, types.CallbackQuery):
-    #     call = message
-    #     message = call.message
-    #     user_id = call.from_user.id
-
     if isinstance(message, types.Message):
         user_id = message.from_user.id
         locale = message.from_user.locale
@@ -136,10 +116,6 @@ async def check_current_user_language(message: Union[types.Message, types.Callba
         locale = call.from_user.locale
         lang = locale.language
         user_id = call.from_user.id
-        # message = call.message
-
-    # await bot.send_message(test_group, user_id)
-    # await bot.send_message(test_group, lang)
 
     if user_id in user_data_settings:
         user = user_data_settings[user_id]

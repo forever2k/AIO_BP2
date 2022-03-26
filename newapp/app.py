@@ -19,42 +19,13 @@ from newapp.language_module import set_rus_language, set_eng_language
 from newapp.switchers import switcher_to_main_menu, switcher_get_data_for_user
 from quizer import my_poll, send_poll
 
-# test_group = -1001153348142
-# test = -1001364950026
-#
-# me = os.getenv('me')
-#
-# TOKEN = os.getenv('TOKEN')
-# PROJECT_NAME = os.getenv('PROJECT_NAME')
-#
-# WEBHOOK_HOST = f'https://{PROJECT_NAME}.herokuapp.com'
-# WEBHOOK_PATH = '/' + TOKEN
-# WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
-#
-# WEBAPP_HOST = '0.0.0.0'
-# WEBAPP_PORT = os.environ.get('PORT')
-
-
 logging.basicConfig(level=logging.DEBUG)
-
-# bot = Bot(token=TOKEN)
-# dp = Dispatcher(bot, storage=MemoryStorage())
-
-# Парсинг файла конфигурации
-
-# bot = Bot(token=TOKEN)
-# dp = Dispatcher(bot)
-
-
-# cursor = dbase.cursor()
 
 
 async def set_commands(bot: Bot):
     commands = [
         BotCommand(command="/start", description="Start"),
-        BotCommand(command="/cancel", description="Cancel"),
-        # BotCommand(command="/rrrr", description="rrrr")
-
+        BotCommand(command="/cancel", description="Cancel")
     ]
     await bot.set_my_commands(commands)
 

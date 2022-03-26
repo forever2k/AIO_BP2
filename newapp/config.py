@@ -2,19 +2,18 @@ import os
 import mysql.connector
 
 
-USE_WEBHOOK = True
-
-test_group = os.getenv('test_group')
-test_channel = os.getenv('test_channel')
+USE_WEBHOOK = False
 
 
 if USE_WEBHOOK == False:
-        from config_pooling import TOKEN, dbase
+        from config_pooling import TOKEN, dbase, me, test_group, test_channel
         TOKEN = TOKEN
         dbase = dbase
 
 else:
         me = os.getenv('me')
+        test_group = os.getenv('test_group')
+        test_channel = os.getenv('test_channel')
         TOKEN = os.getenv('TOKEN')
         PROJECT_NAME = os.getenv('PROJECT_NAME')
         WEBHOOK_HOST = f'https://{PROJECT_NAME}.herokuapp.com'

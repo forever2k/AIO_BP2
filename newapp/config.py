@@ -2,7 +2,7 @@ import os
 import mysql.connector
 
 
-USE_WEBHOOK = False
+USE_WEBHOOK = True
 
 
 if USE_WEBHOOK == False:

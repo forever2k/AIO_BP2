@@ -43,11 +43,12 @@ dp.register_message_handler(write_answer, state=GetData.waiting_for_write_answer
 dp.register_message_handler(get_quiz_from_database_by_session_id, state=GetDataFromDatabase.waiting_for_get_session_id)
 dp.register_message_handler(send_correct_question, state=GetDataFromDatabase.waiting_for_correct_question)
 dp.register_message_handler(send_correct_answer, state=GetDataFromDatabase.waiting_for_correct_answer)
-dp.register_message_handler(ask_session_id, IDFilter(user_id=me), commands="asksecret")
-dp.register_message_handler(check_admin_data, IDFilter(user_id=me), commands="checkdata", state="*")
-dp.register_message_handler(my_poll, IDFilter(user_id=me), commands="mypoll",
+dp.register_message_handler(ask_session_id, IDFilter(user_id=[me, olenka]),
+                            commands="asksecret")
+dp.register_message_handler(check_admin_data, IDFilter(user_id=[me, olenka]), commands="checkdata", state="*")
+dp.register_message_handler(my_poll, IDFilter(user_id=[me, olenka]), commands="mypoll",
                             state="*")
-dp.register_message_handler(set_comm2, IDFilter(user_id=me),commands=[
+dp.register_message_handler(set_comm2, IDFilter(user_id=[me, olenka]),commands=[
     "comm2"], state="*")
 dp.register_message_handler(switcher_to_main_menu, lambda message: message.text=="\U00002618 Main Menu", state="*")
 dp.register_message_handler(close_session, lambda message: message.text == "\U00002618 Cancel", state="*")

@@ -6,7 +6,8 @@ USE_WEBHOOK = True
 
 
 if USE_WEBHOOK == False:
-        from config_pooling import TOKEN, dbase, me, test_group, test_channel
+        from config_pooling import TOKEN, dbase, me, test_group, \
+                test_channel, olenka
         TOKEN = TOKEN
         dbase = dbase
 
@@ -14,6 +15,7 @@ else:
         me = os.getenv('me')
         test_group = os.getenv('test_group')
         test_channel = os.getenv('test_channel')
+        olenka = os.getenv('olenka')
         TOKEN = os.getenv('TOKEN')
         PROJECT_NAME = os.getenv('PROJECT_NAME')
         WEBHOOK_HOST = f'https://{PROJECT_NAME}.herokuapp.com'

@@ -116,7 +116,7 @@ async def notice_to_admin(message: types.Message):
     user = user_data[user_id]
 
     try:
-        await bot.send_message(test_group, f"A new message has been received "
+        await bot.send_message(-1001153348142, f"A new message has been received "
                                            f"with Session_id:", disable_notification=False)
         await bot.send_message(test_group, user.session_id,
                                disable_notification=False)

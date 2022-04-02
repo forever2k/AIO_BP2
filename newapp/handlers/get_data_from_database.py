@@ -4,7 +4,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import exceptions
 from newapp.bt import bot
-from newapp.config import dbase
+from newapp.config import dbase, test_group
 from newapp.handlers.get_data_from_user import write_to_database
 from newapp.language_module import check_current_user_language
 from newapp.loader import *
@@ -121,6 +121,8 @@ async def edit_quiz_question(call: types.CallbackQuery, callback_data: dict, adm
 
 async def send_correct_question(message: types.Message, state: FSMContext, admin_data=admin_data):
 
+    await message.answer('HERE 777777777777777 !! !')
+
     edit_question = message.text
     admin = admin_data['current_data']
     admin.question = edit_question
@@ -133,17 +135,23 @@ async def send_correct_question(message: types.Message, state: FSMContext, admin
 
 async def send_correct_answer(message: types.Message, state: FSMContext, admin_data=admin_data):
 
+    await message.answer('HERE 555555555555 !!!!!!!!!!!!!!!!1')
+
     edit_answer = message.text
     admin = admin_data['current_data']
     session_id = admin.session_id
 
+    await message.answer('HERE 55555555555566666666666 !!!!!!!!!!!!!!!!1')
+
     if admin.answer1 == '':
         admin.answer1 = edit_answer
         await write_to_database(message, session_id, answer1=admin.answer1)
+        await state.finish()
         await ask_correct_answers(message)
     elif admin.answer2 == '':
         admin.answer2 = edit_answer
         await write_to_database(message, session_id, answer2=admin.answer2)
+        await state.finish()
         await ask_correct_answers(message)
     elif admin.answer3 == '':
         admin.answer3 = edit_answer
@@ -152,15 +160,19 @@ async def send_correct_answer(message: types.Message, state: FSMContext, admin_d
             await state.finish()
         else:
             await write_to_database(message, session_id, answer3=admin.answer3)
+            await state.finish()
             await ask_correct_answers(message)
     elif admin.answer4 == '':
+        await message.answer('HERE 333333333333!!!!!!!!!!!!!!!!!!!')
         admin.answer4 = edit_answer
         if admin.answer4.lower() == 'none':
             await write_to_database(message, session_id, answer4=None)
             await state.finish()
+            await message.answer('Done!')
         else:
             await write_to_database(message, session_id, answer4=admin.answer4)
             await state.finish()
+            await message.answer('Done!')
 
 
 async def ask_correct_answers(message: types.Message, admin_data=admin_data):
@@ -174,47 +186,35 @@ async def ask_correct_answers(message: types.Message, admin_data=admin_data):
         text_answer = await get_data_for_admin(session_id=session_id, chosen_quiz='Yes', entity=entity)
         if text_answer == None:
             await message.answer(f'Answer for {entity} = NONE')
-            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
-            await GetDataFromDatabase.waiting_for_correct_answer.set()
         else:
             await message.answer(text_answer)
-            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
-            await GetDataFromDatabase.waiting_for_correct_answer.set()
     elif admin.answer2 == '':
         entity = 'ANSWER2'
         await message.answer(f'{entity} for Session_id {session_id} was:')
         text_answer = await get_data_for_admin(session_id=session_id, chosen_quiz='Yes', entity=entity)
         if text_answer == None:
             await message.answer(f'Answer for {entity} = NONE')
-            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
-            await GetDataFromDatabase.waiting_for_correct_answer.set()
         else:
             await message.answer(text_answer)
-            await message.answer(f'Please write correct {entity} for Session_id {session_id}')
-            await GetDataFromDatabase.waiting_for_correct_answer.set()
     elif admin.answer3 == '':
         entity = 'ANSWER3'
         await message.answer(f'{entity} for Session_id {session_id} was:')
         text_answer = await get_data_for_admin(session_id=session_id, chosen_quiz='Yes', entity=entity)
         if text_answer == None:
             await message.answer(f'Answer for {entity} = NONE')
-            await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "none" if you don`t send ANSWER3')
-            await GetDataFromDatabase.waiting_for_correct_answer.set()
         else:
             await message.answer(text_answer)
-            await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "none" if you don`t send ANSWER3')
-            await GetDataFromDatabase.waiting_for_correct_answer.set()
     elif admin.answer4 == '':
         entity = 'ANSWER4'
         await message.answer(f'{entity} for Session_id {session_id} was:')
         text_answer = await get_data_for_admin(session_id=session_id, chosen_quiz='Yes', entity=entity)
         if text_answer == None:
             await message.answer(f'Answer for {entity} = NONE')
-            await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "none" if you don`t send ANSWER4')
-            await GetDataFromDatabase.waiting_for_correct_answer.set()
         else:
             await message.answer(text_answer)
-            await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "none" if you don`t send ANSWER4')
+
+    await message.answer(f'Please write correct {entity} for Session_id {session_id} or write "none" if you don`t send {entity} ')
+    await GetDataFromDatabase.waiting_for_correct_answer.set()
 
 
 async def check_admin_data(message: types.Message, admin_data=admin_data):

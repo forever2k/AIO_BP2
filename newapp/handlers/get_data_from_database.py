@@ -121,27 +121,21 @@ async def edit_quiz_question(call: types.CallbackQuery, callback_data: dict, adm
 
 async def send_correct_question(message: types.Message, state: FSMContext, admin_data=admin_data):
 
-    await message.answer('HERE 777777777777777 !! !')
-
     edit_question = message.text
     admin = admin_data['current_data']
     admin.question = edit_question
     session_id = admin.session_id
 
     await write_to_database(message, session_id, question=edit_question)
-
+    await state.finish()
     await ask_correct_answers(message)
 
 
 async def send_correct_answer(message: types.Message, state: FSMContext, admin_data=admin_data):
 
-    await message.answer('HERE 555555555555 !!!!!!!!!!!!!!!!1')
-
     edit_answer = message.text
     admin = admin_data['current_data']
     session_id = admin.session_id
-
-    await message.answer('HERE 55555555555566666666666 !!!!!!!!!!!!!!!!1')
 
     if admin.answer1 == '':
         admin.answer1 = edit_answer
@@ -163,7 +157,6 @@ async def send_correct_answer(message: types.Message, state: FSMContext, admin_d
             await state.finish()
             await ask_correct_answers(message)
     elif admin.answer4 == '':
-        await message.answer('HERE 333333333333!!!!!!!!!!!!!!!!!!!')
         admin.answer4 = edit_answer
         if admin.answer4.lower() == 'none':
             await write_to_database(message, session_id, answer4=None)
